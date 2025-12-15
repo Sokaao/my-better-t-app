@@ -1,8 +1,8 @@
 {
-  "buildCommand": "cd my-better-t-app && npm install && npm run build -- --filter=web",
-  "outputDirectory": "my-better-t-app/apps/web/.next",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "cd my-better-t-app && npm install",
+  "installCommand": "npm install",
   "rewrites": [
     { "source": "/(.*)", "destination":"/"}
 ]
