@@ -791,7 +791,7 @@ export default function Home() {
 								<Link
 									href="/mentions-legales"
 									className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm flex items-center gap-2">
-						Mentions légales
+										Mentions légales
 								</Link>
 								<Link
 									href="/politique-confidentialite"
