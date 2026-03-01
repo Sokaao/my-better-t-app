@@ -66,8 +66,8 @@ export default function TermsOfServiceTracker() {
 							</p>
 							<p className="mb-2">
 								<strong>Email:</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 						</div>
@@ -282,8 +282,8 @@ export default function TermsOfServiceTracker() {
 							</p>
 							<p className="mb-2">
 								<strong>By Email:</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="mb-2">

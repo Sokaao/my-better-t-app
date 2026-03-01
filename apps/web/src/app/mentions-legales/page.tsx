@@ -56,8 +56,8 @@ export default function MentionsLegales() {
 							</p>*/}
 							<p className="mb-2">
 								<strong>Email :</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="mb-2">
@@ -198,8 +198,8 @@ export default function MentionsLegales() {
 							</h3>
 							<p className="leading-relaxed mb-4">
 								Pour exercer vos droits, vous pouvez nous contacter à l&apos;adresse suivante :{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="leading-relaxed mb-4">
@@ -365,8 +365,8 @@ export default function MentionsLegales() {
 							</p>
 							<p className="mb-2">
 								<strong>Par email :</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="mb-2">

@@ -66,8 +66,8 @@ export default function PrivacyPolicyTrackerApp() {
 							</p>
 							<p className="mb-2">
 								<strong>Email:</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 						</div>
@@ -228,8 +228,8 @@ export default function PrivacyPolicyTrackerApp() {
 							</h3>
 							<p className="leading-relaxed mb-4">
 								To exercise any of these rights, please contact us at:{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="leading-relaxed mb-4">
@@ -315,8 +315,8 @@ export default function PrivacyPolicyTrackerApp() {
 							</p>
 							<p className="mb-2">
 								<strong>By Email:</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="mb-2">

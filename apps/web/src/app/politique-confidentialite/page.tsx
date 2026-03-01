@@ -51,8 +51,8 @@ export default function PolitiqueConfidentialite() {
 							</p>
 							<p className="mb-2">
 								<strong>Email :</strong>{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 						</div>
@@ -159,8 +159,8 @@ export default function PolitiqueConfidentialite() {
 							</ul>
 							<p className="leading-relaxed mt-4">
 								Pour exercer vos droits, contactez-nous à :{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 							<p className="leading-relaxed mt-4">
@@ -201,8 +201,8 @@ export default function PolitiqueConfidentialite() {
 							</h2>
 							<p className="leading-relaxed">
 								Pour toute question concernant cette politique de confidentialité ou le traitement de vos données personnelles, vous pouvez nous contacter à :{" "}
-								<a href="mailto:synapsis.devis@gmail.com" className="text-[#069D14] hover:underline">
-									synapsis.devis@gmail.com
+								<a href="mailto:contact@mysynapsis.fr" className="text-[#069D14] hover:underline">
+									contact@mysynapsis.fr
 								</a>
 							</p>
 						</div>

@@ -753,7 +753,7 @@ export default function Home() {
 								Contact
 							</h4>
 							<p className="text-gray-600 dark:text-gray-400 text-sm">
-								synapsis.devis@gmail.com
+								contact@mysynapsis.fr
 							</p>
 						</div>
 						<div>
