@@ -109,9 +109,20 @@ export default function Home() {
 			<nav className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sticky top-0 z-50">
 				<div className="container mx-auto px-6 py-5">
 					<div className="flex justify-between items-center">
-						<h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-							Synapsis
-						</h1>
+						<Link href="/" className="flex items-center">
+							{/* Logo pour mode clair */}
+							<img
+								src="/images/logo-light.svg"
+								alt="Synapsis"
+								className="h-14 dark:hidden"
+							/>
+							{/* Logo pour mode sombre */}
+							<img
+								src="/images/logo-dark.svg"
+								alt="Synapsis"
+								className="h-14 hidden dark:block"
+							/>
+						</Link>
 						<div className="hidden md:flex gap-8 items-center">
 							<button
 								onClick={() => scrollToSection("services")}
@@ -130,6 +141,12 @@ export default function Home() {
 							>
 								Qui suis-je ?
 							</button>
+							<Link
+								href="/offres"
+								className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm"
+							>
+								Offres
+							</Link>
 							<Link
 								href="/rendez-vous"
  								className="border-2 border-[#069D14] text-[#069D14] hover:bg-[#069D14] hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-1.5 group">
@@ -744,9 +761,18 @@ export default function Home() {
 				<div className="container mx-auto max-w-6xl">
 					<div className="grid md:grid-cols-4 gap-8 mb-8">
 						<div>
-							<h4 className="font-bold text-gray-900 dark:text-white mb-4 text-lg">
-								Synapsis
-							</h4>
+							<Link href="/" className="inline-block mb-4">
+								<img
+									src="/images/logo-light.svg"
+									alt="Synapsis"
+									className="h-8 dark:hidden"
+								/>
+								<img
+									src="/images/logo-dark.svg"
+									alt="Synapsis"
+									className="h-8 hidden dark:block"
+								/>
+							</Link>
 						</div>
 						<div>
 							<h4 className="font-semibold text-gray-900 dark:text-white mb-4">

@@ -9,8 +9,17 @@ export default function MentionsLegales() {
 			<nav className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sticky top-0 z-50">
 				<div className="container mx-auto px-6 py-5">
 					<div className="flex justify-between items-center">
-						<Link href="/" className="text-3xl font-bold text-gray-900 dark:text-white hover:text-[#069D14] transition-colors">
-							Synapsis
+						<Link href="/" className="flex items-center">
+							<img
+								src="/images/logo-light.svg"
+								alt="Synapsis"
+								className="h-14 dark:hidden"
+							/>
+							<img
+								src="/images/logo-dark.svg"
+								alt="Synapsis"
+								className="h-14 hidden dark:block"
+							/>
 						</Link>
 						<Link
 							href="/"

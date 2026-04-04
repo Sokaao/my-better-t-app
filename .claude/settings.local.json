@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\\\Users\\\\Frédéric MALLET\\\\Downloads\\\\Synapsis_Logos*\")",
+      "Bash(dir \"C:\\\\Users\\\\Frédéric MALLET\\\\Downloads\")",
+      "Bash(findstr:*)",
+      "Bash(powershell -Command:*)"
+    ]
+  }
+}
