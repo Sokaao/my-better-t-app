@@ -1,837 +1,453 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { useState, useEffect, useRef } from "react";
-import { ArrowRight, CheckCircle2, Zap, Users, TrendingUp, Sparkles, Bot, Workflow } from "lucide-react";
 import Link from "next/link";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useEffect, useRef } from "react";
+import { Mail, Check, Pencil, X } from "lucide-react";
+import { track } from "@vercel/analytics";
+import SiteNav from "@/components/site-nav";
+import SiteFooter from "@/components/site-footer";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 export default function Home() {
-	const [mouseX, setMouseX] = useState(0);
-	const [mouseY, setMouseY] = useState(0);
-	const [isHoveringCard, setIsHoveringCard] = useState(false);
-	const galleryRef = useRef<HTMLDivElement | null>(null);
+	useScrollReveal();
+	const execRef = useRef<HTMLSpanElement | null>(null);
 
-	const scrollToSection = (id: string) => {
-		const element = document.getElementById(id);
-		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
-		}
-	};
-
-	// Détecter la position de la souris
 	useEffect(() => {
-		const handleMouseMove = (e: MouseEvent) => {
-			setMouseX(e.clientX);
-			setMouseY(e.clientY);
+		const el = execRef.current;
+		if (!el) return;
+
+		const target = 1247;
+		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		if (reduced) {
+			el.textContent = target.toLocaleString("fr-FR");
+			return;
+		}
+
+		let started = false;
+		let frameId: number;
+		const startCount = () => {
+			if (started) return;
+			started = true;
+			const t0 = performance.now();
+			const dur = 1800;
+			const tick = (now: number) => {
+				const p = Math.min((now - t0) / dur, 1);
+				const eased = 1 - (1 - p) ** 3;
+				el.textContent = Math.round(eased * target).toLocaleString("fr-FR");
+				if (p < 1) frameId = requestAnimationFrame(tick);
+			};
+			frameId = requestAnimationFrame(tick);
 		};
 
-		window.addEventListener("mousemove", handleMouseMove);
-		return () => window.removeEventListener("mousemove", handleMouseMove);
+		const timeoutId = setTimeout(startCount, 3000);
+		return () => {
+			clearTimeout(timeoutId);
+			if (frameId) cancelAnimationFrame(frameId);
+		};
 	}, []);
 
-	// Défilement automatique et smooth de la galerie basé sur la position de la souris
-	useEffect(() => {
-		const gallery = galleryRef.current;
-		if (!gallery) return;
-
-		let animationFrameId: number;
-
-		const animate = () => {
-			// Arrêter le défilement si le curseur survole une carte
-			if (isHoveringCard) {
-				animationFrameId = requestAnimationFrame(animate);
-				return;
-			}
-
-			// Récupérer la position et les dimensions de la galerie
-			const galleryRect = gallery.getBoundingClientRect();
-			const galleryLeft = galleryRect.left;
-			const galleryRight = galleryRect.right;
-			const galleryTop = galleryRect.top;
-			const galleryBottom = galleryRect.bottom;
-			const galleryWidth = galleryRect.width;
-
-			let targetSpeed = 0.8; // Vitesse de défilement constante de base
-
-			// Vérifier si la souris est au-dessus de la galerie
-			const isMouseOverGallery =
-				mouseX >= galleryLeft &&
-				mouseX <= galleryRight &&
-				mouseY >= galleryTop &&
-				mouseY <= galleryBottom;
-
-			if (isMouseOverGallery) {
-				// Position relative de la souris dans la galerie (0 à 1)
-				const relativeX = (mouseX - galleryLeft) / galleryWidth;
-				const threshold = 0.3; // Zone de 30% de chaque côté de la galerie
-
-				if (relativeX < threshold) {
-					// Curseur à gauche de la galerie - défiler vers la gauche
-					const intensity = (threshold - relativeX) / threshold;
-					targetSpeed = -3 * intensity;
-				} else if (relativeX > 1 - threshold) {
-					// Curseur à droite de la galerie - défiler vers la droite
-					const intensity = (relativeX - (1 - threshold)) / threshold;
-					targetSpeed = 3 * intensity;
-				}
-			}
-
-			// Smooth scrolling
-			gallery.scrollLeft += targetSpeed;
-
-			// Boucle infinie seamless - on a 12 cartes (6 originales + 6 dupliquées)
-			// Largeur approximative d'une carte + gap = 280px + 24px = 304px
-			// 6 cartes = 1824px
-			const cardSetWidth = 6 * 304;
-
-			if (gallery.scrollLeft >= cardSetWidth) {
-				gallery.scrollLeft = gallery.scrollLeft - cardSetWidth;
-			} else if (gallery.scrollLeft <= 0) {
-				gallery.scrollLeft = cardSetWidth + gallery.scrollLeft;
-			}
-
-			animationFrameId = requestAnimationFrame(animate);
-		};
-
-		animationFrameId = requestAnimationFrame(animate);
-
-		return () => {
-			if (animationFrameId) {
-				cancelAnimationFrame(animationFrameId);
-			}
-		};
-	}, [mouseX, mouseY, isHoveringCard]);
-
 	return (
-		<div className="min-h-screen bg-white dark:bg-gray-950">
-			{/* Navigation épurée */}
-			<nav className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 sticky top-0 z-50">
-				<div className="container mx-auto px-6 py-5">
-					<div className="flex justify-between items-center">
-						<Link href="/" className="flex items-center">
-							{/* Logo pour mode clair */}
-							<img
-								src="/images/logo-light.svg"
-								alt="Synapsis"
-								className="h-14 dark:hidden"
-							/>
-							{/* Logo pour mode sombre */}
-							<img
-								src="/images/logo-dark.svg"
-								alt="Synapsis"
-								className="h-14 hidden dark:block"
-							/>
-						</Link>
-						<div className="hidden md:flex gap-8 items-center">
-							<button
-								onClick={() => scrollToSection("services")}
- 								className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm"							>
-								Solutions
-							</button>
-							<button
-								onClick={() => scrollToSection("methode")}
-								className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm"
-							>
-								Méthode
-							</button>
-							<button
-								onClick={() => scrollToSection("qui-suis-je")}
-								className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm"
-							>
-								Qui suis-je ?
-							</button>
-							<Link
-								href="/offres"
-								className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm"
-							>
-								Offres
-							</Link>
+		<>
+			<div className="s-bg-grid" />
+			<SiteNav />
+
+			<header className="s-hero">
+				<div className="s-wrap">
+					<div className="s-hero-top">
+						<span className="s-eyebrow s-hin s-h1d" style={{ justifyContent: "center" }}>
+							Automatisation sur-mesure · PME &amp; indépendants
+						</span>
+						<h1 className="s-hin s-h2d">
+							Je construis les{" "}
+							<span className="s-hl">
+								systèmes
+								<svg viewBox="0 0 320 12" preserveAspectRatio="none">
+									<path d="M4,9 C80,3 240,3 316,8" />
+								</svg>
+							</span>{" "}
+							qui font tourner votre business sans vous.
+						</h1>
+						<p className="s-lead s-hin s-h3d">
+							Prospection, relances, devis, reporting : des workflows sur-mesure qui exécutent 24/7 les tâches répétitives de votre opérationnel. Déployés sur votre infrastructure, connectés à vos outils.
+						</p>
+						<div className="s-hero-cta s-hin s-h4d">
 							<Link
 								href="/rendez-vous"
- 								className="border-2 border-[#069D14] text-[#069D14] hover:bg-[#069D14] hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-1.5 group">
-								Appel de découverte
-								<ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+								className="s-btn s-btn-primary"
+								onClick={() => track("cta_reserver_appel", { location: "home_hero" })}
+							>
+								Réserver un appel de découverte <span className="arr">→</span>
 							</Link>
+							<a href="#preuves" className="s-btn s-btn-ghost">
+								Voir des systèmes réels
+							</a>
+						</div>
+						<div className="s-hero-note s-hin s-h5d">
+							Audit gratuit · 30 min · <b>ROI chiffré sous 60 jours</b>
 						</div>
 					</div>
 				</div>
-			</nav>
 
-		{/* Hero Section épurée */}
-		<section id="accueil" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 relative overflow-hidden min-h-screen flex items-center px-6 relative overflow-hidden animate-fade-in-up delay-900">
-			<div className="py-20 px-6 bg-gray-50 dark:bg-gray-900 relative overflow-hiddenanimate-fade-in-up delay-2000 container mx-auto max-w-6xl">
-				{/* Titre centré au-dessus */}
-				<h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-12 leading-tight text-left">
-					Libérez <span className="text-[#069D14]">en moyenne 8h par semaine</span> grâce à l'automatisation{" "}
-					<span className="text-[#0A4D8C]">intelligente.</span>
-				</h2>
-		
-				{/* Grille avec texte à gauche et image à droite */}
-				<div className="grid md:grid-cols-2 gap-12 items-center mt-5">
-					{/* Texte à gauche */}
-					<div className="relative z-10">
-						<p className="text-xl text-gray-600 dark:text-gray-400 mb-1 leading-relaxed alinea">
-							<strong>Dirigeants et entrepreneurs :</strong> <br/>
-							Vos équipes croulent sous les tâches répétitives qui ne génèrent aucune valeur. Transformons ce temps perdu en croissance mesurable et en avantage concurrentiel.
-						</p>
+				{/* WORKFLOW n8n */}
+				<div className="s-flow-stage">
+					<div className="s-flow">
+						<div className="s-flow-bar">
+							<span className="d r" />
+							<span className="d y" />
+							<span className="d g" />
+							<span className="fname">pipeline-relance-client.json</span>
+							<div className="fright">
+								<span className="badge">
+									<span className="live" />
+									ACTIF
+								</span>
+							</div>
+						</div>
+						<div className="s-canvas">
+							<svg className="s-wires" viewBox="0 0 1180 430" preserveAspectRatio="none">
+								<path className="s-wire s-flowing s-w1" d="M212,84 C245,84 235,200 262,200" />
+								<path className="s-wire s-flowing s-w2" d="M212,322 C245,322 235,200 262,200" />
+								<path className="s-wire s-flowing s-w3" d="M436,200 C458,200 458,200 480,200" />
+								<path className="s-wire s-flowing s-w4" d="M656,192 C690,192 685,92 716,92" />
+								<path className="s-wire s-w5" d="M656,208 C690,208 685,312 716,312" />
+								<path className="s-wire s-flowing s-w6" d="M886,92 C915,92 915,92 952,92" />
+								<path className="s-wire s-w7" d="M886,312 C915,312 915,312 952,312" />
+								<circle className="s-pulse" r={4}>
+									<animateMotion dur="2.6s" repeatCount="indefinite" begin="3.2s" path="M212,84 C245,84 235,200 262,200 L436,200 C458,200 458,200 480,200" />
+								</circle>
+								<circle className="s-pulse2" r={4}>
+									<animateMotion dur="2.2s" repeatCount="indefinite" begin="4.1s" path="M656,192 C690,192 685,92 716,92 L886,92 C915,92 915,92 952,92" />
+								</circle>
+								<circle className="s-pulse" r={3.5}>
+									<animateMotion dur="3s" repeatCount="indefinite" begin="5s" path="M212,322 C245,322 235,200 262,200" />
+								</circle>
+							</svg>
+
+							<div className="s-node s-trigger s-n1">
+								<div className="s-ntitle"><span className="s-ico">⚡</span>Nouveau lead</div>
+								<small>Webhook · formulaire site</small>
+							</div>
+							<div className="s-node s-trigger s-n2">
+								<div className="s-ntitle"><span className="s-ico">⏱</span>Sans réponse 48h</div>
+								<small>Déclencheur planifié</small>
+							</div>
+							<div className="s-node s-action s-n3">
+								<div className="s-ntitle"><span className="s-ico">◍</span>Enrichissement</div>
+								<small>SIREN · site · LinkedIn</small>
+							</div>
+							<div className="s-node s-logic s-n4">
+								<div className="s-ntitle"><span className="s-ico">⑂</span>Lead qualifié ?</div>
+								<small>Score IA ≥ 70</small>
+							</div>
+							<div className="s-node s-ai s-n5">
+								<div className="s-ntitle"><span className="s-ico">✦</span>Message personnalisé</div>
+								<small>IA · contexte du lead</small>
+							</div>
+							<div className="s-node s-action s-n6">
+								<div className="s-ntitle"><span className="s-ico">♻</span>Nurturing long terme</div>
+								<small>Séquence 5 emails</small>
+							</div>
+							<div className="s-node s-action s-endnode s-n7">
+								<div className="s-ntitle"><span className="s-ico">✉</span>Envoi + RDV</div>
+								<small>Email · lien agenda</small>
+							</div>
+							<div className="s-node s-action s-endnode s-n8">
+								<div className="s-ntitle"><span className="s-ico">◈</span>Maj CRM</div>
+								<small>Pipeline · étiquettes</small>
+							</div>
+
+							<span className="s-branch-label s-bl-yes">OUI</span>
+							<span className="s-branch-label s-bl-no">NON</span>
+						</div>
+						<div className="s-flow-log">
+							<span><span className="k">Exécutions ce mois :</span> <span className="v o" ref={execRef}>0</span></span>
+							<span className="sep" />
+							<span><span className="k">Taux de succès :</span> <span className="v">99,4%</span></span>
+							<span className="sep" />
+							<span><span className="k">Dernière exécution :</span> <span className="v">il y a 2 min</span></span>
+							<span className="sep" />
+							<span><span className="k">Intervention humaine :</span> <span className="v">aucune</span></span>
+						</div>
+					</div>
+				</div>
+
+				<div className="s-proof">
+					<div className="s-wrap s-proof-in">
+						<span className="s-proof-label">Construit avec</span>
+						<div className="s-stack">
+							<span className="s-stack-item">n8n</span>
+							<span className="s-stack-item">Supabase</span>
+							<span className="s-stack-item">Next.js</span>
+							<span className="s-stack-item">API IA</span>
+							<span className="s-stack-item">Intégrations sur-mesure</span>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			{/* SOLUTIONS */}
+			<section className="s-blk" id="solutions">
+				<div className="s-wrap">
+					<div className="s-sec-head rv">
+						<span className="s-eyebrow">Ce que je construis</span>
+						<h2>Des systèmes, pas des gadgets.</h2>
+						<p>Chaque brique est déployée sur votre infrastructure, connectée à vos outils, et pensée pour tourner sans supervision.</p>
+					</div>
+					<div className="s-sol-grid">
+						<div className="s-card rv rv-d1" data-id="01">
+							<div className="s-cico">◑</div>
+							<h3>Pipeline commercial</h3>
+							<p>Détection, qualification et relance automatique des prospects jusqu&apos;à la prise de rendez-vous.</p>
+						</div>
+						<div className="s-card rv rv-d2" data-id="02">
+							<div className="s-cico">◈</div>
+							<h3>Devis &amp; administratif</h3>
+							<p>Génération de devis et factures à partir d&apos;un simple input, format à votre charte, zéro ressaisie.</p>
+						</div>
+						<div className="s-card rv rv-d3" data-id="03">
+							<div className="s-cico">✉</div>
+							<h3>Relation client 24/7</h3>
+							<p>Réponses, suivis et relances automatisés, même la nuit et le week-end, avec votre ton de voix.</p>
+						</div>
+						<div className="s-card rv rv-d4" data-id="04">
+							<div className="s-cico">✦</div>
+							<h3>Agents IA métier</h3>
+							<p>Assistants entraînés sur votre contexte pour trier, rédiger et préparer les décisions sur les tâches cadrées.</p>
+						</div>
+						<div className="s-card rv rv-d5" data-id="05">
+							<div className="s-cico">⇄</div>
+							<h3>Intégrations</h3>
+							<p>Vos outils synchronisés entre eux. Une saisie unique, propagée partout, sans erreur de transfert.</p>
+						</div>
+						<div className="s-card rv rv-d6" data-id="06">
+							<div className="s-cico">◫</div>
+							<h3>Reporting automatisé</h3>
+							<p>Tableaux de bord alimentés en temps réel. Vous ouvrez, vous lisez, vous décidez. Plus d&apos;export manuel.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* PREUVES */}
+			<section className="s-blk" id="preuves" style={{ paddingTop: 0 }}>
+				<div className="s-wrap">
+					<div className="s-sec-head rv">
+						<span className="s-eyebrow">Réalisations</span>
+						<h2>Ce que ça donne concrètement.</h2>
+						<p>Pas de photo de banque d&apos;images. De vrais systèmes déployés en production.</p>
+					</div>
+					<div className="s-shots">
+						<div className="s-shot rv rv-d1">
+							<div className="s-shot-photo">
+								<img src="/images/workflow-n8n-exemple.png" alt="Workflow n8n réel : agent IA de création de compte utilisateur" />
+							</div>
+							<span className="s-ph-title">Votre workflow n8n complet</span>
+							<span className="s-ph-sub">Une vue du canvas avec les nodes connectés d&apos;un pipeline réel. La preuve la plus forte.</span>
+						</div>
+						<div className="s-shot rv rv-d2">
+							<div className="s-dashmock">
+								<div className="s-dashmock-bar">
+									<span className="d r" /><span className="d y" /><span className="d g" />
+									<span>dashboard — concept</span>
+								</div>
+								<div className="s-dashmock-body">
+									<div className="s-dashmock-stats">
+										<div className="s-dashmock-stat">
+											<div className="n">12</div>
+											<div className="l">Automatisations</div>
+										</div>
+										<div className="s-dashmock-stat">
+											<div className="n">98%</div>
+											<div className="l">Taux succès</div>
+										</div>
+									</div>
+									<div className="s-dashmock-rows">
+										<div className="s-dashmock-row"><span className="dot ok" /> Facture générée cette semaine<span className="t">22</span></div>
+										<div className="s-dashmock-row"><span className="dot ok" /> Relance client<span className="t">7</span></div>
+										<div className="s-dashmock-row"><span className="dot pending" /> Validation envoi mail<span className="t">1</span></div>
+									</div>
+								</div>
+								<div className="s-dashmock-divider"><span>Validation humaine</span></div>
+								<div className="s-dashmock-queue">
+									<div className="s-dashmock-ticket">
+										<div className="ico"><Mail size={11} /></div>
+										<div className="meta">
+											<div className="subject">Relance facture #2024-118</div>
+											<div className="to">à client@exemple.fr</div>
+										</div>
+										<div className="s-dashmock-ticket-actions">
+											<span className="a validate"><Check size={11} /></span>
+											<span className="a edit"><Pencil size={11} /></span>
+											<span className="a decline"><X size={11} /></span>
+										</div>
+									</div>
+									<div className="s-dashmock-ticket">
+										<div className="ico"><Mail size={11} /></div>
+										<div className="meta">
+											<div className="subject">Confirmation RDV audit</div>
+											<div className="to">à prospect@exemple.fr</div>
+										</div>
+										<div className="s-dashmock-ticket-actions">
+											<span className="a validate"><Check size={11} /></span>
+											<span className="a edit"><Pencil size={11} /></span>
+											<span className="a decline"><X size={11} /></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<span className="s-ph-title">Un dashboard de pilotage</span>
+							<span className="s-ph-sub">Concept d&apos;interface pour suivre vos automatisations, avec validation humaine avant chaque envoi sensible.</span>
+						</div>
+						<div className="s-shot rv rv-d3">
+							<div className="s-doc-frame">
+								<div className="s-doc-frame-bar">
+									<span className="d r" /><span className="d y" /><span className="d g" />
+									<span className="fname">devis-final.pdf</span>
+									<span className="s-doc-badge"><span className="lbl">Total TTC</span> 18 234 €</span>
+								</div>
+								<div className="s-doc-frame-img">
+									<img src="/images/devis-exemple.png" alt="Devis PDF généré automatiquement par l'automatisation" />
+								</div>
+							</div>
+							<span className="s-ph-title">Un devis généré automatiquement</span>
+							<span className="s-ph-sub">Le rendu PDF final d&apos;une automatisation, à côté de son input brut.</span>
+						</div>
+						<div className="s-shot rv rv-d4">
+							<div className="s-statcard">
+								<div className="s-statcard-bar">
+									<span className="d r" /><span className="d y" /><span className="d g" />
+									<span>résultats — concept</span>
+								</div>
+								<div className="s-statcard-tiles">
+									<div className="s-statcard-tile">
+										<div className="n">8h</div>
+										<div className="l">Récupérées/sem.</div>
+									</div>
+									<div className="s-statcard-tile">
+										<div className="n">156</div>
+										<div className="l">Tâches traitées</div>
+									</div>
+									<div className="s-statcard-tile">
+										<div className="n">-73%</div>
+										<div className="l">Temps de traitement</div>
+									</div>
+								</div>
+								<div className="s-statcard-chart">
+									<svg viewBox="0 0 400 150" fill="none" style={{ width: "100%", height: "100%" }}>
+										<defs>
+											<linearGradient id="statFill" x1="0" y1="0" x2="0" y2="1">
+												<stop offset="0%" stopColor="var(--orange)" stopOpacity="0.28" />
+												<stop offset="100%" stopColor="var(--orange)" stopOpacity="0" />
+											</linearGradient>
+										</defs>
+										<path d="M10,20 H390 M10,55 H390 M10,90 H390" stroke="var(--line)" strokeWidth="1" />
+										<path
+											d="M10,105 L88,88 L166,96 L244,58 L322,42 L390,18 V125 H10 Z"
+											fill="url(#statFill)"
+										/>
+										<path
+											d="M10,105 L88,88 L166,96 L244,58 L322,42 L390,18"
+											stroke="var(--orange)"
+											strokeWidth="2.6"
+											fill="none"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+										<circle cx="10" cy="105" r="3.5" fill="var(--orange)" />
+										<circle cx="88" cy="88" r="3.5" fill="var(--orange)" />
+										<circle cx="166" cy="96" r="3.5" fill="var(--orange)" />
+										<circle cx="244" cy="58" r="3.5" fill="var(--orange)" />
+										<circle cx="322" cy="42" r="3.5" fill="var(--orange)" />
+										<circle cx="390" cy="18" r="9" fill="var(--orange)" opacity="0.18">
+											<animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite" />
+											<animate attributeName="opacity" values="0.35;0;0.35" dur="2s" repeatCount="indefinite" />
+										</circle>
+										<circle cx="390" cy="18" r="5" fill="var(--orange)" stroke="var(--s-card)" strokeWidth="2.5" />
+										<text x="10" y="142" fontFamily="var(--font-ibm-plex-mono)" fontSize="10" fill="var(--faint)">S1</text>
+										<text x="235" y="142" fontFamily="var(--font-ibm-plex-mono)" fontSize="10" fill="var(--faint)">S8</text>
+										<text x="378" y="142" fontFamily="var(--font-ibm-plex-mono)" fontSize="10" fill="var(--faint)">S12</text>
+									</svg>
+								</div>
+								<div className="s-statcard-legend">
+									<span className="item"><span className="sw" style={{ background: "var(--orange)" }} /> Suivi hebdomadaire</span>
+									<span className="item"><span className="sw" style={{ background: "var(--line-strong)" }} /> Tendance sur 12 semaines</span>
+								</div>
+							</div>
+							<span className="s-ph-title">Un résultat chiffré réel</span>
+							<span className="s-ph-sub">Heures récupérées, volume traité, temps de réponse : un chiffre issu d&apos;une mission.</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* METHODE */}
+			<section className="s-blk" id="methode" style={{ paddingTop: 0 }}>
+				<div className="s-wrap">
+					<div className="s-sec-head rv">
+						<span className="s-eyebrow">Méthode</span>
+						<h2>De l&apos;audit au premier gain en 60 jours.</h2>
+						<p>Déploiement progressif, résultats mesurables à chaque étape.</p>
+					</div>
+					<div className="s-steps rv rv-d1">
+						<div className="s-step">
+							<div className="s-num">ÉTAPE 01</div>
+							<h3>Audit &amp; cartographie</h3>
+							<p>Identification des tâches chronophages et chiffrage du gain potentiel de chacune. Plan d&apos;action priorisé.</p>
+						</div>
+						<div className="s-step">
+							<div className="s-num">ÉTAPE 02</div>
+							<h3>Déploiement par briques</h3>
+							<p>Mise en production étape par étape. Chaque système livré tourne avant de passer au suivant.</p>
+						</div>
+						<div className="s-step">
+							<div className="s-num">ÉTAPE 03</div>
+							<h3>Maintenance &amp; optimisation</h3>
+							<p>Suivi mensuel, ajustements et nouvelles briques selon l&apos;évolution de votre activité.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* CTA */}
+			<section className="s-blk" style={{ paddingTop: 0 }}>
+				<div className="s-wrap">
+					<div className="s-band rv">
+						<span className="s-eyebrow" style={{ justifyContent: "center", marginBottom: 16 }}>
+							Appel de découverte · gratuit
+						</span>
+						<h2>Identifiez vos 3 processus les plus coûteux en 30 minutes.</h2>
+						<p>Sans engagement. On analyse votre opérationnel, je vous montre exactement ce qui est automatisable et ce que ça vous rapporterait.</p>
 						<Link
 							href="/rendez-vous"
-							className="bg-[#069D14] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#058a12] transition-all duration-300 inline-flex items-center gap-2 group shadow-lg hover:shadow-xl mt-25">
-								Réserve ton appel
-							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+							className="s-btn s-btn-primary"
+							onClick={() => track("cta_reserver_appel", { location: "home_band" })}
+						>
+							Réserver mon créneau <span className="arr">→</span>
 						</Link>
-						
-						{/* Section "Ils nous font confiance" */}
-						{/*<div className="mt-16">*/}
-							{/*<p className="text-sm text-gray-500 dark:text-gray-500 mb-4">
-								Déjà adoptée par
-							</p>								<div className="flex gap-8 items-center opacity-40">
-								<div className="text-2xl font-bold text-gray-400">PME</div>
-								<div className="text-2xl font-bold text-gray-400">Agences</div>
-								<div className="text-2xl font-bold text-gray-400">Scale-ups</div>
-							</div>
-						</div>*/}
-					</div>
-
-						{/* Animation Lottie côté droit */}
-					<div className="hidden md:block relative">
-						<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-12 md:p-16 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1 min-h-[400px] flex flex-col justify-center">
-							<DotLottieReact
-								src="/animation/accueil.lottie"
-								loop
-								autoplay
-								style={{ width: '120%', height: '120%' }}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-			{/* test début */}
-			{/* NOUVELLE SECTION - 3 Chiffres Essentiels */}
-			<section className="py-20 md:py-32 px-6 relative overflow-hidden">
-				<div className="container mx-auto max-w-6xl">
-					{/* Titre de section */}
-					<div className="text-center mb-16">
-						<div className="inline-block bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-							L'IMPACT DE L'INACTION
-						</div>
-						<h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-							Chaque jour sans automatisation vous coûte cher
-						</h3>
-						<p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-							Chaque semaine sans automatisation creuse l'écart avec les entreprises qui ont déjà franchi le cap. Les chiffres parlent d'eux-mêmes
-						</p>
-					</div>
-
-					{/* Grille des 3 chiffres */}
-					<div className="grid md:grid-cols-3 gap-8 mb-12">
-						{/* Chiffre 1 - Temps perdu */}
-						<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-							<div className="mb-4">
-								<div className="text-7xl font-bold text-[#0A4D8C] mb-3">
-									60%
-								</div>
-								<p className="text-xl text-gray-900 dark:text-white font-semibold mb-3">
-									Temps perdu en tâches répétitives
-								</p>
-								<p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-									Vos collaborateurs ne sont productifs que <strong>40%</strong> de leur temps <br/> le reste est englouti par des processus répétitifs automatisables.
-								</p>
-							</div>
-							<div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-								<p className="text-xs text-gray-500 dark:text-gray-500">Source : Asana, 2023</p>
-							</div>
-						</div>
-
-						{/* Chiffre 2 - Jours gaspillés */}
-						<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-							<div className="mb-4">
-								<div className="text-7xl font-bold text-[#F2D335] mb-3">
-									50
-								</div>
-								<p className="text-xl text-gray-900 dark:text-white font-semibold mb-3">
-									jours perdus par employé/an
-								</p>
-								<p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-									L'équivalent de <strong>2 mois complets</strong> de travail évaporés sans créer de valeur ajoutée pour votre entreprise.
-								</p>
-							</div>
-							<div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-								<p className="text-xs text-gray-500 dark:text-gray-500">Source : TeamStage, 2024</p>
-							</div>
-						</div>
-
-						{/* Chiffre 3 - Coût financier */}
-						<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-							<div className="mb-4">
-								<div className="text-7xl font-bold text-[#069D14] mb-3">
-									400%
-								</div>
-								<p className="text-xl text-gray-900 dark:text-white font-semibold mb-3">
-									ROI moyen sur l'automatisation
-								</p>
-								<p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-									Les entreprises qui automatisent génèrent <strong>4€ pour chaque 1€ investi</strong> dans l'automatisation des processus.
-								</p>
-							</div>
-							<div className="pt-4 bordeFr-t border-gray-200 dark:border-gray-700">
-								<p className="text-xs text-gray-500 dark:text-gray-500">Source : Gartner Automation ROI Analysis, 2024</p>
-							</div>
-						</div>
-					</div>
-
-					{/* CTA Box avec urgence - Style identique à Impact mesurable */}
-<div className="bg-gradient-to-r from-[#069D14] to-[#0A4D8C] rounded-2xl p-8 md:p-10 mt-35">
-	<h3 className="text-2xl md:text-3xl font-bold text-white mb-4 text-center">
-		Pendant que vous lisez ceci, vos concurrents automatisent.
-	</h3>
-	<p className="text-xl text-white/90 mb-8 text-center">
-		<strong className="text-white">Plus d'une entreprise sur 2</strong> ont déjà franchi le pas.
-	</p>
-	
-	<div className="flex flex-col items-center gap-6">
-		<Link
-			href="/rendez-vous"
-			className="inline-flex items-center gap-2 bg-white text-[#069D14] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
-		>
-			<span>Rejoignez les leaders dès aujourd&apos;hui</span>
-			<ArrowRight className="w-5 h-5" />
-		</Link>
-		
-		<div className="flex items-center gap-4 text-white/90 text-sm">
-			<div className="flex items-center gap-2">
-				<div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-					<svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-					</svg>
-				</div>
-				<span>Appel de découverte</span>
-			</div>
-			<div className="flex items-center gap-2">
-				<div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-					<svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-					</svg>
-				</div>
-				<span>30 minutes</span>
-			</div>
-			<div className="flex items-center gap-2">
-				<div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-					<svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-					</svg>
-				</div>
-				<span>Résultats immédiats</span>
-			</div>
-		</div>
-	</div>
-</div>
-				</div>
-			</section>
-			{/* test fin */}
-			{/* Section Services avec badge */}
-			<section id="services" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-				{/* Image décorative à gauche */}
-				<div className="hidden lg:block absolute left-0 top-1/4 w-80 h-96 opacity-20">
-					<img
-						src="/images/ai-network.jpg"
-						alt="Réseau IA"
-						className="w-full h-full object-cover rounded-r-3xl"
-					/>
-				</div>
-
-				<div className="container mx-auto max-w-6xl relative z-10">
-					<div className="text-center mb-16">
-						<div className="inline-block bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-							NOS SOLUTIONS
-						</div>
-						<h3 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-							Ces automatisations au service de<br/>{" "}
-							<span className="text-[#069D14]">votre rentabilité.</span>
-						</h3>
-						<p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-							 <strong>Voici comment Synapsis transforme votre opérationnel:</strong>
-						</p>
-					</div>
-
-					{/* Galerie horizontale scrollable */}
-<div
-	ref={galleryRef}
-	className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide mt-30"
-	style={{
-		scrollbarWidth: 'none',
-		msOverflowStyle: 'none',
-	}}
->
-	<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#069D14]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#069D14] transition-colors">
-		<Zap className="w-6 h-6 text-[#069D14] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Pipeline Commercial Automatisé
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		L&apos;IA identifie vos meilleurs prospects, <br/> les qualifie et les relance automatiquement jusqu&apos;à la conversion.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#0A4D8C]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#0A4D8C] transition-colors">
-		<Users className="w-6 h-6 text-[#0A4D8C] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Expérience Client Sans Friction
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Support intelligent 24/7, onboarding automatisé <br/>et suivi de satisfaction en temps réel pour des clients ravis.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#F2D335]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#F2D335] transition-colors">
-		<TrendingUp className="w-6 h-6 text-[#F2D335] group-hover:text-gray-900 transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Finance & Admin en Pilote Automatique
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Devis, factures et relances générés automatiquement <br/>avec tableaux de bord financiers mis à jour en temps réel.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#069D14]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#069D14] transition-colors">
-		<Sparkles className="w-6 h-6 text-[#069D14] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Acquisition Client Automatisée
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Campagnes multi-canaux synchronisées avec IA prédictive <br/>pour vous concentrer uniquement sur les leads à fort potentiel.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#0A4D8C]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#0A4D8C] transition-colors">
-		<Bot className="w-6 h-6 text-[#0A4D8C] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Votre Équipe IA 24/7
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Agents virtuels qui qualifient vos prospects et <br/>répondent à vos clients instantanément, même la nuit et le weekend.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#F2D335]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#F2D335] transition-colors">
-		<Workflow className="w-6 h-6 text-[#F2D335] group-hover:text-gray-900 transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Tous Vos Outils Connectés
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		CRM, facturation et gestion synchronisés automatiquement<br/>pour une seule saisie et zéro erreur de transfert.
-	</p>
-</Card>
-
-{/* Duplication des cartes pour effet de boucle infinie */}
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#069D14]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#069D14] transition-colors">
-		<Zap className="w-6 h-6 text-[#069D14] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Pipeline Commercial Automatisé
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		L&apos;IA identifie vos meilleurs prospects, les qualifie et les relance automatiquement jusqu&apos;à la conversion.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#0A4D8C]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#0A4D8C] transition-colors">
-		<Users className="w-6 h-6 text-[#0A4D8C] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Expérience Client Sans Friction
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Support intelligent 24/7, onboarding automatisé et suivi de satisfaction en temps réel pour des clients ravis.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#F2D335]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#F2D335] transition-colors">
-		<TrendingUp className="w-6 h-6 text-[#F2D335] group-hover:text-gray-900 transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Finance & Admin en Pilote Automatique
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Devis, factures et relances générés automatiquement avec tableaux de bord financiers mis à jour en temps réel.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#069D14]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#069D14] transition-colors">
-		<Sparkles className="w-6 h-6 text-[#069D14] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Acquisition Client Automatisée
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Campagnes multi-canaux synchronisées avec IA prédictive pour vous concentrer uniquement sur les leads à fort potentiel.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#0A4D8C]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#0A4D8C] transition-colors">
-		<Bot className="w-6 h-6 text-[#0A4D8C] group-hover:text-white transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Votre Équipe IA 24/7
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		Agents virtuels qui qualifient vos prospects et répondent à vos clients instantanément, même la nuit et le weekend.
-	</p>
-</Card>
-
-<Card
-	className="min-w-[280px] p-6 bg-white dark:bg-gray-800 border-0 shadow-sm hover:shadow-xl transition-all duration-300 group snap-center flex-shrink-0"
-	onMouseEnter={() => setIsHoveringCard(true)}
-	onMouseLeave={() => setIsHoveringCard(false)}
->
-	<div className="w-12 h-12 bg-[#F2D335]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#F2D335] transition-colors">
-		<Workflow className="w-6 h-6 text-[#F2D335] group-hover:text-gray-900 transition-colors" />
-	</div>
-	<h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-		Tous Vos Outils Connectés
-	</h4>
-	<p className="text-sm text-gray-600 dark:text-gray-400">
-		CRM, facturation et gestion synchronisés automatiquement pour une seule saisie et zéro erreur de transfert.
-	</p>
-</Card>
-</div>
-
-					{/* Indicateur de position de la souris */}
-					{/*<div className="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
-						Déplacez votre curseur à gauche ou à droite pour contrôler le défilement
-					</div>*/}
-				</div>
-			</section>
-
-			{/* Section Rendez-vous IA */}
-			<section className="py-20 px-6">
-				<div className="container mx-auto max-w-6xl">
-					<div className="grid md:grid-cols-2 gap-12 items-center">
-						<div className="hidden md:block relative order-1">
-							<div className="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-2xl">
-								<img
-									src="/images/business-meeting.jpg"
-									alt="Consultation stratégique"
-									className="w-full h-full object-cover"
-								/>
-								{/* Overlay avec pattern */}
-								<div className="absolute inset-0 bg-gradient-to-br from-[#069D14]/30 to-transparent"></div>
-								{/* Stats flottantes */} 
-								<div className="absolute bottom-8 left-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-xl">
-									<p className="text-sm text-gray-600 dark:text-gray-400">Durée</p>
-									<p className="text-3xl font-bold text-[#0A4D8C]">30 min</p>
-								</div>
-							</div>
-						</div>
-
-						<div className="order-2">
-							<div className="inline-block bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-								APPEL DE DÉCOUVERTE GRATUIT
-							</div>
-							<h3 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 mt-2 mt-5">
-								Identifiez vos processus{" "}
-								<span className="text-[#069D14]">chronophages</span> en 30 minutes.
-							</h3>
-							<p className="text-lg text-gray-600 dark:text-gray-400 mb-8 mt-20">
-								Appel stratégique <strong>sans engagement</strong> pour analyser vos processus actuels. J'identifie les tâches chronophages, calcule le gain potentiel, et vous montre concrètement comment automatiser ce qui peut l'être.<br/> <strong>Sans engagement, 100% sur-mesure.</strong>
-							</p>
-							<Link
-								href="/rendez-vous"
-								className="bg-[#069D14] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#058a12] transition-all duration-300 inline-flex items-center gap-2 group shadow-lg hover:shadow-xl mt-17"
-							>
-								Je réserve mon appel de découverte
-								<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-							</Link>
-						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Section Méthode */}
-			<section id="methode" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-				{/* Image décorative à droite */}
-				<div className="hidden lg:block absolute right-0 top-1/3 w-96 h-80 opacity-15">
-					<img
-						src="/images/workflow-diagram.jpg"
-						alt="Processus automatisé"
-						className="w-full h-full object-cover rounded-l-3xl"
-					/>
-				</div>
-
-				<div className="container mx-auto max-w-6xl relative z-10">
-					<div className="text-center mb-16">
-					<div className="inline-block bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-						NOTRE MÉTHODE
-					</div>
-						<h3 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-							De l&apos;audit au premier gain en{" "}
-							<span className="text-[#0A4D8C]">60 jours.</span>
-						</h3>
-					<p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-						Approche pragmatique, déploiement progressif, résultats concrets. 
-					</p>
-				</div>
-
-				<div className="grid md:grid-cols-3 gap-8 mt-25">
-					<div className="text-center">
-						<div className="w-16 h-16 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 mx-auto">
-							1
-						</div>
-							<h4 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-								Audit & Stratégie
-							</h4>
-						<p className="text-gray-600 dark:text-gray-400">
-							Identification et plan d&apos;action chiffré des tâches chronophages à automatiser.
-						</p>
-					</div>
-
-					<div className="text-center">
-						<div className="w-16 h-16 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 mx-auto">
-							2
-						</div>
-							<h4 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-								Déploiement Progressif
-							</h4>
-						<p className="text-gray-600 dark:text-gray-400">
-							Mise en place par étapes jusqu&apos;à l&apos;autonomie complète.
-						</p>
-					</div>
-
-					<div className="text-center">
-					<div className="w-16 h-16 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 mx-auto">
-						3
-					</div>
-					<h4 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-						Optimisation Continue
-					</h4>
-					<p className="text-gray-600 dark:text-gray-400">
-						Suivi mensuel, maintenance proactive et ajustements selon vos besoins.
-					</p>
-					</div>
-				</div>
-			</div>
-			</section>
-
-			{/* Section Résultats */}
-			<section className="py-20 px-6">
-				<div className="container mx-auto max-w-4xl">
-					<Card className="p-12 bg-gradient-to-br from-[#069D14] to-[#0A4D8C] text-white border-0 shadow-2xl">
-						<h3 className="text-4xl font-bold mb-8 text-center">
-							Impact mesurable dès 7 jours
-						</h3>
-						<div className="grid md:grid-cols-2 gap-6">
-							<div className="flex items-start gap-4">
-								<CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" />
-								<p className="text-lg">
-									<strong>8 à 12h récupérées</strong> par collaborateur chaque semaine
-								</p>
-							</div>
-							<div className="flex items-start gap-4">
-								<CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" />
-								<p className="text-lg">
-									<strong>40% de réduction</strong> des coûts opérationnels récurrents
-								</p>
-							</div>
-							<div className="flex items-start gap-4">
-								<CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" />
-								<p className="text-lg">
-									<strong>85% d'erreurs en moins</strong> sur les processus automatisés
-								</p>
-							</div>
-							<div className="flex items-start gap-4">
-								<CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" />
-								<p className="text-lg">
-									<strong>Croissance sans limite</strong> sans augmenter vos effectifs
-								</p>
-							</div>
-						</div>
-					</Card>
-				</div>
-			</section>
-
-			{/* Section Qui suis-je */}
-			<section id="qui-suis-je" className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
-				<div className="container mx-auto max-w-6xl">
-					<div className="grid md:grid-cols-5 gap-12 items-center">
-						{/* Photo de profil à gauche */}
-						<div className="md:col-span-2 flex justify-center">
-							<div className="relative">
-								<div className="w-72 h-72 rounded-full overflow-hidden shadow-2xl ring-8 ring-white dark:ring-gray-800">
-									<img
-										src="/images/frederic-mallet.jpg"
-										alt="Frédéric Mallet"
-										className="w-full h-full object-cover"
-									/>
-								</div>
-								{/* Badge d'expertise */}
-								<div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#069D14] text-white px-6 py-3 rounded-full shadow-xl whitespace-nowrap">
-									<p className="font-bold">MALLET Frédéric</p>
-								</div>
-							</div>
-						</div>
-
-						{/* Contenu à droite */}
-						<div className="md:col-span-3">
-							<h3 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8">
-								Votre partenaire en automatisation stratégique
-							</h3>
-							<div className="space-y-6">
-								<p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-									<strong className="text-[#069D14]">Frédéric Mallet</strong>,  expert en automatisation et IA appliquée au business. Spécialisé dans n8n, intégrations API et agents intelligents, je conçois des systèmes d'automatisation qui libèrent du temps et génèrent des résultats mesurables pour les PME, agences et entreprises en croissance.
-								</p>
-								<p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-									Avec <strong className="text-[#0A4D8C]">Synapsis</strong>, j'accompagne les dirigeants qui veulent optimiser et scaler leur activité sans sacrifier leur qualité de service.
-								</p>
-								<p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-									<strong className="text-[#F2D335]">Mon engagement :</strong> ROI mesurable sous 60 jours.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-
-			{/* Footer épuré */}
-			<footer className="border-t border-gray-200 dark:border-gray-800 py-12 px-6">
-				<div className="container mx-auto max-w-6xl">
-					<div className="grid md:grid-cols-4 gap-8 mb-8">
-						<div>
-							<Link href="/" className="inline-block mb-4">
-								<img
-									src="/images/logo-light.svg"
-									alt="Synapsis"
-									className="h-8 dark:hidden"
-								/>
-								<img
-									src="/images/logo-dark.svg"
-									alt="Synapsis"
-									className="h-8 hidden dark:block"
-								/>
-							</Link>
+			{/* FOUNDER */}
+			<section className="s-blk" id="qui" style={{ paddingTop: 0 }}>
+				<div className="s-wrap">
+					<div className="s-founder rv">
+						<div className="s-avatar">
+							<img src="/images/frederic-mallet.jpg" alt="Frédéric Mallet" />
 						</div>
 						<div>
-							<h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-								Contact
-							</h4>
-							<p className="text-gray-600 dark:text-gray-400 text-sm">
-								contact@mysynapsis.fr
+							<span className="s-role">Fondateur · Synapsis</span>
+							<h3>Frédéric Mallet</h3>
+							<p>
+								J&apos;automatise l&apos;opérationnel des PME, agences et indépendants avec n8n, des intégrations API et des agents IA. Je conçois des systèmes qui libèrent du temps et produisent des résultats mesurables. Vous n&apos;achetez pas une prestation ponctuelle : vous installez une infrastructure qui travaille pour vous en continu.
 							</p>
 						</div>
-						<div>
-							<h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-								Réseau professionnel
-							</h4>
-							<a
-								href="https://www.linkedin.com/in/frédéric-mallet-526426397/"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="space-y-7 text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm flex items-center gap-2"
-							>
-								<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-								</svg>
-								LinkedIn
-							</a>
-							<a
-							href="https://www.instagram.com/synaps_is/"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="pt-2 text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm flex items-center gap-2"
-							>
-								<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-								</svg>
-							Instagram
-							</a>
-						</div>
-						<div>
-							<h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-								Légal
-							</h4>
-							<div className="space-y-2">
-								<Link
-									href="/mentions-legales"
-									className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm flex items-center gap-2">
-										Mentions légales
-								</Link>
-								<Link
-									href="/politique-confidentialite"
-									className="text-gray-600 dark:text-gray-300 hover:text-[#069D14] transition-colors font-medium text-sm flex items-center gap-2">
-										Politique de confidentialité
-								</Link>
-							</div>
-						</div>
-					</div>
-					<div className="text-center text-gray-500 dark:text-gray-500 border-t border-gray-200 dark:border-gray-800 pt-8 text-sm">
-						© 2024 Synapsis. Tous droits réservés.
 					</div>
 				</div>
-			</footer>
-		</div>
+			</section>
+
+			<SiteFooter />
+		</>
 	);
 }
