@@ -10,7 +10,10 @@ export default function SiteNav() {
 			<div className="s-nav-in">
 				<Link href="/" className="s-logo">
 					<SynapsisMark className="mark" />
-					SYNAPSIS
+					<span className="s-logo-text">
+						<span className="s-logo-word">SYNAPSIS</span>
+						<span className="s-logo-tagline">Automatisation &amp; IA</span>
+					</span>
 				</Link>
 				<div className="s-nav-links">
 					<Link href="/#solutions">Systèmes</Link>

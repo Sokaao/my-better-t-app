@@ -259,6 +259,30 @@ body {
 .s-logo:hover .mark {
   transform: scale(1.1);
 }
+.s-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.s-logo-word {
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  font-size: 17px;
+  color: var(--ink);
+}
+.s-logo-tagline {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-weight: 500;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-top: 5px;
+  padding-top: 3px;
+  border-top: 1px solid var(--line);
+  white-space: nowrap;
+}
 .s-nav-links {
   display: flex;
   gap: 28px;
