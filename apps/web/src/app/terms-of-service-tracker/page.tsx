@@ -10,6 +10,7 @@ export default function TermsOfServiceTracker() {
 			<div className="s-bg-grid" />
 			<SiteNavMinimal />
 
+			<main>
 			<section className="s-blk">
 				<div className="s-wrap s-legal" style={{ maxWidth: 820 }}>
 					<h1 style={{ marginBottom: 32 }}>Terms of Service - Tracker App</h1>
@@ -182,6 +183,7 @@ export default function TermsOfServiceTracker() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooterMinimal />
 		</>

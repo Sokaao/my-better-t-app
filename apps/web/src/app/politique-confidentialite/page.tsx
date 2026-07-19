@@ -11,6 +11,7 @@ export default function PolitiqueConfidentialite() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<section className="s-blk">
 				<div className="s-wrap s-legal" style={{ maxWidth: 820 }}>
 					<Link href="/" className="s-btn s-btn-ghost" style={{ marginBottom: 32 }}>
@@ -136,6 +137,7 @@ export default function PolitiqueConfidentialite() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>

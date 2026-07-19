@@ -11,6 +11,7 @@ export default function MentionsLegales() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<section className="s-blk">
 				<div className="s-wrap s-legal" style={{ maxWidth: 820 }}>
 					<Link href="/" className="s-btn s-btn-ghost" style={{ marginBottom: 32 }}>
@@ -194,6 +195,7 @@ export default function MentionsLegales() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>

@@ -35,6 +35,7 @@ export default function RendezVousPage() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<section className="s-page-hero">
 				<div className="s-wrap">
 					<span className="s-eyebrow" style={{ justifyContent: "center" }}>Dernière étape</span>
@@ -154,6 +155,7 @@ export default function RendezVousPage() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>

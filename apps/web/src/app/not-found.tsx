@@ -8,6 +8,7 @@ export default function NotFound() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<section className="s-blk" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
 				<div className="s-wrap" style={{ textAlign: "center" }}>
 					<span className="s-eyebrow" style={{ justifyContent: "center" }}>Erreur 404</span>
@@ -36,6 +37,7 @@ export default function NotFound() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>

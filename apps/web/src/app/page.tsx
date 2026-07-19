@@ -53,6 +53,7 @@ export default function Home() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<header className="s-hero">
 				<div className="s-wrap">
 					<div className="s-hero-top">
@@ -467,6 +468,7 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>

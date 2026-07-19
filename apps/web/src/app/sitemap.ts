@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://mysynapsis.fr";
+const siteUrl = "https://www.mysynapsis.fr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const routes = ["", "/offres", "/rendez-vous", "/mentions-legales", "/politique-confidentialite"];

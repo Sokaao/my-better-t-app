@@ -9,6 +9,7 @@ export default function PrivacyPolicyTrackerApp() {
 			<div className="s-bg-grid" />
 			<SiteNavMinimal />
 
+			<main>
 			<section className="s-blk">
 				<div className="s-wrap s-legal" style={{ maxWidth: 820 }}>
 					<h1 style={{ marginBottom: 32 }}>Privacy Policy - Tracker App</h1>
@@ -194,6 +195,7 @@ export default function PrivacyPolicyTrackerApp() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooterMinimal />
 		</>

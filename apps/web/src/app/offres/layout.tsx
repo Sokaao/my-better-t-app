@@ -34,7 +34,7 @@ const servicesLd = {
 	provider: {
 		"@type": "ProfessionalService",
 		name: "Synapsis",
-		url: "https://mysynapsis.fr",
+		url: "https://www.mysynapsis.fr",
 	},
 	areaServed: "FR",
 	hasOfferCatalog: {
@@ -47,7 +47,7 @@ const servicesLd = {
 				price: "900",
 				priceCurrency: "EUR",
 				description: "Une automatisation déployée au choix (relances devis, rappels RDV ou facturation récurrente), livrée en 7 jours.",
-				url: "https://mysynapsis.fr/offres",
+				url: "https://www.mysynapsis.fr/offres",
 			},
 			{
 				"@type": "Offer",
@@ -55,7 +55,7 @@ const servicesLd = {
 				price: "2200",
 				priceCurrency: "EUR",
 				description: "3 automatisations au choix intégrées à vos outils existants, livrées en 14 jours ouvrés.",
-				url: "https://mysynapsis.fr/offres",
+				url: "https://www.mysynapsis.fr/offres",
 			},
 			{
 				"@type": "Offer",
@@ -63,7 +63,7 @@ const servicesLd = {
 				price: "4000",
 				priceCurrency: "EUR",
 				description: "5 automatisations clés, agents IA sur-mesure et 3 mois d'accompagnement inclus.",
-				url: "https://mysynapsis.fr/offres",
+				url: "https://www.mysynapsis.fr/offres",
 			},
 		],
 	},

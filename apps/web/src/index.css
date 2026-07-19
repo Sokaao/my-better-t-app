@@ -137,14 +137,15 @@ body {
   --cream-2: #f3ede1;
   --ink: #231d16;
   --ink-soft: #5c5347;
-  --faint: #8f8578;
+  --faint: #6b6255;
   --orange: #e8500f;
   --orange-deep: #c23f08;
+  --orange-text: #a83505;
   --orange-soft: #fdeadd;
   --line: #e4dccb;
   --line-strong: #d3c8b2;
   --s-card: #fffdf9;
-  --ok: #2e9e5b;
+  --ok: #1a6b3a;
   --violet: #6b4fc0;
 }
 
@@ -413,7 +414,7 @@ body {
 .s-btn {
   font-family: var(--font-archivo), sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 12px 22px;
   border-radius: 9px;
   text-decoration: none;
@@ -434,7 +435,7 @@ body {
   transform: translateX(4px);
 }
 .s-btn-primary {
-  background: var(--orange);
+  background: var(--orange-text);
   color: #fff;
 }
 .s-btn-primary:hover {
@@ -806,7 +807,7 @@ svg.s-wires path.s-wire.s-flowing {
 }
 .s-flow-log .k { color: var(--faint); }
 .s-flow-log .v { font-weight: 600; color: var(--ink); }
-.s-flow-log .v.o { color: var(--orange); }
+.s-flow-log .v.o { color: var(--orange-text); }
 .s-flow-log .sep { width: 1px; height: 14px; background: var(--line-strong); }
 @media (max-width: 700px) {
   .s-flow-log { gap: 12px; }

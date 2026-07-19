@@ -18,6 +18,7 @@ export default function Offres() {
 			<div className="s-bg-grid" />
 			<SiteNav />
 
+			<main>
 			<section className="s-page-hero">
 				<div className="s-wrap">
 					<span className="s-eyebrow" style={{ justifyContent: "center" }}>Offres &amp; tarifs</span>
@@ -277,6 +278,7 @@ export default function Offres() {
 					</div>
 				</div>
 			</section>
+			</main>
 
 			<SiteFooter />
 		</>
