@@ -57,7 +57,7 @@ const professionalServiceLd = {
 	name: "Synapsis",
 	url: siteUrl,
 	image: `${siteUrl}/opengraph-image`,
-	telephone: "+33754083258",
+	telephone: "+33759951051",
 	email: "contact@mysynapsis.fr",
 	address: {
 		"@type": "PostalAddress",

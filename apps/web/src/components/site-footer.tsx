@@ -18,6 +18,7 @@ export default function SiteFooter() {
 					<div className="s-foot-col">
 						<span className="h">Contact</span>
 						<a href="mailto:contact@mysynapsis.fr">contact@mysynapsis.fr</a>
+						<a href="tel:+33759951051">07 59 95 10 51</a>
 					</div>
 					<div className="s-foot-col">
 						<span className="h">Réseaux</span>

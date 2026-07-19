@@ -172,7 +172,7 @@ export default function TermsOfServiceTracker() {
 							<p>For any questions about these Terms of Service, please contact us:</p>
 							<p style={{ marginTop: 10 }}><strong>By Email:</strong> <a href="mailto:contact@mysynapsis.fr">contact@mysynapsis.fr</a></p>
 							<p style={{ marginTop: 10 }}><strong>By Mail:</strong><br />MALLET Frédéric<br />1 Impasse des frênes<br />15260 Neuvéglise-Sur-Truyère<br />France</p>
-							<p style={{ marginTop: 10 }}><strong>Phone:</strong> 07 54 08 32 58</p>
+							<p style={{ marginTop: 10 }}><strong>Phone:</strong> 07 59 95 10 51</p>
 						</div>
 					</div>
 
