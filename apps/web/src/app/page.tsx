@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Mail, Check, Pencil, X } from "lucide-react";
 import { track } from "@vercel/analytics";
@@ -235,12 +236,18 @@ export default function Home() {
 					<div className="s-sec-head rv">
 						<span className="s-eyebrow">Réalisations</span>
 						<h2>Ce que ça donne concrètement.</h2>
-						<p>Pas de photo de banque d&apos;images. De vrais systèmes déployés en production.</p>
+						<p>Pas de photo de banque d&apos;images : des captures réelles et des concepts d&apos;interface assumés comme tels.</p>
 					</div>
 					<div className="s-shots">
 						<div className="s-shot rv rv-d1">
 							<div className="s-shot-photo">
-								<img src="/images/workflow-n8n-exemple.png" alt="Workflow n8n réel : agent IA de création de compte utilisateur" />
+								<Image
+									src="/images/workflow-n8n-exemple.png"
+									alt="Workflow n8n réel : agent IA de création de compte utilisateur"
+									fill
+									sizes="(max-width: 760px) 100vw, 50vw"
+									style={{ objectFit: "cover" }}
+								/>
 							</div>
 							<span className="s-ph-title">Votre workflow n8n complet</span>
 							<span className="s-ph-sub">Une vue du canvas avec les nodes connectés d&apos;un pipeline réel. La preuve la plus forte.</span>
@@ -307,7 +314,13 @@ export default function Home() {
 									<span className="s-doc-badge"><span className="lbl">Total TTC</span> 18 234 €</span>
 								</div>
 								<div className="s-doc-frame-img">
-									<img src="/images/devis-exemple.png" alt="Devis PDF généré automatiquement par l'automatisation" />
+									<Image
+										src="/images/devis-exemple.png"
+										alt="Devis PDF généré automatiquement par l'automatisation"
+										fill
+										sizes="(max-width: 760px) 100vw, 50vw"
+										style={{ objectFit: "cover", objectPosition: "top" }}
+									/>
 								</div>
 							</div>
 							<span className="s-ph-title">Un devis généré automatiquement</span>
@@ -434,7 +447,13 @@ export default function Home() {
 				<div className="s-wrap">
 					<div className="s-founder rv">
 						<div className="s-avatar">
-							<img src="/images/frederic-mallet.jpg" alt="Frédéric Mallet" />
+							<Image
+								src="/images/frederic-mallet.jpg"
+								alt="Frédéric Mallet"
+								fill
+								sizes="110px"
+								style={{ objectFit: "cover" }}
+							/>
 						</div>
 						<div>
 							<span className="s-role">Fondateur · Synapsis</span>

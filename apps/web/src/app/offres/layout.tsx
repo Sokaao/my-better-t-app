@@ -27,12 +27,58 @@ const faqPageLd = {
 	})),
 };
 
+const servicesLd = {
+	"@context": "https://schema.org",
+	"@type": "Service",
+	serviceType: "Automatisation de processus métier (n8n, API, agents IA)",
+	provider: {
+		"@type": "ProfessionalService",
+		name: "Synapsis",
+		url: "https://mysynapsis.fr",
+	},
+	areaServed: "FR",
+	hasOfferCatalog: {
+		"@type": "OfferCatalog",
+		name: "Offres Synapsis",
+		itemListElement: [
+			{
+				"@type": "Offer",
+				name: "Zéro Relance Manuelle",
+				price: "900",
+				priceCurrency: "EUR",
+				description: "Une automatisation déployée au choix (relances devis, rappels RDV ou facturation récurrente), livrée en 7 jours.",
+				url: "https://mysynapsis.fr/offres",
+			},
+			{
+				"@type": "Offer",
+				name: "Pilote Automatique",
+				price: "2200",
+				priceCurrency: "EUR",
+				description: "3 automatisations au choix intégrées à vos outils existants, livrées en 14 jours ouvrés.",
+				url: "https://mysynapsis.fr/offres",
+			},
+			{
+				"@type": "Offer",
+				name: "Transformation Complète",
+				price: "4000",
+				priceCurrency: "EUR",
+				description: "5 automatisations clés, agents IA sur-mesure et 3 mois d'accompagnement inclus.",
+				url: "https://mysynapsis.fr/offres",
+			},
+		],
+	},
+};
+
 export default function OffresLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageLd) }}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesLd) }}
 			/>
 			{children}
 		</>
