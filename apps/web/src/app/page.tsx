@@ -106,6 +106,7 @@ export default function Home() {
 							</div>
 						</div>
 						<div className="s-canvas">
+						<div className="s-canvas-inner">
 							<svg className="s-wires" viewBox="0 0 1180 430" preserveAspectRatio="none">
 								<path className="s-wire s-flowing s-w1" d="M212,84 C245,84 235,200 262,200" />
 								<path className="s-wire s-flowing s-w2" d="M212,322 C245,322 235,200 262,200" />
@@ -160,6 +161,7 @@ export default function Home() {
 
 							<span className="s-branch-label s-bl-yes">OUI</span>
 							<span className="s-branch-label s-bl-no">NON</span>
+						</div>
 						</div>
 						<div className="s-flow-log">
 							<span><span className="k">Exécutions ce mois :</span> <span className="v o" ref={execRef}>0</span></span>

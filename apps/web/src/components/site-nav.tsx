@@ -18,6 +18,7 @@ export default function SiteNav() {
 	const close = () => setOpen(false);
 
 	return (
+		<>
 		<nav className="s-nav">
 			<div className="s-nav-in">
 				<Link href="/" className="s-logo" onClick={close}>
@@ -53,26 +54,27 @@ export default function SiteNav() {
 					</button>
 				</div>
 			</div>
-
-			<div className={`s-mobile-overlay${open ? " open" : ""}`}>
-				<div className="s-mobile-overlay-links">
-					<Link href="/#solutions" onClick={close}>Systèmes</Link>
-					<Link href="/#preuves" onClick={close}>Réalisations</Link>
-					<Link href="/offres" onClick={close}>Offres</Link>
-					<Link href="/#methode" onClick={close}>Méthode</Link>
-					<Link href="/#qui" onClick={close}>Qui suis-je</Link>
-					<Link
-						href="/rendez-vous"
-						className="s-btn s-btn-primary"
-						onClick={() => {
-							track("cta_reserver_appel", { location: "nav_mobile" });
-							close();
-						}}
-					>
-						Réserver un appel <span className="arr">→</span>
-					</Link>
-				</div>
-			</div>
 		</nav>
+
+		<div className={`s-mobile-overlay${open ? " open" : ""}`}>
+			<div className="s-mobile-overlay-links">
+				<Link href="/#solutions" onClick={close}>Systèmes</Link>
+				<Link href="/#preuves" onClick={close}>Réalisations</Link>
+				<Link href="/offres" onClick={close}>Offres</Link>
+				<Link href="/#methode" onClick={close}>Méthode</Link>
+				<Link href="/#qui" onClick={close}>Qui suis-je</Link>
+				<Link
+					href="/rendez-vous"
+					className="s-btn s-btn-primary"
+					onClick={() => {
+						track("cta_reserver_appel", { location: "nav_mobile" });
+						close();
+					}}
+				>
+					Réserver un appel <span className="arr">→</span>
+				</Link>
+			</div>
+		</div>
+		</>
 	);
 }
