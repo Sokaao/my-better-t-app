@@ -878,7 +878,7 @@ export default function SetterIaOnboardingForm({
 										}}
 										onChange={(e) => handleFileChange(`vocal:${v.id}`, e)}
 									/>
-									{!LOCKED_VOCAL_IDS.has(v.id) && (
+									{!LOCKED_VOCAL_IDS.has(v.id) ? (
 										<button
 											type="button"
 											className="of-vocal-remove"
@@ -887,6 +887,8 @@ export default function SetterIaOnboardingForm({
 										>
 											<X size={14} />
 										</button>
+									) : (
+										<span className="of-vocal-remove-spacer" aria-hidden="true" />
 									)}
 								</div>
 							))}
