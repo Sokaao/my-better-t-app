@@ -11,6 +11,24 @@ type TrackerStep = { key: string; title: string; desc: string };
 
 const STAGE_ORDER: Stage[] = ["onboarding", "cadrage", "construction", "test", "production", "suivi"];
 
+const BUILD_PHILOSOPHY = [
+	{
+		num: "01",
+		title: "MVP",
+		desc: "On livre d'abord une première version fonctionnelle qui couvre l'essentiel de ton besoin — pas une usine à gaz, l'outil qui te fait déjà gagner du temps.",
+	},
+	{
+		num: "02",
+		title: "Amélioration continue",
+		desc: "On ajuste au fil de tes retours et de l'usage réel, pas sur des suppositions. Chaque itération colle un peu plus à ta façon de travailler.",
+	},
+	{
+		num: "03",
+		title: "Produit final",
+		desc: "Un système fiable, qui tourne au quotidien, taillé sur mesure pour ton activité — et qu'on continue de faire évoluer avec toi.",
+	},
+];
+
 export default function ClientTracker({
 	slug,
 	nom,
@@ -92,6 +110,24 @@ export default function ClientTracker({
 						</ul>
 					</div>
 				)}
+
+				<div className="of-automation-info">
+					<span className="s-eyebrow">Comment on construit ton automatisation</span>
+					<h2>MVP, amélioration continue, produit final</h2>
+					<p>
+						On n&apos;essaie pas de tout deviner à l&apos;avance. On avance par itérations courtes, avec toi, jusqu&apos;à
+						un système qui te convient vraiment.
+					</p>
+					<div className="s-steps" style={{ marginTop: 20 }}>
+						{BUILD_PHILOSOPHY.map((p) => (
+							<div className="s-step" key={p.num}>
+								<div className="s-num">{p.num}</div>
+								<h3>{p.title}</h3>
+								<p>{p.desc}</p>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 
 			{!onboardingDone && showForm && (
