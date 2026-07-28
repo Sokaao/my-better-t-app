@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import type { Route } from "next";
+import { Check } from "lucide-react";
 import type { Stage } from "@/lib/admin-clients";
 import { getProcessSteps } from "@/lib/process-steps";
 import { getAutomationInfo } from "@/lib/automation-info";
-import SetterIaOnboardingForm from "./setter-ia-form";
-import { advanceAfterOnboarding } from "@/app/onboarding/actions";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 type TrackerStep = { key: string; title: string; desc: string };
 
@@ -13,37 +14,34 @@ const STAGE_ORDER: Stage[] = ["onboarding", "cadrage", "construction", "test", "
 
 const BUILD_PHILOSOPHY = [
 	{
-		num: "01",
+		num: "ÉTAPE 01",
 		title: "MVP",
 		desc: "On livre d'abord une première version fonctionnelle qui couvre l'essentiel de ton besoin — pas une usine à gaz, l'outil qui te fait déjà gagner du temps.",
 	},
 	{
-		num: "02",
+		num: "ÉTAPE 02",
 		title: "Amélioration continue",
 		desc: "On ajuste au fil de tes retours et de l'usage réel, pas sur des suppositions. Chaque itération colle un peu plus à ta façon de travailler.",
 	},
 	{
-		num: "03",
+		num: "ÉTAPE 03",
 		title: "Produit final",
 		desc: "Un système fiable, qui tourne au quotidien, taillé sur mesure pour ton activité — et qu'on continue de faire évoluer avec toi.",
 	},
 ];
 
 export default function ClientTracker({
-	slug,
 	nom,
 	automationType,
 	urlSlug,
 	stage,
 }: {
-	slug: string;
 	nom: string;
 	automationType: string;
 	urlSlug: string;
 	stage: Stage;
 }) {
-	const [currentStage, setCurrentStage] = useState<Stage>(stage);
-	const [showForm, setShowForm] = useState(false);
+	useScrollReveal();
 
 	const processSteps = getProcessSteps(automationType);
 	const steps: TrackerStep[] = [
@@ -51,74 +49,93 @@ export default function ClientTracker({
 		...processSteps.map((s) => ({ key: s.stage, title: s.title, desc: s.desc })),
 	];
 
-	const currentIndex = 1 + STAGE_ORDER.indexOf(currentStage);
-	const onboardingDone = STAGE_ORDER.indexOf(currentStage) > STAGE_ORDER.indexOf("onboarding");
+	const currentIndex = 1 + STAGE_ORDER.indexOf(stage);
 	const automationInfo = getAutomationInfo(automationType);
+	const current = steps[currentIndex];
 
 	return (
-		<section className="s-page-hero">
-			<div className="s-wrap">
-				<span className="s-eyebrow" style={{ justifyContent: "center" }}>
-					Suivi de projet
-				</span>
-				<h1 style={{ fontSize: 30 }}>Bonjour {nom}, voici où en est ton projet.</h1>
-				<p>On avance ensemble, étape par étape. Voici l&apos;avancement en temps réel.</p>
-			</div>
-
-			<div className="s-wrap">
-				<div className="of-stepper-scroll">
-					<div className="of-stepper">
-						{steps.map((s, i) => {
-							const status = i < currentIndex ? "done" : i === currentIndex ? "current" : "upcoming";
-							return (
-								<div className={`of-stepper-node is-${status}`} key={s.key}>
-									<div className="of-stepper-marker">{status === "done" ? "✓" : i + 1}</div>
-									<div className="of-stepper-label">{s.title}</div>
-								</div>
-							);
-						})}
-					</div>
+		<>
+			<section className="s-page-hero">
+				<div className="s-wrap">
+					<span className="s-eyebrow rv" style={{ justifyContent: "center" }}>
+						Suivi de projet
+					</span>
+					<h1 className="rv rv-d1" style={{ fontSize: 30 }}>
+						Bonjour {nom}, voici où en est ton projet.
+					</h1>
+					<p className="rv rv-d2">On avance ensemble, étape par étape. Voici l&apos;avancement en temps réel.</p>
 				</div>
+			</section>
 
-				{steps[currentIndex] && (
-					<div className="of-tracker-current">
-						<span className="of-tracker-current-eyebrow">Étape en cours</span>
-						<div className="of-tracker-current-top">
-							<span className="of-tracker-current-num">{currentIndex + 1}</span>
-							<h2>{steps[currentIndex].title}</h2>
+			<section className="s-blk">
+				<div className="s-wrap">
+					<div className="of-stepper-scroll rv">
+						<div className="of-stepper">
+							{steps.map((s, i) => {
+								const status = i < currentIndex ? "done" : i === currentIndex ? "current" : "upcoming";
+								return (
+									<div className={`of-stepper-node is-${status}`} key={s.key}>
+										<div className="of-stepper-marker">{status === "done" ? "✓" : i + 1}</div>
+										<div className="of-stepper-label">{s.title}</div>
+									</div>
+								);
+							})}
 						</div>
-						<p>{steps[currentIndex].desc}</p>
-						{steps[currentIndex].key === "onboarding" && (
-							<div style={{ marginTop: 16 }}>
-								<button type="button" className="s-btn s-btn-primary" onClick={() => setShowForm((v) => !v)}>
-									{showForm ? "Masquer le formulaire" : "Remplir l'onboarding"}
-								</button>
+					</div>
+
+					{current && (
+						<div className="of-tracker-current rv rv-d1">
+							<span className="of-tracker-current-eyebrow">Étape en cours</span>
+							<div className="of-tracker-current-top">
+								<span className="of-tracker-current-num">{currentIndex + 1}</span>
+								<h2>{current.title}</h2>
 							</div>
-						)}
-					</div>
-				)}
+							<p>{current.desc}</p>
+							{current.key === "onboarding" && (
+								<div style={{ marginTop: 16 }}>
+									<Link href={`/onboarding/${urlSlug}/remplir` as Route} className="s-btn s-btn-primary">
+										Remplir l&apos;onboarding <span className="arr">→</span>
+									</Link>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			</section>
 
-				{automationInfo && (
-					<div className="of-automation-info">
-						<span className="s-eyebrow">Ton automatisation</span>
-						<h2>{automationInfo.title}</h2>
-						<p>{automationInfo.description}</p>
-						<ul>
+			{automationInfo && (
+				<section className="s-blk" style={{ paddingTop: 0 }}>
+					<div className="s-wrap">
+						<div className="s-sec-head rv">
+							<span className="s-eyebrow">Ton automatisation</span>
+							<h2>{automationInfo.title}</h2>
+							<p>{automationInfo.description}</p>
+						</div>
+						<div className="s-info-strip of-benefits-strip rv rv-d1">
 							{automationInfo.benefits.map((b) => (
-								<li key={b}>{b}</li>
+								<div className="s-info-item" key={b}>
+									<div className="s-cico">
+										<Check size={18} />
+									</div>
+									<span>{b}</span>
+								</div>
 							))}
-						</ul>
+						</div>
 					</div>
-				)}
+				</section>
+			)}
 
-				<div className="of-automation-info">
-					<span className="s-eyebrow">Comment on construit ton automatisation</span>
-					<h2>MVP, amélioration continue, produit final</h2>
-					<p>
-						On n&apos;essaie pas de tout deviner à l&apos;avance. On avance par itérations courtes, avec toi, jusqu&apos;à
-						un système qui te convient vraiment.
-					</p>
-					<div className="s-steps" style={{ marginTop: 20 }}>
+			<section className="s-blk" style={{ paddingTop: 0 }}>
+				<div className="s-wrap">
+					<div className="s-sec-head rv">
+						<span className="s-eyebrow">Comment on construit ton automatisation</span>
+						<h2>MVP, amélioration continue, produit final</h2>
+						<p>
+							On n&apos;essaie pas de tout deviner à l&apos;avance. On avance par itérations courtes, avec toi, jusqu&apos;à
+							un système qui te convient vraiment.
+						</p>
+					</div>
+					<div className="s-steps rv rv-d1">
 						{BUILD_PHILOSOPHY.map((p) => (
 							<div className="s-step" key={p.num}>
 								<div className="s-num">{p.num}</div>
@@ -128,21 +145,7 @@ export default function ClientTracker({
 						))}
 					</div>
 				</div>
-			</div>
-
-			{!onboardingDone && showForm && (
-				<div className="s-wrap" style={{ marginTop: 24 }}>
-					<SetterIaOnboardingForm
-						client={slug}
-						nom={nom}
-						onSuccess={() => {
-							setCurrentStage("cadrage");
-							setShowForm(false);
-							void advanceAfterOnboarding(urlSlug);
-						}}
-					/>
-				</div>
-			)}
-		</section>
+			</section>
+		</>
 	);
 }

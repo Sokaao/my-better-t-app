@@ -1,13 +1,17 @@
+import Link from "next/link";
+import type { Route } from "next";
+import { ArrowLeft } from "lucide-react";
+import { redirect } from "next/navigation";
 import SiteNavMinimal from "@/components/site-nav-minimal";
 import SiteFooterMinimal from "@/components/site-footer-minimal";
-import ClientTracker from "@/components/onboarding/client-tracker";
 import InfoMessage from "@/components/onboarding/info-message";
+import FillOnboardingClient from "@/components/onboarding/fill-onboarding-client";
 import { fetchClientByUrlSlug } from "@/lib/admin-clients";
 
 // Toujours re-rendre côté serveur : un client créé après le build doit être joignable sans redéploiement.
 export const dynamic = "force-dynamic";
 
-export default async function OnboardingClientPage({ params }: { params: Promise<{ urlSlug: string }> }) {
+export default async function FillOnboardingPage({ params }: { params: Promise<{ urlSlug: string }> }) {
 	const { urlSlug } = await params;
 
 	let client: Awaited<ReturnType<typeof fetchClientByUrlSlug>> = null;
@@ -40,17 +44,21 @@ export default async function OnboardingClientPage({ params }: { params: Promise
 		);
 	}
 
+	if (client.stage !== "onboarding") {
+		redirect(`/onboarding/${client.url_slug}` as Route);
+	}
+
 	return (
 		<>
 			<div className="s-bg-grid" />
 			<SiteNavMinimal />
 			<main>
-				<ClientTracker
-					nom={client.nom}
-					automationType={client.automation_type}
-					urlSlug={client.url_slug}
-					stage={client.stage}
-				/>
+				<div className="s-wrap" style={{ paddingTop: 24 }}>
+					<Link href={`/onboarding/${client.url_slug}` as Route} className="s-btn s-btn-ghost">
+						<ArrowLeft size={16} /> Retour au suivi de projet
+					</Link>
+				</div>
+				<FillOnboardingClient slug={client.slug} nom={client.nom} urlSlug={client.url_slug} />
 			</main>
 			<SiteFooterMinimal />
 		</>

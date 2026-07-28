@@ -2683,7 +2683,7 @@ svg.s-wires path.s-wire.s-flowing {
 .of-tracker-current {
   background: var(--s-card);
   border: 1.5px solid var(--orange);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 28px 32px 32px;
   box-shadow: 0 8px 28px rgba(232, 80, 15, 0.1);
   margin-bottom: 20px;
@@ -2731,57 +2731,15 @@ svg.s-wires path.s-wire.s-flowing {
   margin: 0;
 }
 
-/* ---------- Descriptif de l'automatisation ---------- */
-.of-automation-info {
-  margin-top: 36px;
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-}
-.of-automation-info h2 {
-  font-size: 22px;
-  margin: 10px 0 10px;
-  color: var(--ink);
-}
-.of-automation-info > p {
-  font-size: 15.5px;
-  color: var(--ink-soft);
-  line-height: 1.6;
-  max-width: 62em;
-  margin: 0 0 18px;
-}
-.of-automation-info ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
+.of-benefits-strip {
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px 24px;
 }
 @media (max-width: 640px) {
-  .of-automation-info ul {
+  .of-benefits-strip {
     grid-template-columns: 1fr;
   }
 }
-.of-automation-info li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 14.5px;
+.of-benefits-strip .s-info-item span {
   color: var(--ink-soft);
-  line-height: 1.5;
-}
-.of-automation-info li::before {
-  content: "✓";
-  flex: none;
-  color: var(--orange);
-  font-weight: 700;
-}
-.of-tracker-badge {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--orange-text);
-  background: var(--orange-soft);
-  padding: 4px 10px;
-  border-radius: 999px;
+  font-size: 14.5px;
 }
