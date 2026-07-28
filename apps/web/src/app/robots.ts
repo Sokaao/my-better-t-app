@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
 		rules: {
 			userAgent: "*",
 			allow: "/",
-			disallow: ["/privacy-policy-tracker-app", "/terms-of-service-tracker", "/api/"],
+			disallow: ["/privacy-policy-tracker-app", "/terms-of-service-tracker", "/api/", "/admin", "/onboarding"],
 		},
 		sitemap: `${siteUrl}/sitemap.xml`,
 	};

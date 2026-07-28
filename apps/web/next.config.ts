@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
 	turbopack: {
 		root: "../../",
 	},
+
+	async redirects() {
+		return [
+			{
+				source: "/onboarding-celofat",
+				destination: "/onboarding/CELOFAT",
+				permanent: true,
+			},
+		];
+	},
 };
 
 export default nextConfig;
