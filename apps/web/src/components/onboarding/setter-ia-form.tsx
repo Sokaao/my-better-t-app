@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X } from "lucide-react";
+import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock } from "lucide-react";
+import { track } from "@vercel/analytics";
 import SiteNavMinimal from "@/components/site-nav-minimal";
 import SiteFooterMinimal from "@/components/site-footer-minimal";
 
@@ -35,7 +36,6 @@ type Values = {
 	critNeg: string;
 	exemplesText: string;
 	relance: string;
-	objections: string;
 	calendly: string;
 	youtube: string;
 	vocalLinks: string;
@@ -53,13 +53,13 @@ const EMPTY_VALUES: Values = {
 	critNeg: "",
 	exemplesText: "",
 	relance: "",
-	objections: "",
 	calendly: "",
 	youtube: "",
 	vocalLinks: "",
 };
 
 type VocalRow = { id: string; name: string };
+type ObjectionRow = { id: string; question: string; reponse: string };
 
 const DEFAULT_VOCALS: VocalRow[] = [
 	{ id: "voc-intro", name: "Intro « t'as aimé ma ressource ? »" },
@@ -67,8 +67,23 @@ const DEFAULT_VOCALS: VocalRow[] = [
 	{ id: "voc-appel", name: "Proposition d'appel" },
 ];
 
+const DEFAULT_OBJECTIONS: ObjectionRow[] = [{ id: "obj-1", question: "", reponse: "" }];
+
 // Ces deux vocaux sont indispensables au scénario de base : suppression non autorisée.
 const LOCKED_VOCAL_IDS = new Set(["voc-intro", "voc-appel"]);
+
+const EXAMPLES: Record<string, string> = {
+	identite:
+		"Exemple :\nJe réponds sous mon prénom, avec un ton direct et complice — jamais scolaire. J'accompagne des indépendants qui vendent du service (coachs, consultants, artisans du digital) à structurer leur activité pour arrêter de vendre leur temps. Mon offre : un accompagnement de 3 mois pour poser une offre claire, un système de vente répétable et une routine de contenu qui ramène des prospects qualifiés.",
+	avatar:
+		"Exemple :\nDes indépendants entre 1 et 3 ans d'activité, qui génèrent déjà du chiffre mais à l'instinct — pas de vrai système. Souvent débordés, mal payés par rapport au temps investi, avec une offre encore floue. Ils suivent déjà des comptes business sur Instagram et savent qu'il leur manque une structure.",
+	critNeg:
+		"Exemple :\n— Pas encore d'activité lancée (idée seule, zéro client)\n— Salarié qui « réfléchit à se lancer » sans échéance\n— Budget clairement hors de portée, annoncé spontanément\n— Secteur que je n'accompagne pas (ex : e-commerce physique)",
+	exemplesText:
+		"Exemple de format :\n\nProspect : Salut ! Je viens de voir ta story, ça m'intéresse…\nToi : Hey merci ! Dis-m'en plus, tu es dans quel domaine ?\nProspect : …\n\n(Colle 2-3 échanges complets, du premier message jusqu'à la prise de RDV.)",
+	relance:
+		"Exemple :\nToujours plus court que le setter, ton « pote qui recroise quelqu'un » : « Hey, je voulais pas te laisser sans réponse 😄 T'en es où de ton côté ? »",
+};
 
 function bufToB64(buf: ArrayBuffer): string {
 	const bytes = new Uint8Array(buf);
@@ -123,11 +138,16 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 
 	const [values, setValues] = useState<Values>(EMPTY_VALUES);
 	const [vocals, setVocals] = useState<VocalRow[]>(DEFAULT_VOCALS);
+	const [objections, setObjections] = useState<ObjectionRow[]>(DEFAULT_OBJECTIONS);
 	const [fileCounts, setFileCounts] = useState<Record<string, number>>({});
 	const [sending, setSending] = useState(false);
 	const [status, setStatus] = useState<{ msg: string; cls: "" | "ok" | "err" }>({ msg: "", cls: "" });
+	const [exampleOpen, setExampleOpen] = useState<Record<string, boolean>>({});
+	const [showSaved, setShowSaved] = useState(false);
 
 	const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+	const isFirstSave = useRef(true);
+	const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(() => {
 		try {
@@ -136,21 +156,30 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 				const parsed = JSON.parse(raw);
 				if (parsed.values) setValues((v) => ({ ...v, ...parsed.values }));
 				if (Array.isArray(parsed.vocals) && parsed.vocals.length) setVocals(parsed.vocals);
+				if (Array.isArray(parsed.objections) && parsed.objections.length) setObjections(parsed.objections);
 			}
 		} catch {
 			// brouillon illisible : on repart d'un formulaire vide
 		}
+		track("onboarding_started", { client });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		try {
-			localStorage.setItem(draftKey, JSON.stringify({ values, vocals }));
+			localStorage.setItem(draftKey, JSON.stringify({ values, vocals, objections }));
 		} catch {
 			// stockage plein/indisponible : tant pis pour l'autosave
 		}
+		if (isFirstSave.current) {
+			isFirstSave.current = false;
+			return;
+		}
+		setShowSaved(true);
+		if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+		saveTimerRef.current = setTimeout(() => setShowSaved(false), 2000);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [values, vocals]);
+	}, [values, vocals, objections]);
 
 	function set<K extends keyof Values>(key: K, val: Values[K]) {
 		setValues((v) => ({ ...v, [key]: val }));
@@ -179,7 +208,24 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 		setVocals((v) => v.map((x) => (x.id === id ? { ...x, name } : x)));
 	}
 
+	function addObjection() {
+		setObjections((o) => [...o, { id: crypto.randomUUID(), question: "", reponse: "" }]);
+	}
+
+	function removeObjection(id: string) {
+		setObjections((o) => (o.length > 1 ? o.filter((x) => x.id !== id) : o));
+	}
+
+	function updateObjection(id: string, field: "question" | "reponse", val: string) {
+		setObjections((o) => o.map((x) => (x.id === id ? { ...x, [field]: val } : x)));
+	}
+
+	function toggleExample(key: string) {
+		setExampleOpen((e) => ({ ...e, [key]: !e[key] }));
+	}
+
 	const vocalsHaveAudio = vocals.some((v) => (fileCounts[`vocal:${v.id}`] ?? 0) > 0);
+	const objectionsFilled = objections.some((o) => o.question.trim() !== "" || o.reponse.trim() !== "");
 
 	function totalAttachedBytes(): number {
 		let total = 0;
@@ -200,13 +246,13 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 			values.critNeg.trim() !== "",
 			values.exemplesText.trim() !== "" || (fileCounts.exemplesText ?? 0) > 0,
 			values.relance.trim() !== "",
-			values.objections.trim() !== "",
+			objectionsFilled,
 			values.calendly.trim() !== "",
 			values.youtube.trim() !== "",
 			vocalsHaveAudio || values.vocalLinks.trim() !== "",
 		];
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [values, fileCounts, vocalsHaveAudio]);
+	}, [values, fileCounts, vocalsHaveAudio, objectionsFilled]);
 
 	const doneCount = boxesDone.filter(Boolean).length;
 	const totalCount = boxesDone.length;
@@ -226,6 +272,7 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 		}
 		setSending(true);
 		setStatus({ msg: "Préparation…", cls: "" });
+		track("onboarding_submit_attempt", { client });
 		try {
 			const secrets = {
 				manychat_token: values.manychatMode === "token" ? values.mcToken : "",
@@ -243,6 +290,10 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 					};
 				}),
 			);
+
+			const objectionItems = objections
+				.map((o) => ({ question: o.question.trim(), reponse: o.reponse.trim() }))
+				.filter((o) => o.question || o.reponse);
 
 			const payload = {
 				client,
@@ -262,7 +313,11 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 					critere_disqualif: { texte: values.critNeg, fichiers: await filesToPayload(fileRefs.current.critNeg?.files) },
 					exemples_setting: { texte: values.exemplesText, fichiers: await filesToPayload(fileRefs.current.exemplesText?.files) },
 					ton_relance: { texte: values.relance, fichiers: await filesToPayload(fileRefs.current.relance?.files) },
-					objections: { texte: values.objections, fichiers: await filesToPayload(fileRefs.current.objections?.files) },
+					objections: {
+						texte: objectionItems.map((o) => `« ${o.question} » → ${o.reponse}`).join("\n\n"),
+						items: objectionItems,
+						fichiers: await filesToPayload(fileRefs.current.objections?.files),
+					},
 				},
 				medias: {
 					calendly: values.calendly,
@@ -280,9 +335,10 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 			if (!res.ok) throw new Error(String(res.status));
 
 			setStatus({
-				msg: "✅ Envoyé à Fred. Tout est bien parti — tu peux fermer la page. Merci !",
+				msg: "✅ Envoyé à Fred. Tout est bien parti — merci !",
 				cls: "ok",
 			});
+			track("onboarding_submit_success", { client });
 			try {
 				localStorage.removeItem(draftKey);
 			} catch {
@@ -293,6 +349,7 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 				msg: "Envoi impossible (connexion ou serveur indisponible). Réessaie dans un instant, ou écris-moi directement à " + NOTIFY_EMAIL + ".",
 				cls: "err",
 			});
+			track("onboarding_submit_error", { client });
 		} finally {
 			setSending(false);
 		}
@@ -304,7 +361,7 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 		</svg>
 	);
 
-	function docAttach(key: keyof Values | "exemplesText", label: string) {
+	function docAttach(key: string, label: string) {
 		return (
 			<>
 				<div className="of-sublab">Documents / captures liés — {label} (optionnel)</div>
@@ -318,6 +375,18 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 					}}
 					onChange={(e) => handleFileChange(key, e)}
 				/>
+			</>
+		);
+	}
+
+	function exampleToggle(key: string) {
+		if (!EXAMPLES[key]) return null;
+		return (
+			<>
+				<button type="button" className="of-example-toggle" onClick={() => toggleExample(key)}>
+					{exampleOpen[key] ? "Masquer l'exemple" : "Voir un exemple"}
+				</button>
+				{exampleOpen[key] && <div className="of-example">{EXAMPLES[key]}</div>}
 			</>
 		);
 	}
@@ -340,6 +409,9 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 							L&apos;hébergement n8n et le CRM sont de mon côté. Remplis les champs ci-dessous, ajoute tes fichiers, et
 							envoie-moi le tout en un clic. <strong>Tes clés API et ton token sont chiffrés dans ton navigateur avant
 							tout envoi</strong> — je suis le seul à pouvoir les lire.
+						</p>
+						<p className="of-time-estimate">
+							<Clock size={13} /> Environ 15-20 minutes — ton brouillon est sauvegardé automatiquement, tu peux revenir plus tard.
 						</p>
 					</div>
 				</section>
@@ -407,20 +479,30 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 								<span className="of-prio of-prio-key">Bloquant</span>
 							</div>
 							<div className="of-grid2">
-								<input
-									type="text"
-									placeholder="Nom / prénom"
-									aria-label="Nom / prénom"
-									value={values.nom}
-									onChange={(e) => set("nom", e.target.value)}
-								/>
-								<input
-									type="email"
-									placeholder="Email"
-									aria-label="Email"
-									value={values.email}
-									onChange={(e) => set("email", e.target.value)}
-								/>
+								<div>
+									<label className="of-grid-label" htmlFor="f-nom">
+										Nom / prénom
+									</label>
+									<input
+										id="f-nom"
+										type="text"
+										placeholder="Ex : Noé Perret"
+										value={values.nom}
+										onChange={(e) => set("nom", e.target.value)}
+									/>
+								</div>
+								<div>
+									<label className="of-grid-label" htmlFor="f-email">
+										Email
+									</label>
+									<input
+										id="f-email"
+										type="email"
+										placeholder="toi@exemple.fr"
+										value={values.email}
+										onChange={(e) => set("email", e.target.value)}
+									/>
+								</div>
 							</div>
 						</div>
 					</section>
@@ -495,20 +577,30 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 								</span>
 							</div>
 							<div className="of-grid2">
-								<input
-									type="text"
-									placeholder="Clé OpenAI (sk-...)"
-									aria-label="Clé OpenAI"
-									value={values.openaiKey}
-									onChange={(e) => set("openaiKey", e.target.value)}
-								/>
-								<input
-									type="text"
-									placeholder="Clé Google Gemini"
-									aria-label="Clé Google Gemini"
-									value={values.geminiKey}
-									onChange={(e) => set("geminiKey", e.target.value)}
-								/>
+								<div>
+									<label className="of-grid-label" htmlFor="f-openai">
+										Clé OpenAI
+									</label>
+									<input
+										id="f-openai"
+										type="text"
+										placeholder="sk-..."
+										value={values.openaiKey}
+										onChange={(e) => set("openaiKey", e.target.value)}
+									/>
+								</div>
+								<div>
+									<label className="of-grid-label" htmlFor="f-gemini">
+										Clé Google Gemini
+									</label>
+									<input
+										id="f-gemini"
+										type="text"
+										placeholder="AIza..."
+										value={values.geminiKey}
+										onChange={(e) => set("geminiKey", e.target.value)}
+									/>
+								</div>
 							</div>
 							<p className="of-hint lock">
 								<Lock size={12} /> Chiffrées dans ton navigateur (RSA-OAEP + AES-256-GCM) avant tout envoi — seul Fred
@@ -525,8 +617,8 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 							<h2>Contenu du prompt</h2>
 						</div>
 						<p className="of-sec-desc">
-							Ce qui fait parler et qualifier l&apos;IA comme toi. Le cœur du système — sur chaque question tu peux aussi
-							joindre des documents (PDF, Word, captures d&apos;écran…).
+							Ce qui fait parler et qualifier l&apos;IA comme toi. Le cœur du système — chaque question a un exemple si
+							tu veux t&apos;inspirer, et tu peux joindre des documents (PDF, Word, captures d&apos;écran…).
 						</p>
 
 						<div className={`of-field${boxesDone[3] ? " done" : ""}`}>
@@ -535,7 +627,9 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ton identité &amp; ton offre</div>
+									<label className="of-t" htmlFor="p-identite">
+										Ton identité &amp; ton offre
+									</label>
 									<div className="of-d">
 										Sous quelle identité l&apos;IA répond (prénom, ton, crédibilité) + ce que tu vends : nature,
 										promesse, cible.
@@ -544,11 +638,12 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 								<span className="of-prio of-prio-key">Bloquant</span>
 							</div>
 							<textarea
+								id="p-identite"
 								placeholder="Ex : Je réponds sous mon prénom, ton direct et cash. J'accompagne les… sur… Mon offre : …"
-								aria-label="Identité et offre"
 								value={values.identite}
 								onChange={(e) => set("identite", e.target.value)}
 							/>
+							{exampleToggle("identite")}
 							{docAttach("identite", "identité & offre")}
 						</div>
 
@@ -558,17 +653,20 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ton (ou tes) avatar(s) client</div>
+									<label className="of-t" htmlFor="p-avatar">
+										Ton (ou tes) avatar(s) client
+									</label>
 									<div className="of-d">Le profil précis des gens que tu vises, pour caler le vocabulaire et les questions.</div>
 								</div>
 								<span className="of-prio of-prio-key">Bloquant</span>
 							</div>
 							<textarea
+								id="p-avatar"
 								placeholder="Qui ? Quel niveau ? Quelle situation ? Plusieurs avatars possibles."
-								aria-label="Avatar client"
 								value={values.avatar}
 								onChange={(e) => set("avatar", e.target.value)}
 							/>
+							{exampleToggle("avatar")}
 							{docAttach("avatar", "avatar(s) client")}
 						</div>
 
@@ -578,17 +676,20 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ce qui fait que tu NE proposes PAS l&apos;accompagnement</div>
+									<label className="of-t" htmlFor="p-critneg">
+										Ce qui fait que tu NE proposes PAS l&apos;accompagnement
+									</label>
 									<div className="of-d">Les critères qui disqualifient un prospect (hors cible, activité qui ne tourne pas…).</div>
 								</div>
 								<span className="of-prio of-prio-key">Bloquant</span>
 							</div>
 							<textarea
+								id="p-critneg"
 								placeholder="Ex : pas de business en cours, cible qui ne correspond pas, budget nul, etc."
-								aria-label="Critères de disqualification"
 								value={values.critNeg}
 								onChange={(e) => set("critNeg", e.target.value)}
 							/>
+							{exampleToggle("critNeg")}
 							{docAttach("critNeg", "critères de disqualification")}
 						</div>
 
@@ -598,17 +699,20 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Des exemples de setting réels</div>
+									<label className="of-t" htmlFor="p-exemples">
+										Des exemples de setting réels
+									</label>
 									<div className="of-d">Colle des vraies conversations réussies, ou joins des captures.</div>
 								</div>
 								<span className="of-prio of-prio-std">Standard</span>
 							</div>
 							<textarea
+								id="p-exemples"
 								placeholder="Colle ici tes échanges types (texte)…"
-								aria-label="Exemples de setting"
 								value={values.exemplesText}
 								onChange={(e) => set("exemplesText", e.target.value)}
 							/>
+							{exampleToggle("exemplesText")}
 							{docAttach("exemplesText", "exemples de setting")}
 						</div>
 
@@ -618,17 +722,20 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ton message de relance</div>
+									<label className="of-t" htmlFor="p-relance">
+										Ton message de relance
+									</label>
 									<div className="of-d">Le style/ton des relances (souvent plus court et décontracté que le setter).</div>
 								</div>
 								<span className="of-prio of-prio-std">Standard</span>
 							</div>
 							<textarea
+								id="p-relance"
 								placeholder="Ex : ton façon 'pote qui relance', 1 phrase max…"
-								aria-label="Message de relance"
 								value={values.relance}
 								onChange={(e) => set("relance", e.target.value)}
 							/>
+							{exampleToggle("relance")}
 							{docAttach("relance", "message de relance")}
 						</div>
 
@@ -643,12 +750,40 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 								</div>
 								<span className="of-prio of-prio-opt">Optionnel</span>
 							</div>
-							<textarea
-								placeholder="Ex : « c'est payant ? » → … / « j'ai pas le temps » → …"
-								aria-label="Objections récurrentes"
-								value={values.objections}
-								onChange={(e) => set("objections", e.target.value)}
-							/>
+
+							{objections.map((o, i) => (
+								<div className="of-obj-row" key={o.id}>
+									<div className="of-obj-row-head">
+										<span>Objection {i + 1}</span>
+										{objections.length > 1 && (
+											<button
+												type="button"
+												className="of-vocal-remove"
+												aria-label="Supprimer cette objection"
+												onClick={() => removeObjection(o.id)}
+											>
+												<X size={13} />
+											</button>
+										)}
+									</div>
+									<input
+										type="text"
+										placeholder="Ex : « C'est payant ? »"
+										aria-label={`Objection ${i + 1}`}
+										value={o.question}
+										onChange={(e) => updateObjection(o.id, "question", e.target.value)}
+									/>
+									<textarea
+										placeholder="Ta réponse habituelle…"
+										aria-label={`Réponse à l'objection ${i + 1}`}
+										value={o.reponse}
+										onChange={(e) => updateObjection(o.id, "reponse", e.target.value)}
+									/>
+								</div>
+							))}
+							<button type="button" className="of-add-btn" onClick={addObjection}>
+								<Plus size={14} /> Ajouter une objection
+							</button>
 							{docAttach("objections", "objections récurrentes")}
 						</div>
 					</section>
@@ -667,15 +802,17 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ton lien Calendly</div>
+									<label className="of-t" htmlFor="m-calendly">
+										Ton lien Calendly
+									</label>
 									<div className="of-d">L&apos;objectif de conversion : l&apos;IA l&apos;envoie pour caler l&apos;appel avec les prospects qualifiés.</div>
 								</div>
 								<span className="of-prio of-prio-key">Bloquant</span>
 							</div>
 							<input
+								id="m-calendly"
 								type="url"
 								placeholder="https://calendly.com/…"
-								aria-label="Lien Calendly"
 								value={values.calendly}
 								onChange={(e) => set("calendly", e.target.value)}
 							/>
@@ -687,15 +824,17 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 									<CheckIcon />
 								</span>
 								<div className="of-ftxt">
-									<div className="of-t">Ta vidéo de nurturing (lien YouTube)</div>
+									<label className="of-t" htmlFor="m-youtube">
+										Ta vidéo de nurturing (lien YouTube)
+									</label>
 									<div className="of-d">Envoyée aux prospects pas encore mûrs pour les entretenir.</div>
 								</div>
 								<span className="of-prio of-prio-std">Standard</span>
 							</div>
 							<input
+								id="m-youtube"
 								type="url"
 								placeholder="https://youtube.com/…"
-								aria-label="Lien YouTube de nurturing"
 								value={values.youtube}
 								onChange={(e) => set("youtube", e.target.value)}
 							/>
@@ -775,6 +914,24 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 								Envoyer le tout <span className="arr">→</span>
 							</button>
 							{status.msg && <div className={`of-status ${status.cls}`}>{status.msg}</div>}
+							{status.cls === "ok" && (
+								<div className="of-next-steps">
+									<h3>Ce qui se passe maintenant</h3>
+									<ol>
+										<li>
+											<b>1</b> Je reçois tout instantanément — fichiers, textes et vocaux inclus.
+										</li>
+										<li>
+											<b>2</b> Je regarde ça sous 48h et je reviens vers toi si un point manque ou mérite d&apos;être
+											précisé.
+										</li>
+										<li>
+											<b>3</b> Je construis ton setter IA et je te partage un accès pour le tester avant toute mise en
+											prod.
+										</li>
+									</ol>
+								</div>
+							)}
 						</div>
 						<p style={{ textAlign: "center", fontSize: 13, color: "var(--faint)", marginTop: 16 }}>
 							<CheckCircle2 size={13} style={{ verticalAlign: -2, marginRight: 4 }} />
@@ -783,6 +940,10 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 					</section>
 				</div>
 			</main>
+
+			<div className={`of-save-indicator${showSaved ? " show" : ""}`} aria-live="polite">
+				<span className="dot" /> Brouillon enregistré
+			</div>
 
 			<SiteFooterMinimal />
 		</>
