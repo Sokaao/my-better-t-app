@@ -37,43 +37,55 @@ export default function ClientTracker({
 
 	return (
 		<section className="s-page-hero">
-			<div className="s-wrap" style={{ maxWidth: 720 }}>
+			<div className="s-wrap" style={{ maxWidth: 880 }}>
 				<span className="s-eyebrow" style={{ justifyContent: "center" }}>
 					Suivi de projet
 				</span>
-				<h1 style={{ fontSize: 30 }}>
-					Bonjour {nom}, voici où en est ton projet.
-				</h1>
+				<h1 style={{ fontSize: 30 }}>Bonjour {nom}, voici où en est ton projet.</h1>
 				<p>On avance ensemble, étape par étape. Voici l&apos;avancement en temps réel.</p>
 			</div>
 
-			<div className="s-wrap" style={{ maxWidth: 720 }}>
-				<div className="of-tracker">
+			<div className="s-wrap" style={{ maxWidth: 880 }}>
+				<div className="of-stepper-scroll">
+					<div className="of-stepper">
+						{steps.map((s, i) => {
+							const status = i < currentIndex ? "done" : i === currentIndex ? "current" : "upcoming";
+							return (
+								<div className={`of-stepper-node is-${status}`} key={s.key}>
+									<div className="of-stepper-marker">{status === "done" ? "✓" : i + 1}</div>
+									<div className="of-stepper-label">{s.title}</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<div className="of-tracker-grid">
 					{steps.map((s, i) => {
 						const status = i < currentIndex ? "done" : i === currentIndex ? "current" : "upcoming";
 						const isOnboardingStep = s.key === "onboarding";
 						return (
-							<div className={`of-tracker-step is-${status}`} key={s.key}>
-								<div className="of-tracker-marker">{status === "done" ? "✓" : i + 1}</div>
-								<div className="of-tracker-content">
+							<div className={`of-tracker-card is-${status}`} key={s.key}>
+								<div className="of-tracker-card-top">
+									<span className="of-tracker-card-num">{status === "done" ? "✓" : i + 1}</span>
 									<h3>{s.title}</h3>
-									<p>{s.desc}</p>
-									{isOnboardingStep && status !== "upcoming" && (
-										<div style={{ marginTop: 12 }}>
-											{onboardingDone ? (
-												<span className="of-tracker-badge">Onboarding reçu ✓</span>
-											) : (
-												<button
-													type="button"
-													className="s-btn s-btn-primary"
-													onClick={() => setShowForm((v) => !v)}
-												>
-													{showForm ? "Masquer le formulaire" : "Remplir l'onboarding"}
-												</button>
-											)}
-										</div>
-									)}
 								</div>
+								<p>{s.desc}</p>
+								{isOnboardingStep && status !== "upcoming" && (
+									<div style={{ marginTop: 14 }}>
+										{onboardingDone ? (
+											<span className="of-tracker-badge">Onboarding reçu ✓</span>
+										) : (
+											<button
+												type="button"
+												className="s-btn s-btn-primary"
+												onClick={() => setShowForm((v) => !v)}
+											>
+												{showForm ? "Masquer le formulaire" : "Remplir l'onboarding"}
+											</button>
+										)}
+									</div>
+								)}
 							</div>
 						);
 					})}
@@ -81,7 +93,7 @@ export default function ClientTracker({
 			</div>
 
 			{!onboardingDone && showForm && (
-				<div className="s-wrap" style={{ maxWidth: 720, marginTop: 24 }}>
+				<div className="s-wrap" style={{ maxWidth: 880, marginTop: 24 }}>
 					<SetterIaOnboardingForm
 						client={slug}
 						nom={nom}
