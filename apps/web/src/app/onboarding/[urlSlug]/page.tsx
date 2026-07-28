@@ -1,6 +1,6 @@
 import SiteNavMinimal from "@/components/site-nav-minimal";
 import SiteFooterMinimal from "@/components/site-footer-minimal";
-import SetterIaOnboardingForm from "@/components/onboarding/setter-ia-form";
+import ClientTracker from "@/components/onboarding/client-tracker";
 import { fetchClientByUrlSlug } from "@/lib/admin-clients";
 
 // Toujours re-rendre côté serveur : un client créé après le build doit être joignable sans redéploiement.
@@ -60,5 +60,20 @@ export default async function OnboardingClientPage({ params }: { params: Promise
 		);
 	}
 
-	return <SetterIaOnboardingForm client={client.slug} nom={client.nom} />;
+	return (
+		<>
+			<div className="s-bg-grid" />
+			<SiteNavMinimal />
+			<main>
+				<ClientTracker
+					slug={client.slug}
+					nom={client.nom}
+					automationType={client.automation_type}
+					urlSlug={client.url_slug}
+					stage={client.stage}
+				/>
+			</main>
+			<SiteFooterMinimal />
+		</>
+	);
 }

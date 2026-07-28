@@ -2601,3 +2601,83 @@ svg.s-wires path.s-wire.s-flowing {
     grid-template-columns: 1fr;
   }
 }
+
+.of-tracker {
+  display: flex;
+  flex-direction: column;
+  margin: 32px 0;
+}
+.of-tracker-step {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  padding-bottom: 28px;
+}
+.of-tracker-step:last-child {
+  padding-bottom: 0;
+}
+.of-tracker-step::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+.of-tracker-step:last-child::before {
+  display: none;
+}
+.of-tracker-step.is-done::before {
+  background: var(--orange);
+}
+.of-tracker-marker {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid var(--line-strong);
+  background: #fff;
+  color: var(--faint);
+  z-index: 1;
+}
+.of-tracker-step.is-done .of-tracker-marker {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+.of-tracker-step.is-current .of-tracker-marker {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.of-tracker-content {
+  padding-top: 4px;
+}
+.of-tracker-content h3 {
+  font-size: 16px;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.of-tracker-step.is-upcoming .of-tracker-content h3,
+.of-tracker-step.is-upcoming .of-tracker-content p {
+  color: var(--faint);
+}
+.of-tracker-content p {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.5;
+}
+.of-tracker-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange-text);
+  background: var(--orange-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+}

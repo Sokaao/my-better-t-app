@@ -4,8 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock } from "lucide-react";
 import { track } from "@vercel/analytics";
-import SiteNavMinimal from "@/components/site-nav-minimal";
-import SiteFooterMinimal from "@/components/site-footer-minimal";
 
 /**
  * Clé publique RSA-OAEP-256 de Synapsis (Fred). Non secrète — sert uniquement à chiffrer,
@@ -134,7 +132,15 @@ function filesToPayload(list: FileList | null | undefined): Promise<FilePayload[
 	return Promise.all(Array.from(list).map(fileToPayload));
 }
 
-export default function SetterIaOnboardingForm({ client, nom: clientNom }: { client: string; nom: string }) {
+export default function SetterIaOnboardingForm({
+	client,
+	nom: clientNom,
+	onSuccess,
+}: {
+	client: string;
+	nom: string;
+	onSuccess?: () => void;
+}) {
 	const draftKey = `synapsis_onboarding_${client}`;
 
 	const [values, setValues] = useState<Values>(EMPTY_VALUES);
@@ -345,6 +351,7 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 			} catch {
 				// non bloquant
 			}
+			onSuccess?.();
 		} catch {
 			setStatus({
 				msg: "Envoi impossible (connexion ou serveur indisponible). Réessaie dans un instant, ou écris-moi directement à " + NOTIFY_EMAIL + ".",
@@ -394,11 +401,7 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 
 	return (
 		<>
-			<div className="s-bg-grid" />
-			<SiteNavMinimal />
-
-			<main>
-				<section className="s-page-hero">
+			<section className="s-page-hero" style={{ paddingTop: 8 }}>
 					<div className="s-wrap">
 						<span className="s-eyebrow" style={{ justifyContent: "center" }}>
 							Onboarding · {clientNom}
@@ -945,13 +948,10 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 						</p>
 					</section>
 				</div>
-			</main>
 
 			<div className={`of-save-indicator${showSaved ? " show" : ""}`} aria-live="polite">
 				<span className="dot" /> Brouillon enregistré
 			</div>
-
-			<SiteFooterMinimal />
 		</>
 	);
 }

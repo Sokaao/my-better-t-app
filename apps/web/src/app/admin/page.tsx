@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { fetchClients } from "@/lib/admin-clients";
 import { logout } from "./actions";
+import StageSelect from "@/components/admin/stage-select";
 
 // Toujours re-rendre côté serveur : la liste des clients ne doit jamais être figée au build.
 export const dynamic = "force-dynamic";
@@ -66,6 +67,9 @@ export default async function AdminPage() {
 												Automatisation
 											</th>
 											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
+												Étape
+											</th>
+											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
 												Créé le
 											</th>
 											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
@@ -84,6 +88,9 @@ export default async function AdminPage() {
 												</td>
 												<td style={{ padding: "12px 16px", color: "var(--ink-soft)" }}>
 													{AUTOMATION_LABELS[c.automation_type] || c.automation_type}
+												</td>
+												<td style={{ padding: "12px 16px" }}>
+													<StageSelect id={c.id} stage={c.stage} />
 												</td>
 												<td style={{ padding: "12px 16px", color: "var(--ink-soft)" }}>
 													{new Date(c.created_at).toLocaleDateString("fr-FR")}

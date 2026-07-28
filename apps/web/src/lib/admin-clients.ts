@@ -4,6 +4,18 @@
 import { randomBytes } from "crypto";
 import { supabaseAdmin } from "./supabase-admin";
 
+export const STAGES = ["onboarding", "cadrage", "construction", "test", "production", "suivi"] as const;
+export type Stage = (typeof STAGES)[number];
+
+export const STAGE_LABELS: Record<Stage, string> = {
+	onboarding: "Onboarding",
+	cadrage: "Cadrage",
+	construction: "Construction",
+	test: "Test & validation",
+	production: "Mise en production",
+	suivi: "Suivi",
+};
+
 export type ClientRow = {
 	id: string;
 	slug: string;
@@ -11,6 +23,8 @@ export type ClientRow = {
 	nom: string;
 	automation_type: string;
 	notes: string;
+	stage: Stage;
+	onboarding_submitted_at: string | null;
 	created_at: string;
 };
 
@@ -49,4 +63,20 @@ export async function insertClient(input: {
 		.single();
 	if (error) throw new Error(error.message);
 	return data;
+}
+
+export async function updateClientStage(id: string, stage: Stage): Promise<void> {
+	const { error } = await supabaseAdmin().from("clients").update({ stage }).eq("id", id);
+	if (error) throw new Error(error.message);
+}
+
+// Appelé côté client juste après l'envoi réussi du formulaire d'onboarding — fait avancer
+// l'étape uniquement si le client est encore à "onboarding" (n'écrase pas une avancée manuelle).
+export async function advanceAfterOnboarding(urlSlug: string): Promise<void> {
+	const { error } = await supabaseAdmin()
+		.from("clients")
+		.update({ stage: "cadrage", onboarding_submitted_at: new Date().toISOString() })
+		.ilike("url_slug", urlSlug)
+		.eq("stage", "onboarding");
+	if (error) throw new Error(error.message);
 }

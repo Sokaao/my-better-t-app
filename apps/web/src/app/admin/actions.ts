@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
-import { insertClient } from "@/lib/admin-clients";
+import { insertClient, updateClientStage, STAGES, type Stage } from "@/lib/admin-clients";
 
 export async function login(formData: FormData) {
 	const password = String(formData.get("password") || "");
@@ -53,5 +53,15 @@ export async function createClient(formData: FormData) {
 		redirect(("/admin/clients/new?error=" + encodeURIComponent(msg)) as Route);
 	}
 
+	redirect("/admin");
+}
+
+export async function updateStage(formData: FormData) {
+	const id = String(formData.get("id") || "");
+	const stage = String(formData.get("stage") || "");
+
+	if (!id || !STAGES.includes(stage as Stage)) return;
+
+	await updateClientStage(id, stage as Stage);
 	redirect("/admin");
 }
