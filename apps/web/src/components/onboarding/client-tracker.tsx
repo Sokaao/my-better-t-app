@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Stage } from "@/lib/admin-clients";
 import { getProcessSteps } from "@/lib/process-steps";
+import { getAutomationInfo } from "@/lib/automation-info";
 import SetterIaOnboardingForm from "./setter-ia-form";
 import { advanceAfterOnboarding } from "@/app/onboarding/actions";
 
@@ -34,6 +35,7 @@ export default function ClientTracker({
 
 	const currentIndex = 1 + STAGE_ORDER.indexOf(currentStage);
 	const onboardingDone = STAGE_ORDER.indexOf(currentStage) > STAGE_ORDER.indexOf("onboarding");
+	const automationInfo = getAutomationInfo(automationType);
 
 	return (
 		<section className="s-page-hero">
@@ -78,18 +80,18 @@ export default function ClientTracker({
 					</div>
 				)}
 
-				<div className="of-tracker-minor">
-					{steps.map((s, i) => {
-						if (i === currentIndex) return null;
-						const status = i < currentIndex ? "done" : "upcoming";
-						return (
-							<div className={`of-tracker-pill is-${status}`} key={s.key}>
-								<span className="of-tracker-pill-num">{status === "done" ? "✓" : i + 1}</span>
-								{s.title}
-							</div>
-						);
-					})}
-				</div>
+				{automationInfo && (
+					<div className="of-automation-info">
+						<span className="s-eyebrow">Ton automatisation</span>
+						<h2>{automationInfo.title}</h2>
+						<p>{automationInfo.description}</p>
+						<ul>
+							{automationInfo.benefits.map((b) => (
+								<li key={b}>{b}</li>
+							))}
+						</ul>
+					</div>
+				)}
 			</div>
 
 			{!onboardingDone && showForm && (
