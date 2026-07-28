@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock } from "lucide-react";
 import { track } from "@vercel/analytics";
 import SiteNavMinimal from "@/components/site-nav-minimal";
@@ -930,6 +931,11 @@ export default function SetterIaOnboardingForm({ client, nom: clientNom }: { cli
 											prod.
 										</li>
 									</ol>
+									<p style={{ textAlign: "center", marginTop: 16 }}>
+										<Link href="/deroulement" style={{ color: "var(--orange)", fontSize: 13, fontWeight: 600 }}>
+											Voir le déroulement complet du projet →
+										</Link>
+									</p>
 								</div>
 							)}
 						</div>

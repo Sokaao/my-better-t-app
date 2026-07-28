@@ -50,7 +50,7 @@ export default async function AdminPage() {
 					<div className="s-wrap">
 						{loadError ? (
 							<p style={{ color: "#c0392b" }}>
-								Impossible de charger la liste des clients (n8n injoignable). Réessaie dans un instant.
+								Impossible de charger la liste des clients (Supabase injoignable). Réessaie dans un instant.
 							</p>
 						) : clients.length === 0 ? (
 							<p style={{ color: "var(--ink-soft)" }}>Aucun client pour l&apos;instant.</p>
@@ -89,9 +89,13 @@ export default async function AdminPage() {
 													{new Date(c.created_at).toLocaleDateString("fr-FR")}
 												</td>
 												<td style={{ padding: "12px 16px" }}>
-													<Link href={(`/onboarding/${c.slug}`) as Route} style={{ color: "var(--orange)" }}>
-														/onboarding/{c.slug}
-													</Link>
+													{c.url_slug ? (
+														<Link href={(`/onboarding/${c.url_slug}`) as Route} style={{ color: "var(--orange)" }}>
+															/onboarding/{c.url_slug}
+														</Link>
+													) : (
+														<span style={{ color: "var(--faint)" }}>— (lien non généré)</span>
+													)}
 												</td>
 											</tr>
 										))}

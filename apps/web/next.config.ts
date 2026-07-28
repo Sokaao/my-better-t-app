@@ -13,7 +13,12 @@ const nextConfig: NextConfig = {
 		return [
 			{
 				source: "/onboarding-celofat",
-				destination: "/onboarding/CELOFAT",
+				destination: "/onboarding/CELOFAT-d12fb6",
+				permanent: true,
+			},
+			{
+				source: "/onboarding/CELOFAT",
+				destination: "/onboarding/CELOFAT-d12fb6",
 				permanent: true,
 			},
 		];

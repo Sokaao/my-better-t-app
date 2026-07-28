@@ -38,6 +38,10 @@ export default function SiteFooter() {
 						</a>
 					</div>
 					<div className="s-foot-col">
+						<span className="h">Ressources</span>
+						<Link href="/deroulement">Comment ça se passe</Link>
+					</div>
+					<div className="s-foot-col">
 						<span className="h">Légal</span>
 						<Link href="/mentions-legales">Mentions légales</Link>
 						<Link href="/politique-confidentialite">Confidentialité</Link>

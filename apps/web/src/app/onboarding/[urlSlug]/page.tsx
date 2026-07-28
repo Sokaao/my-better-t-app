@@ -1,7 +1,7 @@
 import SiteNavMinimal from "@/components/site-nav-minimal";
 import SiteFooterMinimal from "@/components/site-footer-minimal";
 import SetterIaOnboardingForm from "@/components/onboarding/setter-ia-form";
-import { fetchClientBySlug } from "@/lib/admin-clients";
+import { fetchClientByUrlSlug } from "@/lib/admin-clients";
 
 // Toujours re-rendre côté serveur : un client créé après le build doit être joignable sans redéploiement.
 export const dynamic = "force-dynamic";
@@ -27,12 +27,12 @@ function InfoMessage({ title, body }: { title: string; body: string }) {
 	);
 }
 
-export default async function OnboardingClientPage({ params }: { params: Promise<{ slug: string }> }) {
-	const { slug } = await params;
+export default async function OnboardingClientPage({ params }: { params: Promise<{ urlSlug: string }> }) {
+	const { urlSlug } = await params;
 
-	let client: Awaited<ReturnType<typeof fetchClientBySlug>> = null;
+	let client: Awaited<ReturnType<typeof fetchClientByUrlSlug>> = null;
 	try {
-		client = await fetchClientBySlug(slug);
+		client = await fetchClientByUrlSlug(urlSlug);
 	} catch {
 		return (
 			<InfoMessage
