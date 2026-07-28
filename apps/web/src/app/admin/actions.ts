@@ -49,7 +49,10 @@ export async function createClient(formData: FormData) {
 	try {
 		await insertClient({ slug, nom, automation_type, notes });
 	} catch (e) {
-		const msg = e instanceof Error && e.message.includes("duplicate") ? "Cet identifiant existe déjà." : "Erreur lors de la création. Réessaie.";
+		const msg =
+			e instanceof Error && e.message.includes("duplicate")
+				? "Cet identifiant existe déjà — vérifie la liste des clients, il a peut-être déjà été créé (double-clic sur « Créer »)."
+				: "Erreur lors de la création. Réessaie.";
 		redirect(("/admin/clients/new?error=" + encodeURIComponent(msg)) as Route);
 	}
 

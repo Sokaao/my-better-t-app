@@ -1,4 +1,5 @@
 import { createClient } from "../../actions";
+import SubmitButton from "@/components/admin/submit-button";
 
 export default async function NewClientPage({
 	searchParams,
@@ -51,9 +52,9 @@ export default async function NewClientPage({
 								</p>
 							)}
 
-							<button className="s-btn s-btn-primary" type="submit" style={{ marginTop: 16 }}>
+							<SubmitButton className="s-btn s-btn-primary" style={{ marginTop: 16 }} pendingLabel="Création…">
 								Créer le client
-							</button>
+							</SubmitButton>
 						</form>
 					</div>
 				</section>
