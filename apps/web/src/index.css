@@ -2679,75 +2679,96 @@ svg.s-wires path.s-wire.s-flowing {
   color: var(--faint);
 }
 
-/* ---------- Cartes détail des étapes ---------- */
-.of-tracker-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-@media (max-width: 820px) {
-  .of-tracker-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 560px) {
-  .of-tracker-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.of-tracker-card {
+/* ---------- Étape en cours (mise en avant) ---------- */
+.of-tracker-current {
   background: var(--s-card);
-  border: 1.5px solid var(--line);
-  border-radius: 14px;
-  padding: 18px 18px 20px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border: 1.5px solid var(--orange);
+  border-radius: 16px;
+  padding: 28px 32px 32px;
+  box-shadow: 0 8px 28px rgba(232, 80, 15, 0.1);
+  margin-bottom: 20px;
 }
-.of-tracker-card.is-current {
-  border-color: var(--orange);
-  box-shadow: 0 4px 18px rgba(232, 80, 15, 0.1);
+.of-tracker-current-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--orange-text);
+  background: var(--orange-soft);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
 }
-.of-tracker-card.is-upcoming {
-  background: transparent;
-  border-style: dashed;
-}
-.of-tracker-card-top {
+.of-tracker-current-top {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 14px;
+  margin-bottom: 10px;
 }
-.of-tracker-card-num {
+.of-tracker-current-num {
   flex: none;
-  width: 22px;
-  height: 22px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  background: var(--orange-soft);
-  color: var(--orange-text);
+  background: var(--orange);
+  color: #fff;
 }
-.of-tracker-card.is-upcoming .of-tracker-card-num {
-  background: transparent;
-  border: 1.5px solid var(--line-strong);
-  color: var(--faint);
-}
-.of-tracker-card h3 {
-  font-size: 15.5px;
+.of-tracker-current h2 {
+  font-size: 22px;
   margin: 0;
   color: var(--ink);
 }
-.of-tracker-card.is-upcoming h3 {
-  color: var(--faint);
-}
-.of-tracker-card p {
-  font-size: 13.5px;
+.of-tracker-current p {
+  font-size: 15.5px;
   color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 62em;
   margin: 0;
-  line-height: 1.5;
 }
-.of-tracker-card.is-upcoming p {
+
+/* ---------- Autres étapes (compact) ---------- */
+.of-tracker-minor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.of-tracker-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px 6px 6px;
+}
+.of-tracker-pill.is-upcoming {
+  color: var(--faint);
+  background: transparent;
+  border-style: dashed;
+}
+.of-tracker-pill-num {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  background: var(--orange);
+  color: #fff;
+}
+.of-tracker-pill.is-upcoming .of-tracker-pill-num {
+  background: transparent;
+  border: 1.5px solid var(--line-strong);
   color: var(--faint);
 }
 .of-tracker-badge {
