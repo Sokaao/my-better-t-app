@@ -259,7 +259,7 @@ export default function Home() {
 							<div className="s-dashmock">
 								<div className="s-dashmock-bar">
 									<span className="d r" /><span className="d y" /><span className="d g" />
-									<span>dashboard — concept</span>
+									<span>dashboard · concept</span>
 								</div>
 								<div className="s-dashmock-body">
 									<div className="s-dashmock-stats">
@@ -333,7 +333,7 @@ export default function Home() {
 							<div className="s-statcard">
 								<div className="s-statcard-bar">
 									<span className="d r" /><span className="d y" /><span className="d g" />
-									<span>résultats — concept</span>
+									<span>résultats · concept</span>
 								</div>
 								<div className="s-statcard-tiles">
 									<div className="s-statcard-tile">

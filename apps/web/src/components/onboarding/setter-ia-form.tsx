@@ -6,7 +6,7 @@ import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock, Mic,
 import { track } from "@vercel/analytics";
 
 /**
- * Clé publique RSA-OAEP-256 de Synapsis (Fred). Non secrète — sert uniquement à chiffrer,
+ * Clé publique RSA-OAEP-256 de Synapsis (Fred). Non secrète : sert uniquement à chiffrer,
  * jamais à déchiffrer. La clé privée correspondante n'existe que hors-ligne, chez Fred.
  */
 const FRED_PUBLIC_KEY_JWK: JsonWebKey = {
@@ -73,11 +73,11 @@ const LOCKED_VOCAL_IDS = new Set(["voc-intro", "voc-appel"]);
 
 const EXAMPLES: Record<string, string> = {
 	identite:
-		"Exemple :\nJe réponds sous mon prénom, avec un ton direct et complice — jamais scolaire. J'accompagne des indépendants qui vendent du service (coachs, consultants, artisans du digital) à structurer leur activité pour arrêter de vendre leur temps. Mon offre : un accompagnement de 3 mois pour poser une offre claire, un système de vente répétable et une routine de contenu qui ramène des prospects qualifiés.",
+		"Exemple :\nJe réponds sous mon prénom, avec un ton direct et complice, jamais scolaire. J'accompagne des indépendants qui vendent du service (coachs, consultants, artisans du digital) à structurer leur activité pour arrêter de vendre leur temps. Mon offre : un accompagnement de 3 mois pour poser une offre claire, un système de vente répétable et une routine de contenu qui ramène des prospects qualifiés.",
 	avatar:
-		"Exemple :\nDes indépendants entre 1 et 3 ans d'activité, qui génèrent déjà du chiffre mais à l'instinct — pas de vrai système. Souvent débordés, mal payés par rapport au temps investi, avec une offre encore floue. Ils suivent déjà des comptes business sur Instagram et savent qu'il leur manque une structure.",
+		"Exemple :\nDes indépendants entre 1 et 3 ans d'activité, qui génèrent déjà du chiffre mais à l'instinct, pas de vrai système. Souvent débordés, mal payés par rapport au temps investi, avec une offre encore floue. Ils suivent déjà des comptes business sur Instagram et savent qu'il leur manque une structure.",
 	critNeg:
-		"Exemple :\n— Pas encore d'activité lancée (idée seule, zéro client)\n— Salarié qui « réfléchit à se lancer » sans échéance\n— Budget clairement hors de portée, annoncé spontanément\n— Secteur que je n'accompagne pas (ex : e-commerce physique)",
+		"Exemple :\n- Pas encore d'activité lancée (idée seule, zéro client)\n- Salarié qui « réfléchit à se lancer » sans échéance\n- Budget clairement hors de portée, annoncé spontanément\n- Secteur que je n'accompagne pas (ex : e-commerce physique)",
 	exemplesText:
 		"Exemple de format :\n\nProspect : Salut ! Je viens de voir ta story, ça m'intéresse…\nToi : Hey merci ! Dis-m'en plus, tu es dans quel domaine ?\nProspect : …\n\n(Colle 2-3 échanges complets, du premier message jusqu'à la prise de RDV.)",
 	relance:
@@ -182,7 +182,7 @@ function VoiceRecorder({ label, onRecorded }: { label: string; onRecorded: (file
 			setSeconds(0);
 			timerRef.current = setInterval(() => setSeconds((s) => s + 1), 1000);
 		} catch {
-			setError("Micro inaccessible — vérifie les autorisations de ton navigateur.");
+			setError("Micro inaccessible. Vérifie les autorisations de ton navigateur.");
 		}
 	}
 
@@ -424,14 +424,14 @@ export default function SetterIaOnboardingForm({
 
 			const payload = {
 				client,
-				projet: `Setter IA Instagram — ${clientNom}`,
+				projet: `Setter IA Instagram · ${clientNom}`,
 				soumis_le: new Date().toISOString(),
 				contact: { nom: values.nom, email: values.email },
 				acces: {
 					manychat_mode: values.manychatMode,
 					secrets_chiffres: secretsChiffres,
 					note: secretsChiffres
-						? "openai / gemini / manychat_token sont chiffrés en RSA-OAEP-256 + AES-256-GCM pour la clé publique Synapsis. À déchiffrer avec l'outil local dédié de Fred — ce JSON ne contient aucun secret en clair."
+						? "openai / gemini / manychat_token sont chiffrés en RSA-OAEP-256 + AES-256-GCM pour la clé publique Synapsis. À déchiffrer avec l'outil local dédié de Fred. Ce JSON ne contient aucun secret en clair."
 						: "Aucune clé/token saisi dans le formulaire.",
 				},
 				prompt: {
@@ -462,7 +462,7 @@ export default function SetterIaOnboardingForm({
 			if (!res.ok) throw new Error(String(res.status));
 
 			setStatus({
-				msg: "✅ Envoyé à Fred. Tout est bien parti — merci !",
+				msg: "✅ Envoyé à Fred. Tout est bien parti, merci !",
 				cls: "ok",
 			});
 			track("onboarding_submit_success", { client });
@@ -492,7 +492,7 @@ export default function SetterIaOnboardingForm({
 	function docAttach(key: string, label: string) {
 		return (
 			<>
-				<div className="of-sublab">Documents / captures liés — {label} (optionnel)</div>
+				<div className="of-sublab">Documents / captures liés à {label} (optionnel)</div>
 				<input
 					type="file"
 					multiple
@@ -532,10 +532,10 @@ export default function SetterIaOnboardingForm({
 						<p>
 							L&apos;hébergement n8n et le CRM sont de mon côté. Remplis les champs ci-dessous, ajoute tes fichiers, et
 							envoie-moi le tout en un clic. <strong>Tes clés API et ton token sont chiffrés dans ton navigateur avant
-							tout envoi</strong> — je suis le seul à pouvoir les lire.
+							tout envoi</strong>, je suis le seul à pouvoir les lire.
 						</p>
 						<p className="of-time-estimate">
-							<Clock size={13} /> Environ 15-20 minutes — ton brouillon est sauvegardé automatiquement, tu peux revenir plus tard.
+							<Clock size={13} /> Environ 15-20 minutes. Ton brouillon est sauvegardé automatiquement, tu peux revenir plus tard.
 						</p>
 					</div>
 				</section>
@@ -727,7 +727,7 @@ export default function SetterIaOnboardingForm({
 								</div>
 							</div>
 							<p className="of-hint lock">
-								<Lock size={12} /> Chiffrées dans ton navigateur (RSA-OAEP + AES-256-GCM) avant tout envoi — seul Fred
+								<Lock size={12} /> Chiffrées dans ton navigateur (RSA-OAEP + AES-256-GCM) avant tout envoi, seul Fred
 								peut les déchiffrer. Tu peux aussi laisser vide et m&apos;inviter directement dans ton n8n : c&apos;est
 								l&apos;option la plus sûre.
 							</p>
@@ -741,7 +741,7 @@ export default function SetterIaOnboardingForm({
 							<h2>Contenu du prompt</h2>
 						</div>
 						<p className="of-sec-desc">
-							Ce qui fait parler et qualifier l&apos;IA comme toi. Le cœur du système — chaque question a un exemple si
+							Ce qui fait parler et qualifier l&apos;IA comme toi. Le cœur du système : chaque question a un exemple si
 							tu veux t&apos;inspirer, et tu peux joindre des documents (PDF, Word, captures d&apos;écran…).
 						</p>
 
@@ -972,7 +972,7 @@ export default function SetterIaOnboardingForm({
 								<div className="of-ftxt">
 									<div className="of-t">Ta banque de vocaux</div>
 									<div className="of-d">
-										Enregistre-les depuis ton tel puis dépose les fichiers ici. Ajoute-en autant que nécessaire — utile
+										Enregistre-les depuis ton tel puis dépose les fichiers ici. Ajoute-en autant que nécessaire, utile
 										notamment pour les questions sur ton avatar, tu peux en avoir plusieurs.
 									</div>
 								</div>
@@ -1037,7 +1037,7 @@ export default function SetterIaOnboardingForm({
 						<div className="s-band">
 							<h2>Envoyer mes éléments à Fred</h2>
 							<p>
-								Tout part directement à Fred en un clic — textes, documents et vocaux inclus. Rien à télécharger ni à
+								Tout part directement à Fred en un clic : textes, documents et vocaux inclus. Rien à télécharger ni à
 								joindre à un mail, et rien à renvoyer si tu as un doute : tu verras la confirmation ci-dessous.
 							</p>
 
@@ -1051,7 +1051,7 @@ export default function SetterIaOnboardingForm({
 										<h3>Vérifie avant l&apos;envoi</h3>
 										<ul>
 											<li>
-												Contact : <b>{values.nom || "—"}</b> — {values.email || "—"}
+												Contact : <b>{values.nom || "-"}</b> · {values.email || "-"}
 											</li>
 											<li>
 												<b>{doneCount}</b>/{totalCount} champs remplis
@@ -1081,7 +1081,7 @@ export default function SetterIaOnboardingForm({
 									<h3>Ce qui se passe maintenant</h3>
 									<ol>
 										<li>
-											<b>1</b> Je reçois tout instantanément — fichiers, textes et vocaux inclus.
+											<b>1</b> Je reçois tout instantanément : fichiers, textes et vocaux inclus.
 										</li>
 										<li>
 											<b>2</b> Je regarde ça sous 48h et je reviens vers toi si un point manque ou mérite d&apos;être

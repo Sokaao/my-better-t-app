@@ -3,7 +3,7 @@ import { STAGES, type Stage } from "./admin-clients";
 export type ProcessStep = { stage: Stage; title: string; desc: string };
 
 // Contenu du process affiché sur la page de suivi du client, par type d'automatisation.
-// Un seul type actif aujourd'hui — en ajouter un nouveau ici suffit à le rendre disponible
+// Un seul type actif aujourd'hui : en ajouter un nouveau ici suffit à le rendre disponible
 // depuis le menu déroulant de /admin/clients/new.
 export const PROCESS_STEPS: Record<string, ProcessStep[]> = {
 	setter_ia_instagram: [
@@ -30,7 +30,7 @@ export const PROCESS_STEPS: Record<string, ProcessStep[]> = {
 		{
 			stage: "production",
 			title: "Mise en production",
-			desc: "Le système tourne. Premiers résultats mesurables — c'est le début du suivi, pas la fin du projet.",
+			desc: "Le système tourne. Premiers résultats mesurables : c'est le début du suivi, pas la fin du projet.",
 		},
 		{
 			stage: "suivi",

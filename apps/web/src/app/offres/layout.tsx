@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { faqs } from "./faqs";
 
 export const metadata: Metadata = {
-	title: "Offres & Tarifs — Automatisation dès 900€",
+	title: "Offres & Tarifs · Automatisation dès 900€",
 	description: "3 offres packagées pour automatiser vos relances, devis et facturation avec n8n, dès 900€ en paiement unique. Garantie remboursement intégral.",
 	alternates: {
 		canonical: "/offres",
 	},
 	openGraph: {
-		title: "Offres & Tarifs — Automatisation dès 900€ | Synapsis",
+		title: "Offres & Tarifs · Automatisation dès 900€ | Synapsis",
 		description: "3 offres packagées pour automatiser vos relances, devis et facturation avec n8n, dès 900€ en paiement unique. Garantie remboursement intégral.",
 		url: "/offres",
 	},

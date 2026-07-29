@@ -42,8 +42,8 @@ export default async function NewClientPage({
 								<option value="autre">Autre / pas encore configuré</option>
 							</select>
 							<p className="of-hint">
-								Détermine le formulaire d&apos;onboarding affiché. Seul « Setter IA Instagram » est actif pour l&apos;instant
-								— les autres types créent le client mais affichent une page d&apos;attente tant qu&apos;un formulaire n&apos;a
+								Détermine le formulaire d&apos;onboarding affiché. Seul « Setter IA Instagram » est actif pour l&apos;instant :
+								les autres types créent le client mais affichent une page d&apos;attente tant qu&apos;un formulaire n&apos;a
 								pas été construit pour ce type.
 							</p>
 

@@ -29,7 +29,7 @@ export default function Offres() {
 						Vous passez encore <strong>4h par semaine</strong> sur des tâches que vous pourriez ne plus jamais faire.
 					</p>
 					<p>
-						Relances, facturation, suivi client — on automatise ça en moins d&apos;une semaine.{" "}
+						Relances, facturation, suivi client : on automatise ça en moins d&apos;une semaine.{" "}
 						<strong style={{ color: "var(--orange)" }}>ROI garanti sous 60 jours.</strong>
 					</p>
 					<div style={{ marginTop: 24 }}>

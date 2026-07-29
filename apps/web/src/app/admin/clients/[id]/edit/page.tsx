@@ -41,7 +41,7 @@ export default async function EditClientPage({
 							<div className="of-sublab">Identifiant (slug)</div>
 							<input type="text" value={client.slug} disabled style={{ opacity: 0.6 }} />
 							<p className="of-hint">
-								Non modifiable — sert de nom au dossier Drive et à l&apos;URL d&apos;onboarding déjà partagée avec le client.
+								Non modifiable. Sert de nom au dossier Drive et à l&apos;URL d&apos;onboarding déjà partagée avec le client.
 							</p>
 
 							<div className="of-sublab">Email du client (optionnel)</div>

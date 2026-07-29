@@ -108,7 +108,7 @@ export default async function AdminPage() {
 													}}
 													title={c.notes || undefined}
 												>
-													{c.notes || <span style={{ color: "var(--faint)" }}>—</span>}
+													{c.notes || <span style={{ color: "var(--faint)" }}>-</span>}
 												</td>
 												<td style={{ padding: "10px 12px", color: "var(--ink-soft)", whiteSpace: "nowrap" }}>
 													{new Date(c.updated_at).toLocaleString("fr-FR", {
@@ -127,7 +127,7 @@ export default async function AdminPage() {
 															<CopyLinkButton url={`https://www.mysynapsis.fr/onboarding/${c.url_slug}`} />
 														</div>
 													) : (
-														<span style={{ color: "var(--faint)" }}>— (lien non généré)</span>
+														<span style={{ color: "var(--faint)" }}>(lien non généré)</span>
 													)}
 												</td>
 												<td style={{ padding: "10px 12px" }}>

@@ -1,4 +1,4 @@
-// Accès serveur uniquement (clé service_role) — n'importer ce module que depuis des
+// Accès serveur uniquement (clé service_role), n'importer ce module que depuis des
 // Server Components ou Server Actions, jamais depuis un composant client.
 
 import { randomBytes } from "crypto";
@@ -39,7 +39,7 @@ export async function fetchClients(): Promise<ClientRow[]> {
 	return data ?? [];
 }
 
-// Utilisé pour retrouver le client depuis l'URL publique /onboarding/[urlSlug] —
+// Utilisé pour retrouver le client depuis l'URL publique /onboarding/[urlSlug] :
 // urlSlug est non-devinable (slug + suffixe aléatoire), à la différence de slug (nom propre).
 export async function fetchClientByUrlSlug(urlSlug: string): Promise<ClientRow | null> {
 	const { data, error } = await supabaseAdmin()
@@ -95,7 +95,7 @@ export async function updateClientStage(id: string, stage: Stage): Promise<void>
 	if (error) throw new Error(error.message);
 }
 
-// Appelé côté client juste après l'envoi réussi du formulaire d'onboarding — fait avancer
+// Appelé côté client juste après l'envoi réussi du formulaire d'onboarding : fait avancer
 // l'étape uniquement si le client est encore à "onboarding" (n'écrase pas une avancée manuelle).
 export async function advanceAfterOnboarding(urlSlug: string): Promise<void> {
 	const { error } = await supabaseAdmin()

@@ -13,7 +13,7 @@ export const faqs = [
 	},
 	{
 		q: "Je reste propriétaire de mes automatisations ?",
-		a: "Oui, à 100%. Tous les workflows sont déployés sur votre propre compte n8n Cloud. Si vous arrêtez de travailler avec moi, tout continue de fonctionner et vous appartient — aucune dépendance à Synapsis.",
+		a: "Oui, à 100%. Tous les workflows sont déployés sur votre propre compte n8n Cloud. Si vous arrêtez de travailler avec moi, tout continue de fonctionner et vous appartient, sans aucune dépendance à Synapsis.",
 	},
 	{
 		q: "Et si mes besoins évoluent après la mise en place ?",

@@ -35,7 +35,7 @@ const STEPS = [
 	{
 		num: "ÉTAPE 06",
 		title: "Mise en production",
-		desc: "Le système tourne. Premiers résultats mesurables — c'est le début du suivi, pas la fin du projet.",
+		desc: "Le système tourne. Premiers résultats mesurables : c'est le début du suivi, pas la fin du projet.",
 	},
 	{
 		num: "ÉTAPE 07",
@@ -86,7 +86,7 @@ export default function DeroulementPage() {
 					<div className="s-wrap">
 						<div className="s-band rv rv-d1">
 							<h2>Prêt à commencer ?</h2>
-							<p>La première étape ne coûte rien — 30 minutes pour savoir si ça vaut le coup.</p>
+							<p>La première étape ne coûte rien : 30 minutes pour savoir si ça vaut le coup.</p>
 							<Link
 								href="/rendez-vous"
 								className="s-btn s-btn-primary"

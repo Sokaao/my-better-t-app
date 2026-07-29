@@ -130,7 +130,7 @@ body {
 }
 
 /* ============================================================
-   Synapsis — Design system (thème crème / orange)
+   Synapsis · Design system (thème crème / orange)
    ============================================================ */
 :root {
   --cream: #faf6ef;
@@ -2090,7 +2090,7 @@ svg.s-wires path.s-wire.s-flowing {
 }
 
 /* ============================================================
-   ONBOARDING FORM (client intake — onboarding-celofat)
+   ONBOARDING FORM (client intake, onboarding-celofat)
    ============================================================ */
 .of-progress {
   position: sticky;

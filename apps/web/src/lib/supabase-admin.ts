@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Client service_role — accès complet, RLS ignoré. Ne jamais importer depuis un composant client
+// Client service_role : accès complet, RLS ignoré. Ne jamais importer depuis un composant client
 // ni exposer cette clé au navigateur : n'utiliser ce module que dans des Server Components/Actions.
 export function supabaseAdmin() {
 	const url = process.env.SUPABASE_URL;

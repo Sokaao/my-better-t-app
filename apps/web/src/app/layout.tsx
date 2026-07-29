@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 const siteUrl = "https://www.mysynapsis.fr";
-const defaultTitle = "Synapsis — Systèmes d'automatisation sur-mesure";
+const defaultTitle = "Synapsis · Systèmes d'automatisation sur-mesure";
 const defaultDescription = "Je construis les systèmes qui font tourner votre business sans vous : prospection, relances, devis, reporting automatisés avec n8n, API et agents IA.";
 
 export const metadata: Metadata = {

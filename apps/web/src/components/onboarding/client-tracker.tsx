@@ -16,7 +16,7 @@ const BUILD_PHILOSOPHY = [
 	{
 		num: "ÉTAPE 01",
 		title: "MVP",
-		desc: "On livre d'abord une première version fonctionnelle qui couvre l'essentiel de ton besoin — pas une usine à gaz, l'outil qui te fait déjà gagner du temps.",
+		desc: "On livre d'abord une première version fonctionnelle qui couvre l'essentiel de ton besoin, pas une usine à gaz : l'outil qui te fait déjà gagner du temps.",
 	},
 	{
 		num: "ÉTAPE 02",
@@ -26,7 +26,7 @@ const BUILD_PHILOSOPHY = [
 	{
 		num: "ÉTAPE 03",
 		title: "Produit final",
-		desc: "Un système fiable, qui tourne au quotidien, taillé sur mesure pour ton activité — et qu'on continue de faire évoluer avec toi.",
+		desc: "Un système fiable, qui tourne au quotidien, taillé sur mesure pour ton activité, et qu'on continue de faire évoluer avec toi.",
 	},
 ];
 
@@ -106,7 +106,7 @@ export default function ClientTracker({
 									</div>
 								) : (
 									<p style={{ marginTop: 12, fontSize: 13, color: "var(--faint)" }}>
-										Le formulaire d&apos;onboarding est en cours de préparation pour ton automatisation — Fred te
+										Le formulaire d&apos;onboarding est en cours de préparation pour ton automatisation. Fred te
 										préviendra dès qu&apos;il est prêt.
 									</p>
 								))}

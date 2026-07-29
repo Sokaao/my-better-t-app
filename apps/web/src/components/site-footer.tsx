@@ -47,7 +47,7 @@ export default function SiteFooter() {
 						<Link href="/politique-confidentialite">Confidentialité</Link>
 					</div>
 				</div>
-				<div className="s-copy">© {new Date().getFullYear()} Synapsis — Tous droits réservés</div>
+				<div className="s-copy">© {new Date().getFullYear()} Synapsis · Tous droits réservés</div>
 			</div>
 		</footer>
 	);

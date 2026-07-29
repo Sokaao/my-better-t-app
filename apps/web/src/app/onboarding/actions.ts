@@ -2,7 +2,7 @@
 
 import { advanceAfterOnboarding as advance } from "@/lib/admin-clients";
 
-// Invoqué directement depuis le composant client juste après l'envoi réussi du formulaire —
+// Invoqué directement depuis le composant client juste après l'envoi réussi du formulaire :
 // pas de <form>, appelé comme une fonction async classique (RPC Server Action).
 export async function advanceAfterOnboarding(urlSlug: string) {
 	try {
