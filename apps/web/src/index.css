@@ -2777,6 +2777,18 @@ svg.s-wires path.s-wire.s-flowing {
 .of-stepper-node.is-upcoming .of-stepper-label {
   color: var(--faint);
 }
+.of-stepper-edit-link {
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--faint);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+.of-stepper-edit-link:hover {
+  color: var(--orange);
+}
 
 /* ---------- Étape en cours (mise en avant) ---------- */
 .of-tracker-current {

@@ -22,9 +22,9 @@ export default function FillOnboardingClient({
 			client={slug}
 			nom={nom}
 			initialData={initialData}
-			onSuccess={(data) => {
-				void advanceAfterOnboarding(urlSlug);
-				void saveOnboardingSubmission(urlSlug, data);
+			onSuccess={({ isComplete, ...prefill }) => {
+				if (isComplete) void advanceAfterOnboarding(urlSlug);
+				void saveOnboardingSubmission(urlSlug, prefill);
 				router.push(`/onboarding/${urlSlug}`);
 			}}
 		/>

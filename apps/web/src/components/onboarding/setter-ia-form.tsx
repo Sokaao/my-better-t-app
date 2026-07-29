@@ -241,7 +241,7 @@ export default function SetterIaOnboardingForm({
 	client: string;
 	nom: string;
 	initialData?: OnboardingPrefill | null;
-	onSuccess?: (data: Required<OnboardingPrefill>) => void;
+	onSuccess?: (data: Required<OnboardingPrefill> & { isComplete: boolean }) => void;
 }) {
 	const draftKey = `synapsis_onboarding_${client}`;
 
@@ -488,7 +488,7 @@ export default function SetterIaOnboardingForm({
 				// non bloquant
 			}
 			const { mcToken: _mcToken, openaiKey: _openaiKey, geminiKey: _geminiKey, ...prefillValues } = values;
-			onSuccess?.({ values: prefillValues, vocals, objections });
+			onSuccess?.({ values: prefillValues, vocals, objections, isComplete: doneCount === totalCount });
 		} catch {
 			setStatus({
 				msg: "Envoi impossible (connexion ou serveur indisponible). Réessaie dans un instant, ou écris-moi directement à " + NOTIFY_EMAIL + ".",

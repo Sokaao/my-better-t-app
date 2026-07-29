@@ -79,23 +79,21 @@ export default function ClientTracker({
 						<div className="of-stepper">
 							{steps.map((s, i) => {
 								const status = i < currentIndex ? "done" : i === currentIndex ? "current" : "upcoming";
+								const showEditLink = s.key === "onboarding" && status === "done" && automationType === "setter_ia_instagram";
 								return (
 									<div className={`of-stepper-node is-${status}`} key={s.key}>
 										<div className="of-stepper-marker">{status === "done" ? "✓" : i + 1}</div>
 										<div className="of-stepper-label">{s.title}</div>
+										{showEditLink && (
+											<Link href={`/onboarding/${urlSlug}/remplir` as Route} className="of-stepper-edit-link">
+												Voir l&apos;onboarding
+											</Link>
+										)}
 									</div>
 								);
 							})}
 						</div>
 					</div>
-
-					{stage !== "onboarding" && automationType === "setter_ia_instagram" && (
-						<div className="rv" style={{ textAlign: "center", marginBottom: 24 }}>
-							<Link href={`/onboarding/${urlSlug}/remplir` as Route} className="s-btn s-btn-ghost">
-								Voir l&apos;onboarding
-							</Link>
-						</div>
-					)}
 
 					{current && (
 						<div className="of-tracker-current rv rv-d1">
