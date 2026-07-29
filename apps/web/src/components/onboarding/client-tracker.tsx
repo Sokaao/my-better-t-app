@@ -89,6 +89,14 @@ export default function ClientTracker({
 						</div>
 					</div>
 
+					{stage !== "onboarding" && automationType === "setter_ia_instagram" && (
+						<div className="rv" style={{ textAlign: "center", marginBottom: 24 }}>
+							<Link href={`/onboarding/${urlSlug}/remplir` as Route} className="s-btn s-btn-ghost">
+								Voir l&apos;onboarding
+							</Link>
+						</div>
+					)}
+
 					{current && (
 						<div className="of-tracker-current rv rv-d1">
 							<span className="of-tracker-current-eyebrow">Étape en cours</span>

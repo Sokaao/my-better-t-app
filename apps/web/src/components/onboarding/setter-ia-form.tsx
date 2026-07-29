@@ -60,6 +60,14 @@ const EMPTY_VALUES: Values = {
 type VocalRow = { id: string; name: string };
 type ObjectionRow = { id: string; question: string; reponse: string };
 
+// Ce qui est pré-remplissable lors d'une modification ultérieure : jamais les secrets
+// (mcToken/openaiKey/geminiKey), qui restent chiffrés côté serveur et illisibles ici.
+export type OnboardingPrefill = {
+	values?: Partial<Omit<Values, "mcToken" | "openaiKey" | "geminiKey">>;
+	vocals?: VocalRow[];
+	objections?: ObjectionRow[];
+};
+
 const DEFAULT_VOCALS: VocalRow[] = [
 	{ id: "voc-intro", name: "Intro « t'as aimé ma ressource ? »" },
 	{ id: "voc-avatar-1", name: "Questions sur ton avatar (pour qualifier)" },
@@ -227,11 +235,13 @@ function VoiceRecorder({ label, onRecorded }: { label: string; onRecorded: (file
 export default function SetterIaOnboardingForm({
 	client,
 	nom: clientNom,
+	initialData,
 	onSuccess,
 }: {
 	client: string;
 	nom: string;
-	onSuccess?: () => void;
+	initialData?: OnboardingPrefill | null;
+	onSuccess?: (data: Required<OnboardingPrefill>) => void;
 }) {
 	const draftKey = `synapsis_onboarding_${client}`;
 
@@ -258,6 +268,12 @@ export default function SetterIaOnboardingForm({
 				if (parsed.values) setValues((v) => ({ ...v, ...parsed.values }));
 				if (Array.isArray(parsed.vocals) && parsed.vocals.length) setVocals(parsed.vocals);
 				if (Array.isArray(parsed.objections) && parsed.objections.length) setObjections(parsed.objections);
+			} else if (initialData) {
+				// Pas de brouillon local : on repart des dernières réponses envoyées à Fred
+				// (utile quand le client revient modifier son onboarding depuis un autre appareil).
+				if (initialData.values) setValues((v) => ({ ...v, ...initialData.values }));
+				if (Array.isArray(initialData.vocals) && initialData.vocals.length) setVocals(initialData.vocals);
+				if (Array.isArray(initialData.objections) && initialData.objections.length) setObjections(initialData.objections);
 			}
 		} catch {
 			// brouillon illisible : on repart d'un formulaire vide
@@ -471,7 +487,8 @@ export default function SetterIaOnboardingForm({
 			} catch {
 				// non bloquant
 			}
-			onSuccess?.();
+			const { mcToken: _mcToken, openaiKey: _openaiKey, geminiKey: _geminiKey, ...prefillValues } = values;
+			onSuccess?.({ values: prefillValues, vocals, objections });
 		} catch {
 			setStatus({
 				msg: "Envoi impossible (connexion ou serveur indisponible). Réessaie dans un instant, ou écris-moi directement à " + NOTIFY_EMAIL + ".",

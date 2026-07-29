@@ -28,6 +28,7 @@ export type ClientRow = {
 	onboarding_submitted_at: string | null;
 	created_at: string;
 	updated_at: string;
+	last_submission: unknown;
 };
 
 export async function fetchClients(): Promise<ClientRow[]> {
@@ -103,5 +104,12 @@ export async function advanceAfterOnboarding(urlSlug: string): Promise<void> {
 		.update({ stage: "cadrage", onboarding_submitted_at: new Date().toISOString() })
 		.ilike("url_slug", urlSlug)
 		.eq("stage", "onboarding");
+	if (error) throw new Error(error.message);
+}
+
+// Garde les dernières réponses (hors secrets) pour pré-remplir le formulaire si le client
+// revient le modifier plus tard, même après que le projet ait avancé.
+export async function saveLastSubmission(urlSlug: string, data: unknown): Promise<void> {
+	const { error } = await supabaseAdmin().from("clients").update({ last_submission: data }).ilike("url_slug", urlSlug);
 	if (error) throw new Error(error.message);
 }

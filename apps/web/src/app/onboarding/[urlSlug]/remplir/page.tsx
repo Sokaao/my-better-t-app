@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { ArrowLeft } from "lucide-react";
-import { redirect } from "next/navigation";
 import SiteNavMinimal from "@/components/site-nav-minimal";
 import SiteFooterMinimal from "@/components/site-footer-minimal";
 import InfoMessage from "@/components/onboarding/info-message";
 import FillOnboardingClient from "@/components/onboarding/fill-onboarding-client";
+import type { OnboardingPrefill } from "@/components/onboarding/setter-ia-form";
 import { fetchClientByUrlSlug } from "@/lib/admin-clients";
 
 // Toujours re-rendre côté serveur : un client créé après le build doit être joignable sans redéploiement.
@@ -44,9 +44,9 @@ export default async function FillOnboardingPage({ params }: { params: Promise<{
 		);
 	}
 
-	if (client.stage !== "onboarding") {
-		redirect(`/onboarding/${client.url_slug}` as Route);
-	}
+	// Accessible à tout moment, même après l'étape "onboarding" : le client peut revenir
+	// modifier ses réponses. Chaque nouvel envoi crée un nouveau log côté Fred, sans écraser l'ancien.
+	const isRevisit = client.stage !== "onboarding";
 
 	return (
 		<>
@@ -57,8 +57,19 @@ export default async function FillOnboardingPage({ params }: { params: Promise<{
 					<Link href={`/onboarding/${client.url_slug}` as Route} className="s-btn s-btn-ghost">
 						<ArrowLeft size={16} /> Retour au suivi de projet
 					</Link>
+					{isRevisit && (
+						<p style={{ marginTop: 12, fontSize: 13, color: "var(--faint)" }}>
+							Tu modifies les informations envoyées précédemment. Ton nouvel envoi s&apos;ajoute à l&apos;historique, il
+							n&apos;écrase rien.
+						</p>
+					)}
 				</div>
-				<FillOnboardingClient slug={client.slug} nom={client.nom} urlSlug={client.url_slug} />
+				<FillOnboardingClient
+					slug={client.slug}
+					nom={client.nom}
+					urlSlug={client.url_slug}
+					initialData={client.last_submission as OnboardingPrefill | null}
+				/>
 			</main>
 			<SiteFooterMinimal />
 		</>
