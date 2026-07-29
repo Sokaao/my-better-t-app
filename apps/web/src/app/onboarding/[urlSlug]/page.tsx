@@ -31,15 +31,6 @@ export default async function OnboardingClientPage({ params }: { params: Promise
 		);
 	}
 
-	if (client.automation_type !== "setter_ia_instagram") {
-		return (
-			<InfoMessage
-				title={`Le formulaire de ${client.nom} n'est pas encore prêt.`}
-				body="Fred configure encore cet onboarding. Contacte-le à contact@mysynapsis.fr si tu penses que c'est une erreur."
-			/>
-		);
-	}
-
 	return (
 		<>
 			<div className="s-bg-grid" />
@@ -50,6 +41,7 @@ export default async function OnboardingClientPage({ params }: { params: Promise
 					automationType={client.automation_type}
 					urlSlug={client.url_slug}
 					stage={client.stage}
+					updatedAt={client.updated_at}
 				/>
 			</main>
 			<SiteFooterMinimal />

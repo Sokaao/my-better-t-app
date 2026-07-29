@@ -3,6 +3,7 @@ import type { Route } from "next";
 import { fetchClients } from "@/lib/admin-clients";
 import { logout } from "./actions";
 import StageSelect from "@/components/admin/stage-select";
+import CopyLinkButton from "@/components/admin/copy-link-button";
 
 // Toujours re-rendre côté serveur : la liste des clients ne doit jamais être figée au build.
 export const dynamic = "force-dynamic";
@@ -70,11 +71,15 @@ export default async function AdminPage() {
 												Étape
 											</th>
 											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
-												Créé le
+												Notes
+											</th>
+											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
+												Mis à jour
 											</th>
 											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }}>
 												Lien onboarding
 											</th>
+											<th style={{ padding: "12px 16px", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: "var(--faint)" }} />
 										</tr>
 									</thead>
 									<tbody>
@@ -92,17 +97,43 @@ export default async function AdminPage() {
 												<td style={{ padding: "12px 16px" }}>
 													<StageSelect id={c.id} stage={c.stage} />
 												</td>
-												<td style={{ padding: "12px 16px", color: "var(--ink-soft)" }}>
-													{new Date(c.created_at).toLocaleDateString("fr-FR")}
+												<td
+													style={{
+														padding: "12px 16px",
+														color: "var(--ink-soft)",
+														maxWidth: 220,
+														overflow: "hidden",
+														textOverflow: "ellipsis",
+														whiteSpace: "nowrap",
+													}}
+													title={c.notes || undefined}
+												>
+													{c.notes || <span style={{ color: "var(--faint)" }}>—</span>}
+												</td>
+												<td style={{ padding: "12px 16px", color: "var(--ink-soft)", whiteSpace: "nowrap" }}>
+													{new Date(c.updated_at).toLocaleString("fr-FR", {
+														day: "2-digit",
+														month: "2-digit",
+														hour: "2-digit",
+														minute: "2-digit",
+													})}
 												</td>
 												<td style={{ padding: "12px 16px" }}>
 													{c.url_slug ? (
-														<Link href={(`/onboarding/${c.url_slug}`) as Route} style={{ color: "var(--orange)" }}>
-															/onboarding/{c.url_slug}
-														</Link>
+														<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+															<Link href={(`/onboarding/${c.url_slug}`) as Route} style={{ color: "var(--orange)" }}>
+																/onboarding/{c.url_slug}
+															</Link>
+															<CopyLinkButton url={`https://www.mysynapsis.fr/onboarding/${c.url_slug}`} />
+														</div>
 													) : (
 														<span style={{ color: "var(--faint)" }}>— (lien non généré)</span>
 													)}
+												</td>
+												<td style={{ padding: "12px 16px" }}>
+													<Link href={(`/admin/clients/${c.id}/edit`) as Route} style={{ color: "var(--ink-soft)" }}>
+														Modifier
+													</Link>
 												</td>
 											</tr>
 										))}

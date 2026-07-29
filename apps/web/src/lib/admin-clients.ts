@@ -23,9 +23,11 @@ export type ClientRow = {
 	nom: string;
 	automation_type: string;
 	notes: string;
+	email: string | null;
 	stage: Stage;
 	onboarding_submitted_at: string | null;
 	created_at: string;
+	updated_at: string;
 };
 
 export async function fetchClients(): Promise<ClientRow[]> {
@@ -49,20 +51,43 @@ export async function fetchClientByUrlSlug(urlSlug: string): Promise<ClientRow |
 	return data;
 }
 
+export async function fetchClientById(id: string): Promise<ClientRow | null> {
+	const { data, error } = await supabaseAdmin().from("clients").select("*").eq("id", id).maybeSingle();
+	if (error) throw new Error(error.message);
+	return data;
+}
+
 export async function insertClient(input: {
 	slug: string;
 	nom: string;
 	automation_type: string;
 	notes: string;
+	email: string;
 }): Promise<ClientRow> {
 	const urlSlug = `${input.slug}-${randomBytes(3).toString("hex")}`;
 	const { data, error } = await supabaseAdmin()
 		.from("clients")
-		.insert({ ...input, url_slug: urlSlug })
+		.insert({ ...input, email: input.email || null, url_slug: urlSlug })
 		.select()
 		.single();
 	if (error) throw new Error(error.message);
 	return data;
+}
+
+export async function updateClient(
+	id: string,
+	input: { nom: string; automation_type: string; notes: string; email: string },
+): Promise<void> {
+	const { error } = await supabaseAdmin()
+		.from("clients")
+		.update({ ...input, email: input.email || null })
+		.eq("id", id);
+	if (error) throw new Error(error.message);
+}
+
+export async function deleteClient(id: string): Promise<void> {
+	const { error } = await supabaseAdmin().from("clients").delete().eq("id", id);
+	if (error) throw new Error(error.message);
 }
 
 export async function updateClientStage(id: string, stage: Stage): Promise<void> {

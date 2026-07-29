@@ -32,6 +32,10 @@ export default async function NewClientPage({
 								lettres/chiffres/tirets uniquement.
 							</p>
 
+							<div className="of-sublab">Email du client (optionnel)</div>
+							<input type="email" name="email" placeholder="Ex : noe@celofat.fr" />
+							<p className="of-hint">Utilisé pour prévenir le client par email quand tu fais avancer son étape.</p>
+
 							<div className="of-sublab">Type d&apos;automatisation</div>
 							<select name="automation_type" defaultValue="setter_ia_instagram">
 								<option value="setter_ia_instagram">Setter IA Instagram</option>

@@ -16,6 +16,14 @@ export const AUTOMATION_INFO: Record<string, AutomationInfo> = {
 	},
 };
 
-export function getAutomationInfo(automationType: string): AutomationInfo | null {
-	return AUTOMATION_INFO[automationType] ?? null;
+// Affiché quand aucun contenu spécifique n'existe encore pour ce type d'automatisation —
+// évite de laisser la section "Ton automatisation" vide sur la page de suivi du client.
+const DEFAULT_AUTOMATION_INFO: AutomationInfo = {
+	title: "Ton automatisation",
+	description: "Fred configure encore le détail de ton automatisation. Cette section sera complétée très bientôt.",
+	benefits: [],
+};
+
+export function getAutomationInfo(automationType: string): AutomationInfo {
+	return AUTOMATION_INFO[automationType] ?? DEFAULT_AUTOMATION_INFO;
 }
