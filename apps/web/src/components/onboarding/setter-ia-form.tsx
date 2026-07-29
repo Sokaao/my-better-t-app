@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock } from "lucide-react";
+import { CheckCircle2, Lock, Server, Database, ShieldCheck, Plus, X, Clock, Mic, Square, Trash2 } from "lucide-react";
 import { track } from "@vercel/analytics";
 
 /**
@@ -132,6 +132,98 @@ function filesToPayload(list: FileList | null | undefined): Promise<FilePayload[
 	return Promise.all(Array.from(list).map(fileToPayload));
 }
 
+function formatSeconds(total: number): string {
+	const m = Math.floor(total / 60);
+	const s = total % 60;
+	return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+function VoiceRecorder({ label, onRecorded }: { label: string; onRecorded: (file: File | null) => void }) {
+	const [recording, setRecording] = useState(false);
+	const [seconds, setSeconds] = useState(0);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [error, setError] = useState("");
+
+	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+	const chunksRef = useRef<Blob[]>([]);
+	const streamRef = useRef<MediaStream | null>(null);
+	const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+	useEffect(() => {
+		return () => {
+			if (timerRef.current) clearInterval(timerRef.current);
+			streamRef.current?.getTracks().forEach((t) => t.stop());
+		};
+	}, []);
+
+	async function startRecording() {
+		setError("");
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			streamRef.current = stream;
+			const mimeType = MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "";
+			const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+			chunksRef.current = [];
+			recorder.ondataavailable = (e) => {
+				if (e.data.size > 0) chunksRef.current.push(e.data);
+			};
+			recorder.onstop = () => {
+				const blob = new Blob(chunksRef.current, { type: recorder.mimeType || "audio/webm" });
+				const ext = blob.type.includes("mp4") ? "m4a" : "webm";
+				const safeName = (label || "vocal").replace(/[^\p{L}\p{N}-]+/gu, "-").slice(0, 40) || "vocal";
+				const file = new File([blob], `${safeName}.${ext}`, { type: blob.type });
+				setPreviewUrl(URL.createObjectURL(blob));
+				onRecorded(file);
+				stream.getTracks().forEach((t) => t.stop());
+			};
+			mediaRecorderRef.current = recorder;
+			recorder.start();
+			setRecording(true);
+			setSeconds(0);
+			timerRef.current = setInterval(() => setSeconds((s) => s + 1), 1000);
+		} catch {
+			setError("Micro inaccessible — vérifie les autorisations de ton navigateur.");
+		}
+	}
+
+	function stopRecording() {
+		mediaRecorderRef.current?.stop();
+		setRecording(false);
+		if (timerRef.current) clearInterval(timerRef.current);
+	}
+
+	function clearRecording() {
+		setPreviewUrl(null);
+		onRecorded(null);
+	}
+
+	if (previewUrl) {
+		return (
+			<div className="of-recorder has-recording">
+				<audio controls src={previewUrl} style={{ height: 32 }} />
+				<button type="button" className="of-recorder-btn" onClick={clearRecording}>
+					<Trash2 size={13} /> Supprimer
+				</button>
+			</div>
+		);
+	}
+
+	return (
+		<div className="of-recorder">
+			{recording ? (
+				<button type="button" className="of-recorder-btn is-recording" onClick={stopRecording}>
+					<Square size={12} /> Arrêter ({formatSeconds(seconds)})
+				</button>
+			) : (
+				<button type="button" className="of-recorder-btn" onClick={startRecording}>
+					<Mic size={13} /> Enregistrer directement
+				</button>
+			)}
+			{error && <span className="of-recorder-error">{error}</span>}
+		</div>
+	);
+}
+
 export default function SetterIaOnboardingForm({
 	client,
 	nom: clientNom,
@@ -147,10 +239,12 @@ export default function SetterIaOnboardingForm({
 	const [vocals, setVocals] = useState<VocalRow[]>(DEFAULT_VOCALS);
 	const [objections, setObjections] = useState<ObjectionRow[]>(DEFAULT_OBJECTIONS);
 	const [fileCounts, setFileCounts] = useState<Record<string, number>>({});
+	const [recordedVocals, setRecordedVocals] = useState<Record<string, File | null>>({});
 	const [sending, setSending] = useState(false);
 	const [status, setStatus] = useState<{ msg: string; cls: "" | "ok" | "err" }>({ msg: "", cls: "" });
 	const [exampleOpen, setExampleOpen] = useState<Record<string, boolean>>({});
 	const [showSaved, setShowSaved] = useState(false);
+	const [reviewOpen, setReviewOpen] = useState(false);
 
 	const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 	const isFirstSave = useRef(true);
@@ -208,6 +302,11 @@ export default function SetterIaOnboardingForm({
 			delete next[`vocal:${id}`];
 			return next;
 		});
+		setRecordedVocals((r) => {
+			const next = { ...r };
+			delete next[id];
+			return next;
+		});
 		delete fileRefs.current[`vocal:${id}`];
 	}
 
@@ -231,7 +330,7 @@ export default function SetterIaOnboardingForm({
 		setExampleOpen((e) => ({ ...e, [key]: !e[key] }));
 	}
 
-	const vocalsHaveAudio = vocals.some((v) => (fileCounts[`vocal:${v.id}`] ?? 0) > 0);
+	const vocalsHaveAudio = vocals.some((v) => (fileCounts[`vocal:${v.id}`] ?? 0) > 0 || !!recordedVocals[v.id]);
 	const objectionsFilled = objections.some((o) => o.question.trim() !== "" || o.reponse.trim() !== "");
 
 	function totalAttachedBytes(): number {
@@ -240,7 +339,23 @@ export default function SetterIaOnboardingForm({
 			if (!input?.files) continue;
 			for (const f of Array.from(input.files)) total += f.size;
 		}
+		for (const f of Object.values(recordedVocals)) {
+			if (f) total += f.size;
+		}
 		return total;
+	}
+
+	function attachedDocCount(): number {
+		let n = 0;
+		for (const [key, input] of Object.entries(fileRefs.current)) {
+			if (key.startsWith("vocal:")) continue;
+			n += input?.files?.length ?? 0;
+		}
+		return n;
+	}
+
+	function vocalsReadyCount(): number {
+		return vocals.filter((v) => !!recordedVocals[v.id] || (fileRefs.current[`vocal:${v.id}`]?.files?.length ?? 0) > 0).length;
 	}
 
 	const boxesDone = useMemo(() => {
@@ -265,7 +380,7 @@ export default function SetterIaOnboardingForm({
 	const totalCount = boxesDone.length;
 	const progressPct = totalCount ? (doneCount / totalCount) * 100 : 0;
 
-	async function handleSend() {
+	function handleReviewClick() {
 		if (!values.nom.trim() || !values.email.trim()) {
 			setStatus({ msg: "Renseigne au moins ton nom et ton email.", cls: "err" });
 			return;
@@ -277,6 +392,11 @@ export default function SetterIaOnboardingForm({
 			});
 			return;
 		}
+		setStatus({ msg: "", cls: "" });
+		setReviewOpen(true);
+	}
+
+	async function handleSend() {
 		setSending(true);
 		setStatus({ msg: "Préparation…", cls: "" });
 		track("onboarding_submit_attempt", { client });
@@ -290,7 +410,7 @@ export default function SetterIaOnboardingForm({
 
 			const vocauxPayload = await Promise.all(
 				vocals.map(async (v, i) => {
-					const f = fileRefs.current[`vocal:${v.id}`]?.files?.[0];
+					const f = recordedVocals[v.id] || fileRefs.current[`vocal:${v.id}`]?.files?.[0];
 					return {
 						nom: v.name.trim() || `Vocal ${i + 1}`,
 						fichier: f ? await fileToPayload(f) : null,
@@ -890,6 +1010,10 @@ export default function SetterIaOnboardingForm({
 									) : (
 										<span className="of-vocal-remove-spacer" aria-hidden="true" />
 									)}
+									<VoiceRecorder
+										label={v.name}
+										onRecorded={(file) => setRecordedVocals((r) => ({ ...r, [v.id]: file }))}
+									/>
 								</div>
 							))}
 							<button type="button" className="of-add-btn" onClick={addVocal}>
@@ -916,9 +1040,41 @@ export default function SetterIaOnboardingForm({
 								Tout part directement à Fred en un clic — textes, documents et vocaux inclus. Rien à télécharger ni à
 								joindre à un mail, et rien à renvoyer si tu as un doute : tu verras la confirmation ci-dessous.
 							</p>
-							<button className="s-btn s-btn-primary" type="button" disabled={sending} onClick={handleSend}>
-								Envoyer le tout <span className="arr">→</span>
-							</button>
+
+							{!reviewOpen ? (
+								<button className="s-btn s-btn-primary" type="button" onClick={handleReviewClick}>
+									Envoyer le tout <span className="arr">→</span>
+								</button>
+							) : (
+								status.cls !== "ok" && (
+									<div className="of-review">
+										<h3>Vérifie avant l&apos;envoi</h3>
+										<ul>
+											<li>
+												Contact : <b>{values.nom || "—"}</b> — {values.email || "—"}
+											</li>
+											<li>
+												<b>{doneCount}</b>/{totalCount} champs remplis
+											</li>
+											<li>
+												<b>{attachedDocCount()}</b> document(s) joint(s)
+											</li>
+											<li>
+												<b>{vocalsReadyCount()}</b>/{vocals.length} vocaux prêts (enregistrés ou importés)
+											</li>
+										</ul>
+										<div className="of-review-actions">
+											<button className="s-btn s-btn-ghost" type="button" disabled={sending} onClick={() => setReviewOpen(false)}>
+												Revoir mes réponses
+											</button>
+											<button className="s-btn s-btn-primary" type="button" disabled={sending} onClick={handleSend}>
+												{sending ? "Envoi…" : "Confirmer et envoyer →"}
+											</button>
+										</div>
+									</div>
+								)
+							)}
+
 							{status.msg && <div className={`of-status ${status.cls}`}>{status.msg}</div>}
 							{status.cls === "ok" && (
 								<div className="of-next-steps">

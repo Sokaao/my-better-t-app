@@ -2408,6 +2408,51 @@ svg.s-wires path.s-wire.s-flowing {
   width: 38px;
   height: 38px;
 }
+.of-recorder {
+  flex: 1 0 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+.of-recorder-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink-soft);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.of-recorder-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.of-recorder-btn.is-recording {
+  border-color: #c0392b;
+  color: #c0392b;
+  background: #fdeceb;
+  animation: of-rec-pulse 1.4s ease-in-out infinite;
+}
+@keyframes of-rec-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.of-recorder.has-recording {
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.of-recorder-error {
+  font-size: 12px;
+  color: #c0392b;
+}
 .of-add-btn {
   display: inline-flex;
   align-items: center;
@@ -2551,6 +2596,55 @@ svg.s-wires path.s-wire.s-flowing {
 }
 .of-obj-row > *:last-child {
   margin-bottom: 0;
+}
+
+.of-review {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border: 1px solid rgba(250, 246, 239, 0.18);
+  border-radius: 12px;
+  background: rgba(250, 246, 239, 0.05);
+  text-align: left;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.of-review h3 {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.of-review ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 0;
+}
+.of-review li {
+  font-size: 13.5px;
+  color: #cfc7ba;
+}
+.of-review li b {
+  color: #fff;
+}
+.of-review-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.of-review-actions .s-btn-ghost {
+  border-color: rgba(250, 246, 239, 0.3);
+  color: #f2ede1;
+}
+.of-review-actions .s-btn-ghost:hover {
+  border-color: var(--orange);
+  color: var(--orange);
 }
 
 .of-next-steps {
