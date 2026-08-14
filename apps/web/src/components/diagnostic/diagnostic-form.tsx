@@ -142,6 +142,11 @@ export default function DiagnosticForm() {
 		const ownerYear = ownerWeek * WEEKS;
 		const totalYear = ownerYear + others * teamH * AUTO * WEEKS;
 		return {
+			others,
+			// Volume brut avant le filtre d'automatisation, pour pouvoir montrer le
+			// calcul étape par étape dans le dépliant.
+			weeklyRaw: ownerH + others * teamH,
+			yearlyRaw: (ownerH + others * teamH) * WEEKS,
 			ownerWeek,
 			ownerDays: ownerYear / DAY_H,
 			totalYear,
@@ -425,9 +430,61 @@ export default function DiagnosticForm() {
 							</div>
 						)}
 
-						<div className="dg-hyp">
-							<b>Comment c&apos;est calculé.</b> Base <code>46 semaines</code> travaillées par an. J&apos;estime que <code>55 %</code> de ces tâches sont automatisables sans jugement professionnel, et que <code>35 %</code> du temps libéré repart en missions facturées, le reste absorbant la croissance sans recruter. Ce sont des hypothèses de cadrage, pas des statistiques publiées. Le vrai chiffre se mesure sur une semaine de relevé, et c&apos;est exactement ce qu&apos;on ferait ensemble.
-						</div>
+						<details className="dg-fold">
+							<summary>
+								<span className="chev">▾</span> Comment on arrive à ce chiffre
+							</summary>
+							<ol className="dg-steps">
+								<li>
+									<span>
+									Vous passez <b>{nf1.format(ownerH)} h</b> par semaine sur ces tâches.
+									{r.others > 0 ? (
+										<> Vos <b>{nf.format(r.others)}</b> collaborateurs y passent <b>{nf1.format(teamH)} h</b> chacun.</>
+									) : null}{" "}
+									Ça fait <b>{nf1.format(r.weeklyRaw)} h</b> par semaine dans le cabinet.
+									</span>
+								</li>
+								<li>
+									<span>
+									Sur <b>46 semaines</b> travaillées dans l&apos;année, congés et fériés déduits, ça donne{" "}
+									<b>{nf.format(Math.round(r.yearlyRaw))} h</b>.
+									</span>
+								</li>
+								<li>
+									<span>
+									Tout n&apos;est pas automatisable. Je retiens <b>55 %</b>, le reste demande un jugement
+									professionnel. Il reste <b>{nf.format(Math.round(r.totalYear))} h</b> par an qu&apos;un
+									système peut reprendre.
+									</span>
+								</li>
+								<li>
+									<span>
+									Là-dedans, <b>vos</b> heures à vous font <b>{nf1.format(r.ownerWeek)} h</b> par semaine,
+									soit <b>{nf.format(Math.round(r.ownerDays))} journées</b> de 7 h sur l&apos;année.
+									</span>
+								</li>
+								<li>
+									<span>
+									Si <b>35 %</b> du temps libéré repart en missions facturées, ça fait{" "}
+									<b>{nf.format(Math.round(r.billableH))} h</b> facturables à <b>{nf.format(rate)} €</b>,
+									donc <b>{kEur(roundish(r.revenue))}</b> de chiffre d&apos;affaires en plus.
+									</span>
+								</li>
+								<li>
+									<span>
+									Les 65 % restants ne sont pas perdus : ils absorbent la croissance sans embaucher. Au
+									total, ces heures pèsent <b>{nf1.format(r.people)}</b> collaborateur à temps plein, sur
+									une base de 1 607 h par an.
+									</span>
+								</li>
+							</ol>
+							<p className="dg-foldnote">
+								Les deux pourcentages, 55 % et 35 %, sont mes hypothèses de cadrage, pas des statistiques
+								publiées. Les 46 semaines et les 1 607 h sont les références habituelles en France. Votre
+								vrai chiffre se mesure sur une semaine de relevé, et c&apos;est exactement ce qu&apos;on
+								ferait ensemble.
+							</p>
+						</details>
 
 						<div className="dg-form">
 							{sent ? (

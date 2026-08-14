@@ -3232,26 +3232,6 @@ svg.s-wires path.s-wire.s-flowing {
   margin-top: 12px;
 }
 
-.dg-hyp {
-  margin-top: 14px;
-  border: 1px dashed var(--line-strong);
-  border-radius: 13px;
-  padding: 18px 22px;
-  background: var(--cream-2);
-  font-size: 13px;
-  color: var(--ink-soft);
-  line-height: 1.6;
-}
-.dg-hyp b { color: var(--ink); }
-.dg-hyp code {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 12px;
-  color: var(--ink);
-  background: var(--s-card);
-  padding: 1px 5px;
-  border-radius: 4px;
-  border: 1px solid var(--line);
-}
 
 .dg-form {
   margin-top: 26px;
@@ -3360,4 +3340,92 @@ svg.s-wires path.s-wire.s-flowing {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+
+/* Dépliant "Comment on arrive à ce chiffre" du résultat du diagnostic */
+.dg-fold {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--s-card);
+  overflow: hidden;
+}
+.dg-fold summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+.dg-fold summary::-webkit-details-marker {
+  display: none;
+}
+.dg-fold summary:hover {
+  color: var(--orange-text);
+}
+.dg-fold summary:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}
+.dg-fold summary .chev {
+  display: inline-block;
+  color: var(--orange);
+  font-size: 12px;
+  transition: transform 0.3s;
+}
+.dg-fold[open] summary .chev {
+  transform: rotate(180deg);
+}
+.dg-fold[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.dg-steps {
+  list-style: none;
+  margin: 0;
+  padding: 20px 22px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  counter-reset: dgstep;
+}
+.dg-steps li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.dg-steps li::before {
+  counter-increment: dgstep;
+  content: counter(dgstep);
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: var(--orange-soft);
+  border: 1px solid #f2c9ab;
+  color: var(--orange-text);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+}
+.dg-steps li b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.dg-foldnote {
+  padding: 14px 22px 20px;
+  font-size: 13px;
+  color: var(--faint);
+  line-height: 1.6;
 }
