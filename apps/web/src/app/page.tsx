@@ -58,35 +58,35 @@ export default function Home() {
 				<div className="s-wrap">
 					<div className="s-hero-top">
 						<span className="s-eyebrow s-hin s-h1d" style={{ justifyContent: "center" }}>
-							Automatisation sur-mesure · PME &amp; indépendants
+							Automatisation sur-mesure · Cabinets d&apos;expertise comptable
 						</span>
 						<h1 className="s-hin s-h2d">
-							Je construis les{" "}
+							Arrêtez d&apos;être un{" "}
 							<span className="s-hl">
-								systèmes
+								employé
 								<svg viewBox="0 0 320 12" preserveAspectRatio="none">
 									<path d="M4,9 C80,3 240,3 316,8" />
 								</svg>
 							</span>{" "}
-							qui font tourner votre business sans vous.
+							dans votre propre cabinet.
 						</h1>
 						<p className="s-lead s-hin s-h3d">
-							Prospection, relances, devis, reporting : des workflows sur-mesure qui exécutent 24/7 les tâches répétitives de votre opérationnel. Déployés sur votre infrastructure, connectés à vos outils.
+							La plupart des dirigeants que j&apos;accompagne passaient plus de 12 h par semaine sur des tâches qu&apos;une machine fait mieux. Répondez à 6 questions : vous saurez combien d&apos;heures vous récupérez, ce que ça représente, et par quoi commencer.
 						</p>
 						<div className="s-hero-cta s-hin s-h4d">
 							<Link
-								href="/rendez-vous"
+								href="/diagnostic"
 								className="s-btn s-btn-primary"
-								onClick={() => track("cta_reserver_appel", { location: "home_hero" })}
+								onClick={() => track("cta_diagnostic", { location: "home_hero" })}
 							>
-								Réserver un appel de découverte <span className="arr">→</span>
+								Lancer le diagnostic <span className="arr">→</span>
 							</Link>
 							<a href="#preuves" className="s-btn s-btn-ghost">
 								Voir des systèmes réels
 							</a>
 						</div>
 						<div className="s-hero-note s-hin s-h5d">
-							Audit gratuit · 30 min · <b>ROI chiffré sous 60 jours</b>
+							6 questions · 2 min · <b>aucun email demandé pour voir le résultat</b>
 						</div>
 					</div>
 				</div>
