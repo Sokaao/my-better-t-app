@@ -1,18 +1,11 @@
-// Accès serveur uniquement (clé service_role), n'importer ce module que depuis des
-// Server Components ou Server Actions, jamais depuis un composant client.
-
-import { supabaseAdmin } from "./supabase-admin";
-
-export const LEAD_STATUSES = ["nouveau", "contacte", "rdv", "client", "perdu"] as const;
-export type LeadStatus = (typeof LEAD_STATUSES)[number];
-
-export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
-	nouveau: "Nouveau",
-	contacte: "Contacté",
-	rdv: "RDV pris",
-	client: "Client",
-	perdu: "Perdu",
-};
+// Envoi d'un lead du diagnostic vers n8n, qui écrit ensuite dans NocoDB.
+// Volontairement synchrone : on attend la réponse du workflow pour savoir si la
+// ligne a bien été créée. Un webhook en fire-and-forget afficherait "c'est noté"
+// à quelqu'un dont les coordonnées viennent de disparaître.
+//
+// Côté n8n, le nœud Webhook doit être réglé sur "Respond: When Last Node
+// Finishes" (ou terminer par un nœud Respond to Webhook) pour que ce contrôle
+// ait un sens.
 
 export const OBJECTIFS = ["temps", "argent", "vie", "erreurs"] as const;
 export type Objectif = (typeof OBJECTIFS)[number];
@@ -24,9 +17,9 @@ export const OBJECTIF_LABELS: Record<Objectif, string> = {
 	erreurs: "Arrêter les erreurs",
 };
 
-// Ce que le questionnaire envoie : les réponses brutes plus les résultats affichés.
-// Les résultats sont figés à l'envoi, parce que les hypothèses du simulateur
-// évolueront et que le chiffre vu par le prospect doit rester celui-là.
+// Ce que le questionnaire produit : les coordonnées, les réponses brutes, et
+// les résultats affichés à l'écran. Ces résultats sont figés à l'envoi : les
+// hypothèses du simulateur évolueront, pas le chiffre annoncé à cette personne.
 export type LeadInput = {
 	prenom: string;
 	nom: string;
@@ -47,76 +40,64 @@ export type LeadInput = {
 	source: string | null;
 };
 
-export type LeadRow = {
-	id: string;
-	created_at: string;
-	prenom: string;
-	nom: string;
-	email: string;
-	telephone: string;
-	taille_cabinet: number;
-	heures_dirigeant: number;
-	heures_collaborateur: number;
-	taux_horaire: number;
-	objectif: Objectif;
-	taches: string[];
-	heures_dirigeant_semaine: number | null;
-	heures_dirigeant_jours_an: number | null;
-	heures_cabinet_an: number | null;
-	ca_potentiel: number | null;
-	etp_equivalent: number | null;
-	premiere_automatisation: string | null;
-	statut: LeadStatus;
-	source: string | null;
-	notes: string;
-	contacte_at: string | null;
-};
+export async function sendLead(lead: LeadInput): Promise<{ ok: boolean; error?: string }> {
+	const url = process.env.LEAD_WEBHOOK_URL;
+	const secret = process.env.LEAD_WEBHOOK_SECRET;
 
-export async function createLead(input: LeadInput): Promise<LeadRow> {
-	const { data, error } = await supabaseAdmin()
-		.from("leads")
-		.insert({
-			prenom: input.prenom,
-			nom: input.nom,
-			email: input.email,
-			telephone: input.telephone,
-			taille_cabinet: input.tailleCabinet,
-			heures_dirigeant: input.heuresDirigeant,
-			heures_collaborateur: input.heuresCollaborateur,
-			taux_horaire: input.tauxHoraire,
-			objectif: input.objectif,
-			taches: input.taches,
-			heures_dirigeant_semaine: input.heuresDirigeantSemaine,
-			heures_dirigeant_jours_an: input.heuresDirigeantJoursAn,
-			heures_cabinet_an: input.heuresCabinetAn,
-			ca_potentiel: input.caPotentiel,
-			etp_equivalent: input.etpEquivalent,
-			premiere_automatisation: input.premiereAutomatisation,
-			source: input.source,
-		})
-		.select("*")
-		.single();
-	if (error) throw new Error(error.message);
-	return data as LeadRow;
-}
+	if (!url) {
+		// Mauvaise configuration plutôt que panne : on le dit clairement dans les
+		// logs, et on ne fait pas croire au visiteur que c'est passé.
+		console.error("[lead] LEAD_WEBHOOK_URL manquant : le lead n'a été envoyé nulle part.");
+		return { ok: false, error: "Le formulaire n'est pas encore relié. Écrivez-moi directement à synapsis.devis@gmail.com." };
+	}
 
-export async function fetchLeads(): Promise<LeadRow[]> {
-	const { data, error } = await supabaseAdmin()
-		.from("leads")
-		.select("*")
-		.order("created_at", { ascending: false });
-	if (error) throw new Error(error.message);
-	return (data ?? []) as LeadRow[];
-}
+	// Payload à plat : chaque clé se mappe sur une colonne NocoDB sans avoir à
+	// creuser dans des objets imbriqués côté n8n.
+	const payload = {
+		recuLe: new Date().toISOString(),
+		prenom: lead.prenom,
+		nom: lead.nom,
+		nomComplet: `${lead.prenom} ${lead.nom}`.trim(),
+		email: lead.email,
+		telephone: lead.telephone,
+		source: lead.source ?? "direct",
+		tailleCabinet: lead.tailleCabinet,
+		heuresDirigeant: lead.heuresDirigeant,
+		heuresCollaborateur: lead.heuresCollaborateur,
+		tauxHoraire: lead.tauxHoraire,
+		objectif: lead.objectif,
+		objectifLabel: OBJECTIF_LABELS[lead.objectif],
+		taches: lead.taches.join(" · "),
+		heuresDirigeantSemaine: lead.heuresDirigeantSemaine,
+		heuresDirigeantJoursAn: lead.heuresDirigeantJoursAn,
+		heuresCabinetAn: lead.heuresCabinetAn,
+		caPotentiel: lead.caPotentiel,
+		etpEquivalent: lead.etpEquivalent,
+		premiereAutomatisation: lead.premiereAutomatisation,
+		statut: "Nouveau",
+	};
 
-export async function updateLeadStatus(id: string, statut: LeadStatus): Promise<void> {
-	const { error } = await supabaseAdmin()
-		.from("leads")
-		.update({
-			statut,
-			// On date le premier passage hors de "nouveau" pour mesurer le délai de rappel.
-			contacte_at: statut === "nouveau" ? null : new Date().toISOString(),
-		})
-		.eq("id", id);
-	if (error) throw new Error(error.message);
+	try {
+		const res = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				...(secret ? { "X-Webhook-Secret": secret } : {}),
+			},
+			body: JSON.stringify(payload),
+			// Le chemin du webhook est devinable : sans réponse rapide, on préfère
+			// rendre la main au visiteur plutôt que de le laisser attendre.
+			signal: AbortSignal.timeout(10000),
+		});
+		if (!res.ok) {
+			console.error(`[lead] n8n a répondu ${res.status} pour ${lead.email}`, JSON.stringify(payload));
+			return { ok: false, error: "L'enregistrement a échoué. Réessayez dans un instant." };
+		}
+		return { ok: true };
+	} catch (err) {
+		// On journalise le payload complet : même si l'appel échoue, le lead reste
+		// récupérable à la main dans les logs Vercel.
+		console.error(`[lead] envoi impossible pour ${lead.email}`, err, JSON.stringify(payload));
+		return { ok: false, error: "L'enregistrement a échoué. Réessayez dans un instant." };
+	}
 }
