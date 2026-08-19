@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 
 export default function DiagnosticPage() {
 	return (
-		<>
+		<div className="dg-page">
 			{/* Pas de navigation ici : la page reçoit du trafic payant, chaque lien
 			    sortant est une fuite. Le logo vit dans la barre de progression. */}
 			<main>
 				<DiagnosticForm />
 			</main>
 			<SiteFooterMinimal />
-		</>
+		</div>
 	);
 }

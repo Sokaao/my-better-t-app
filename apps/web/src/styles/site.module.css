@@ -1,0 +1,3162 @@
+/* ============================================================
+   Socle des pages nichées · direction artistique « grand livre »
+   Tout est scopé sous .page : aucun impact sur les pages en classes .s-*.
+   Le thème sombre suit la classe .dark posée sur <html> par next-themes.
+   Boutons et logo reprennent la DA de index.css (.s-btn / .s-logo).
+   ============================================================ */
+
+.page {
+	--ground: #faf6ef;
+	--ground-2: #f6f0e5;
+	--surface: #fffdf9;
+	--surface-2: #f3ede1;
+	--ink: #231d16;
+	--ink-soft: #5c5347;
+	--faint: #8a8174;
+	--line: #e4dccb;
+	--line-strong: #d3c8b2;
+	--orange: #e8500f;
+	--orange-deep: #c23f08;
+	--orange-text: #a83505;
+	--orange-soft: #fdeadd;
+	--ok: #1a6b3a;
+	--ok-soft: #e6f2ea;
+	--inv-bg: #231d16;
+	--inv-ink: #faf6ef;
+	--inv-soft: #b7ab98;
+	--inv-line: rgba(255, 255, 255, 0.16);
+	--on-accent: #ffffff;
+	--grid-line: rgba(35, 29, 22, 0.045);
+	--wash: rgba(232, 80, 15, 0.07);
+	--lift: 0 1px 2px rgba(35, 29, 22, 0.04), 0 12px 32px -20px rgba(35, 29, 22, 0.28);
+	--lift-hi: 0 2px 4px rgba(35, 29, 22, 0.05), 0 22px 48px -24px rgba(35, 29, 22, 0.38);
+
+	position: relative;
+	background: var(--ground);
+	color: var(--ink);
+	font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+	font-size: 17px;
+	line-height: 1.65;
+	-webkit-font-smoothing: antialiased;
+	min-height: 100vh;
+	overflow-x: hidden;
+}
+
+:global(.dark) .page {
+	--ground: #141009;
+	--ground-2: #181309;
+	--surface: #1c1710;
+	--surface-2: #241d14;
+	--ink: #f4eee2;
+	--ink-soft: #b3a794;
+	--faint: #8b8070;
+	--line: #2b241a;
+	--line-strong: #3d3427;
+	--orange: #ff6a2b;
+	--orange-deep: #ff7f47;
+	--orange-text: #ff9160;
+	--orange-soft: #2e1a0e;
+	--ok: #4dbb80;
+	--ok-soft: #12281c;
+	--inv-bg: #2a2218;
+	--inv-ink: #faf3e6;
+	--inv-soft: #bcb09c;
+	--inv-line: rgba(255, 255, 255, 0.13);
+	--on-accent: #1a140d;
+	--grid-line: rgba(255, 255, 255, 0.035);
+	--wash: rgba(255, 106, 43, 0.09);
+	--lift: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -20px rgba(0, 0, 0, 0.8);
+	--lift-hi: 0 2px 4px rgba(0, 0, 0, 0.5), 0 22px 48px -24px rgba(0, 0, 0, 0.9);
+}
+
+/* Trame discrète + halo chaud derrière le hero : de la profondeur, pas du décor. */
+.page::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto 0;
+	height: 78rem;
+	pointer-events: none;
+	z-index: 0;
+	background-image:
+		radial-gradient(70rem 42rem at 78% -8%, var(--wash), transparent 62%),
+		linear-gradient(var(--grid-line) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+	background-size: 100% 100%, 100% 4.5rem, 4.5rem 100%;
+	mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%);
+}
+
+/* Grain très fin : donne au crème une matière de papier plutôt qu'un aplat. */
+.page::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 2;
+	opacity: 0.05;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:global(.dark) .page::after {
+	opacity: 0.035;
+}
+
+.page > * {
+	position: relative;
+	z-index: 1;
+}
+
+.page * {
+	box-sizing: border-box;
+}
+
+.page :focus-visible {
+	outline: 2px solid var(--orange);
+	outline-offset: 3px;
+	border-radius: 3px;
+}
+
+.wrap {
+	width: 100%;
+	max-width: 68rem;
+	margin: 0 auto;
+	padding: 0 1.5rem;
+}
+
+.page p {
+	margin: 0;
+}
+
+.page p + p {
+	margin-top: 1em;
+}
+
+.page h1,
+.page h2,
+.page h3 {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	color: var(--ink);
+	text-wrap: balance;
+	margin: 0;
+	letter-spacing: -0.024em;
+}
+
+.page h1 {
+	font-weight: 800;
+	font-size: clamp(2rem, 4.1vw, 3.1rem);
+	line-height: 1.06;
+	/* Les chiffres du titre sont alignés comme le reste du texte : dans un display,
+	   un chiffre isolé est un point d'ancrage pour l'oeil, pas une donnée tabulaire. */
+	font-variant-numeric: proportional-nums;
+}
+
+.page h2 {
+	font-weight: 800;
+	font-size: clamp(1.65rem, 3.9vw, 2.35rem);
+	line-height: 1.13;
+}
+
+.page h3 {
+	font-weight: 700;
+	font-size: 1.0625rem;
+	line-height: 1.32;
+	letter-spacing: -0.012em;
+}
+
+.eyebrow {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--orange);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.625rem;
+}
+
+.eyebrowQuiet {
+	color: var(--faint);
+}
+
+/* ─── Boutons (DA reprise de .s-btn) ─── */
+.btn {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 12px 22px;
+	border-radius: 9px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 1.5px solid transparent;
+	transition: all 0.22s;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	position: relative;
+}
+
+.arr {
+	display: inline-block;
+	transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1.4);
+}
+
+.btn:hover .arr {
+	transform: translateX(4px);
+}
+
+.btnPrimary {
+	background: var(--orange-text);
+	color: var(--on-accent);
+}
+
+.btnPrimary:hover {
+	background: var(--orange-deep);
+	transform: translateY(-1px);
+	box-shadow: 0 10px 24px -8px rgba(232, 80, 15, 0.55);
+}
+
+.btnPrimary:active {
+	transform: translateY(0);
+}
+
+.btnGhost {
+	border-color: var(--line-strong);
+	color: var(--ink);
+}
+
+.btnGhost:hover {
+	border-color: var(--orange);
+	color: var(--orange);
+}
+
+/* ─── Navigation : reprise exacte de .s-nav / .s-logo de index.css ─── */
+.nav {
+	position: sticky;
+	top: 0;
+	z-index: 110;
+	backdrop-filter: blur(12px);
+	background: rgba(250, 246, 239, 0.85);
+	border-bottom: 1px solid var(--line);
+}
+
+:global(.dark) .nav {
+	background: rgba(20, 16, 9, 0.85);
+}
+
+.navIn {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 15px 32px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	font-size: 17px;
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.logoMark {
+	width: auto;
+	height: 26px;
+	transition: transform 0.3s;
+}
+
+.logo:hover .logoMark {
+	transform: scale(1.1);
+}
+
+.logoText {
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+}
+
+.logoWord {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	font-size: 17px;
+	color: var(--ink);
+}
+
+.logoTagline {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-weight: 500;
+	font-size: 8px;
+	letter-spacing: 0.1em;
+	color: var(--orange);
+	text-transform: uppercase;
+	margin-top: 5px;
+	padding-top: 3px;
+	border-top: 1px solid var(--line);
+	white-space: nowrap;
+}
+
+.navLinks {
+	display: flex;
+	gap: 28px;
+	align-items: center;
+}
+
+.navItem {
+	color: var(--ink-soft);
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 450;
+	position: relative;
+	padding: 3px 0;
+}
+
+.navItem::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: -1px;
+	width: 100%;
+	height: 2px;
+	background: var(--orange);
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.navItem:hover {
+	color: var(--ink);
+}
+
+.navItem:hover::after {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+
+@media (max-width: 820px) {
+	.navItem {
+		display: none;
+	}
+
+	.navIn {
+		padding: 15px 20px;
+	}
+}
+
+/* ─── Rythme des sections ─── */
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.block {
+	padding: 6.25rem 0;
+}
+
+/* Alternance de fond : un mouvement sur deux, pour que chaque passerelle tombe
+   entre deux fonds différents et se lise comme une charnière. */
+.blockAlt {
+	background: var(--ground-2);
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+}
+
+/* Bloc empilé sous un autre dans le même mouvement : il respire sans nouvelle section. */
+.stacked {
+	margin-top: 1.5rem;
+}
+
+/* ─── Passerelle : la phrase qui porte d'un mouvement au suivant ───
+   Hors des sections, sur le fond de base, avec un filet vertical au-dessus et
+   en dessous : le fil ne se coupe pas entre deux mouvements. */
+.bridge {
+	max-width: 34rem;
+	margin: 3rem auto;
+	padding: 0 1.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.25rem;
+}
+
+.bridge::before,
+.bridge::after {
+	content: "";
+	width: 1px;
+	height: 2.5rem;
+	background: var(--line-strong);
+	flex-shrink: 0;
+}
+
+.bridge p {
+	font-size: 1.05rem;
+	line-height: 1.5;
+	color: var(--ink-soft);
+	text-align: center;
+	text-wrap: balance;
+}
+
+@media (max-width: 52rem) {
+	.bridge {
+		margin: 2.25rem auto;
+		gap: 1rem;
+	}
+
+	.bridge::before,
+	.bridge::after {
+		height: 1.5rem;
+	}
+}
+
+.secHead {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 3rem;
+	max-width: 44rem;
+}
+
+/* Variante deux colonnes : casse l'empilement identique d'une section à l'autre. */
+.secHeadWide {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+	gap: 1rem 3.5rem;
+	align-items: end;
+	max-width: none;
+	margin-bottom: 2.75rem;
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid var(--line);
+}
+
+.secHeadWide .eyebrow {
+	grid-column: 1 / -1;
+}
+
+.secHeadWide .sub {
+	padding-bottom: 0.35rem;
+}
+
+@media (max-width: 56rem) {
+	.secHeadWide {
+		grid-template-columns: 1fr;
+		gap: 0.875rem;
+	}
+}
+
+.sub {
+	color: var(--ink-soft);
+}
+
+/* Deux moments typographiques sur toute la page, pas un de plus. */
+.displayHuge {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(2.5rem, 7.5vw, 4.6rem);
+	line-height: 0.96;
+	letter-spacing: -0.038em;
+	text-wrap: balance;
+}
+
+.pullQuote {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.7rem, 4.6vw, 2.85rem);
+	line-height: 1.14;
+	letter-spacing: -0.032em;
+	color: var(--ink);
+	text-align: center;
+	text-wrap: balance;
+	max-width: 34rem;
+	padding-top: 2.5rem;
+	position: relative;
+}
+
+/* Le centrage doit passer devant la remise à zéro des marges de .page p. */
+.page .pullQuote {
+	margin: 3.5rem auto 0;
+}
+
+.pullQuote::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 3.5rem;
+	height: 2px;
+	background: var(--orange);
+}
+
+.pullQuoteSoft {
+	color: var(--faint);
+}
+
+/* Ton atténué lisible sur le fond sombre de la bande. */
+.bandMuted {
+	color: var(--inv-soft);
+}
+
+/* ─── Hero ─── */
+.hero {
+	padding: 4.5rem 0 4rem;
+	position: relative;
+}
+
+/* Le hero occupe l'écran entier, mais seulement là où ça a du sens : deux colonnes
+   côte à côte, et une hauteur suffisante. Sur mobile la mise en page s'empile, et
+   sur un écran court le contenu serait comprimé, donc on garde la hauteur naturelle.
+   `svh` évite le saut causé par la barre d'adresse mobile, `vh` sert de repli. */
+@media (min-width: 62rem) and (min-height: 44rem) {
+	.hero {
+		min-height: calc(100vh - 4.5rem);
+		min-height: calc(100svh - 4.5rem);
+		display: flex;
+		align-items: center;
+		padding-top: 2rem;
+		padding-bottom: 6rem;
+	}
+
+	.hero > .wrap {
+		width: 100%;
+	}
+
+	.scrollCue {
+		display: flex;
+	}
+}
+
+/* Indice de défilement : plein écran, sans lui, rien ne dit qu'il y a une suite. */
+.scrollCue {
+	display: none;
+	position: absolute;
+	left: 50%;
+	bottom: 2rem;
+	transform: translateX(-50%);
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--faint);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.scrollCue:hover {
+	color: var(--orange);
+}
+
+.scrollCue span {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.5625rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.scrollCue svg {
+	width: 1rem;
+	height: 1rem;
+	animation: nudge 2.4s ease-in-out infinite;
+}
+
+@keyframes nudge {
+	0%, 60%, 100% {
+		transform: translateY(0);
+	}
+	30% {
+		transform: translateY(4px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.scrollCue svg {
+		animation: none;
+	}
+}
+
+.heroGrid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 4rem;
+	align-items: center;
+}
+
+@media (max-width: 62rem) {
+	.heroGrid {
+		grid-template-columns: 1fr;
+		gap: 3.25rem;
+	}
+}
+
+.heroIn {
+	display: flex;
+	flex-direction: column;
+	gap: 1.9rem;
+}
+
+.hero > .wrap {
+	max-width: 72rem;
+}
+
+.heroLine {
+	display: inline;
+}
+
+@media (min-width: 62rem) {
+	.heroLine {
+		display: block;
+	}
+}
+
+/* Bannière de titre : elle court sur toute la largeur, au-dessus des deux colonnes.
+   La largeur est bornée pour que le display ne dépasse pas trois lignes et garde
+   des retours nets, `balance` répartit ensuite les mots. */
+.heroTop {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 1.35rem;
+	margin-bottom: 4rem;
+}
+
+@media (max-width: 62rem) {
+	.heroTop {
+		margin-bottom: 2.5rem;
+	}
+}
+
+/* Le bouton se détache un peu plus du texte qui le précède : c'est le moment de
+   la décision, il ne doit pas coller au paragraphe. */
+.heroIn .heroCta {
+	margin-top: 0.6rem;
+}
+
+.heroCta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+}
+
+.heroNote {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.75rem;
+	color: var(--faint);
+	letter-spacing: 0.01em;
+}
+
+.heroNote b {
+	color: var(--ink-soft);
+	font-weight: 500;
+}
+
+/* Le même couple bouton + mention, réutilisé sous le grand livre du mouvement 01. */
+.ledgerFoot + .heroCta {
+	margin-top: 1.5rem;
+}
+
+/* Chaîné depuis .ledgerFoot pour ne pas toucher au rythme du hero, où .heroIn
+   gère déjà l'écart par son gap. */
+.ledgerFoot + .heroCta + .heroNote {
+	margin-top: 0.75rem;
+}
+
+/* La ligne « ce que je fais » : panneau teinté, pas un filet de plus. */
+.mechanism {
+	background: color-mix(in srgb, var(--orange-soft) 60%, var(--ground));
+	border-radius: 12px;
+	padding: 1.35rem 1.5rem 1.45rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+
+.mechanismLead {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 0.9875rem;
+	letter-spacing: -0.012em;
+	color: var(--ink);
+}
+
+.mechanismList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+}
+
+.mechanismList li {
+	display: flex;
+	align-items: baseline;
+	gap: 0.7rem;
+	font-size: 0.9375rem;
+	line-height: 1.45;
+	color: var(--ink-soft);
+}
+
+/* Le repère est un filet, pas un tiret de clavier : il s'aligne sur le vocabulaire
+   documentaire du reste du site et reste net à toutes les tailles. */
+.mechanismList li::before {
+	content: "";
+	flex-shrink: 0;
+	width: 0.85rem;
+	height: 2px;
+	border-radius: 1px;
+	background: var(--orange);
+	transform: translateY(-0.25rem);
+}
+
+.mechanismEnd {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 0.9875rem;
+	letter-spacing: -0.012em;
+	color: var(--ink);
+	padding-top: 0.85rem;
+	border-top: 1px solid color-mix(in srgb, var(--orange) 20%, transparent);
+}
+
+/* Entrée du hero : en CSS pur, pour que le premier écran s'affiche même sans JS. */
+.in {
+	animation: rise 0.75s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+}
+
+.in1 {
+	animation-delay: 0.06s;
+}
+
+.in2 {
+	animation-delay: 0.13s;
+}
+
+.in3 {
+	animation-delay: 0.2s;
+}
+
+.in4 {
+	animation-delay: 0.28s;
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* ─── Panneau produit du hero ─── */
+.panel {
+	background: var(--surface);
+	border: 1px solid var(--line-strong);
+	border-radius: 14px;
+	box-shadow: var(--lift-hi);
+	overflow: hidden;
+}
+
+.panelHead {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem 1.25rem;
+	border-bottom: 1px solid var(--line);
+	background: var(--surface-2);
+}
+
+.panelTitle {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+.panelDate {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	font-variant-numeric: tabular-nums;
+	color: var(--orange-text);
+	letter-spacing: 0.04em;
+}
+
+.panelGauge {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+	padding: 1.5rem 1.25rem;
+	border-bottom: 1px solid var(--line);
+}
+
+.ring {
+	width: 5.5rem;
+	height: 5.5rem;
+	flex-shrink: 0;
+	position: relative;
+}
+
+.ringSvg {
+	width: 100%;
+	height: 100%;
+	transform: rotate(-90deg);
+}
+
+.ringTrack {
+	fill: none;
+	stroke: var(--line);
+	stroke-width: 7;
+}
+
+.ringValue {
+	fill: none;
+	stroke: var(--orange);
+	stroke-width: 7;
+	stroke-linecap: round;
+	stroke-dasharray: 213.6;
+	stroke-dashoffset: 17.1;
+	animation: fill 1.4s cubic-bezier(0.2, 0.7, 0.3, 1) 0.35s backwards;
+}
+
+@keyframes fill {
+	from {
+		stroke-dashoffset: 213.6;
+	}
+}
+
+.ringLabel {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.15rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.03em;
+	color: var(--ink);
+}
+
+.gaugeText {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.gaugeBig {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.35rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.025em;
+	color: var(--ink);
+	line-height: 1.2;
+}
+
+.gaugeSmall {
+	font-size: 0.8125rem;
+	color: var(--faint);
+	line-height: 1.45;
+}
+
+.panelRows {
+	display: flex;
+	flex-direction: column;
+}
+
+.panelRow {
+	display: grid;
+	grid-template-columns: 0.6rem 1fr auto;
+	gap: 0.75rem;
+	align-items: center;
+	padding: 0.95rem 1.375rem;
+	border-bottom: 1px solid var(--line);
+}
+
+.panelRow:last-child {
+	border-bottom: none;
+}
+
+/* Les dossiers arrivent l'un après l'autre : le tableau se remplit sous les yeux. */
+.panelRow {
+	animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+}
+
+.panelRow:nth-child(1) {
+	animation-delay: 0.7s;
+}
+
+.panelRow:nth-child(2) {
+	animation-delay: 0.82s;
+}
+
+.panelRow:nth-child(3) {
+	animation-delay: 0.94s;
+}
+
+.panelRow:nth-child(4) {
+	animation-delay: 1.06s;
+}
+
+.dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: var(--ok);
+}
+
+.dotWait {
+	background: var(--orange);
+}
+
+.rowName {
+	font-size: 0.875rem;
+	color: var(--ink);
+	font-weight: 500;
+}
+
+.rowSub {
+	display: block;
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	color: var(--faint);
+	margin-top: 0.15rem;
+	letter-spacing: 0.01em;
+}
+
+.tagOk,
+.tagWait {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.2rem 0.45rem;
+	border-radius: 3px;
+	white-space: nowrap;
+}
+
+.tagOk {
+	color: var(--ok);
+	background: var(--ok-soft);
+}
+
+.tagWait {
+	color: var(--orange-text);
+	background: var(--orange-soft);
+}
+
+.panelFoot {
+	padding: 0.75rem 1.25rem;
+	border-top: 1px solid var(--line);
+	background: var(--surface-2);
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+/* Mention de source : la page cite des chiffres de la profession, elle dit d'où
+   ils viennent. Devant ce public, une statistique sans origine ne vaut rien. */
+.sourceNote {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	line-height: 1.6;
+	letter-spacing: 0.01em;
+	color: var(--faint);
+	margin-top: 1.5rem;
+	padding-left: 1rem;
+	border-left: 2px solid var(--line-strong);
+	max-width: 44rem;
+}
+
+.sourceNote strong {
+	color: var(--ink-soft);
+	font-weight: 500;
+}
+
+/* ─── Le relevé du mouvement 01 ───────────────────────────────────────────────
+   Pas un tableau : il n'y a aucune donnée à aligner, le chiffre est justement ce
+   qui manque. C'est une feuille de relevé, avec ses cases à cocher et sa ligne de
+   total en pointillés qui attend d'être remplie. Elle préfigure le diagnostic. */
+.sheet {
+	background: var(--surface);
+	border: 1px solid var(--line-strong);
+	border-radius: 12px;
+	box-shadow: var(--lift);
+	padding: 1.75rem 2rem 1.5rem;
+	max-width: 58rem;
+}
+
+.sheetHead {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--faint);
+	padding-bottom: 1.125rem;
+	border-bottom: 1px solid var(--line-strong);
+}
+
+.sheetGrid {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+	gap: 0 2.5rem;
+}
+
+.sheetItem {
+	display: grid;
+	grid-template-columns: 1.1rem 1fr;
+	gap: 0.85rem;
+	align-items: start;
+	padding: 1rem 0;
+	border-bottom: 1px solid var(--line);
+}
+
+/* La case à cocher, vide : c'est le geste que le diagnostic lui fera faire. */
+.sheetCheck {
+	width: 1.05rem;
+	height: 1.05rem;
+	border: 1.5px solid var(--line-strong);
+	border-radius: 3px;
+	margin-top: 0.2rem;
+}
+
+.sheetText {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.sheetTask {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 0.9875rem;
+	letter-spacing: -0.01em;
+	color: var(--ink);
+	line-height: 1.3;
+}
+
+.sheetMoment {
+	font-size: 0.875rem;
+	font-style: italic;
+	color: var(--faint);
+	line-height: 1.45;
+}
+
+/* Ligne de total : les pointillés font le lien jusqu'au chiffre absent. */
+.sheetTotal {
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	margin-top: 1.25rem;
+	padding-top: 1.25rem;
+	border-top: 3px double var(--line-strong);
+}
+
+.sheetTotalLabel {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1.0625rem;
+	letter-spacing: -0.015em;
+	color: var(--ink);
+	white-space: nowrap;
+}
+
+.sheetLeader {
+	flex: 1;
+	border-bottom: 2px dotted var(--line-strong);
+	transform: translateY(-0.2rem);
+	min-width: 2rem;
+}
+
+.sheetUnknown {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 2rem;
+	letter-spacing: -0.03em;
+	color: var(--orange-text);
+	line-height: 1;
+}
+
+@media (max-width: 34rem) {
+	.sheet {
+		padding: 1.375rem 1.5rem 1.25rem;
+	}
+
+	.sheetGrid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ─── Grand livre ─── */
+
+/* Le chiffre que la page ne donne pas : le manque est le sujet, il se voit donc. */
+
+.ledgerFoot {
+	font-size: 0.8125rem;
+	color: var(--faint);
+	max-width: 44rem;
+}
+
+.page .ledgerFoot {
+	margin-top: 1.25rem;
+}
+
+/* ─── Bande inversée ─── */
+.band {
+	background: var(--inv-bg);
+	color: var(--inv-ink);
+	border-radius: 14px;
+	padding: 3.25rem 2.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.125rem;
+	border: 1px solid var(--inv-line);
+	box-shadow: var(--lift-hi);
+	position: relative;
+	overflow: hidden;
+}
+
+/* Halo chaud dans l'angle : donne du volume à un aplat sombre. */
+.band::after {
+	content: "";
+	position: absolute;
+	top: -30%;
+	right: -10%;
+	width: 30rem;
+	height: 30rem;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(232, 80, 15, 0.18), transparent 68%);
+	pointer-events: none;
+}
+
+.band > * {
+	position: relative;
+	z-index: 1;
+}
+
+.band h2 {
+	color: var(--inv-ink);
+}
+
+.band p {
+	color: var(--inv-soft);
+	max-width: 42rem;
+}
+
+.band strong {
+	color: var(--inv-ink);
+}
+
+.band .eyebrow {
+	color: var(--orange);
+}
+
+/* ─── Fait / ne fait pas ─── */
+.does {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: var(--lift);
+}
+
+.doesCol {
+	background: var(--surface);
+	padding: 1.875rem 1.625rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.125rem;
+}
+
+.doesNo {
+	background: var(--surface-2);
+}
+
+.doesCol h3 {
+	font-size: 0.75rem;
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.doesYes h3 {
+	color: var(--ok);
+}
+
+.doesNo h3 {
+	color: var(--orange-text);
+}
+
+.doesList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.doesList li {
+	display: flex;
+	gap: 0.75rem;
+	align-items: baseline;
+	font-size: 0.9375rem;
+	color: var(--ink-soft);
+}
+
+.sym {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.8125rem;
+	flex-shrink: 0;
+}
+
+.doesYes .sym {
+	color: var(--ok);
+}
+
+.doesNo .sym {
+	color: var(--orange);
+}
+
+/* ─── Un mois, avant et après ───────────────────────────────────────────────
+   Deux couloirs colorés côte à côte : celui de gauche porte la charge, celui de
+   droite est presque vide. Le point plein marque chaque intervention humaine, et
+   la ligne de total les recompte en points. La démonstration se lit sans lire. */
+.track {
+	display: flex;
+	flex-direction: column;
+}
+
+.trackRow {
+	display: grid;
+	grid-template-columns: 8.5rem minmax(0, 1fr) minmax(0, 1fr);
+	align-items: stretch;
+}
+
+.trackDay {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-variant-numeric: tabular-nums;
+	font-size: 0.75rem;
+	letter-spacing: 0.02em;
+	color: var(--faint);
+	padding: 0.95rem 1.25rem 0.95rem 0;
+	display: flex;
+	align-items: baseline;
+	border-bottom: 1px solid var(--line);
+}
+
+.trackCell {
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	color: var(--ink-soft);
+	padding: 0.95rem 1.25rem;
+	display: flex;
+	gap: 0.65rem;
+	align-items: baseline;
+	border-bottom: 1px solid var(--line);
+	transition: background 0.2s;
+}
+
+/* Les deux couloirs. */
+.trackCell:nth-of-type(2) {
+	background: var(--surface-2);
+}
+
+.trackCell:nth-of-type(3) {
+	background: var(--orange-soft);
+}
+
+.trackRow:hover .trackCell:nth-of-type(2) {
+	background: var(--line);
+}
+
+.trackGood {
+	color: var(--ink);
+}
+
+/* ─── En-tête des couloirs ─── */
+.trackHead .trackCell,
+.trackHead .trackDay {
+	border-bottom: 1px solid var(--line-strong);
+	padding-top: 0.8rem;
+	padding-bottom: 0.7rem;
+}
+
+.trackHead .trackCell:nth-of-type(2) {
+	border-radius: 10px 0 0 0;
+}
+
+.trackHead .trackCell:nth-of-type(3) {
+	border-radius: 0 10px 0 0;
+}
+
+.trackCol {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1rem;
+	letter-spacing: -0.018em;
+	color: var(--faint);
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.trackColGood {
+	color: var(--orange-text);
+}
+
+.trackCol em {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.625rem;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+/* ─── Le point d-intervention ─── */
+.act,
+.noAct {
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+	transform: translateY(-0.15rem);
+}
+
+.act {
+	background: var(--orange);
+}
+
+.noAct {
+	border: 1px solid var(--line-strong);
+	background: transparent;
+}
+
+/* ─── Ligne d-échéance : le moment où tout se joue ─── */
+.trackEnd .trackCell,
+.trackEnd .trackDay {
+	border-top: 1px solid var(--line-strong);
+	border-bottom: none;
+	padding-top: 1.1rem;
+	padding-bottom: 1.1rem;
+	font-weight: 600;
+}
+
+.trackEnd .trackDay {
+	color: var(--ink);
+	font-weight: 500;
+}
+
+.trackEnd .trackCell {
+	color: var(--ink);
+}
+
+.trackEnd .trackCell:nth-of-type(3) {
+	color: var(--orange-text);
+}
+
+/* ─── Total : les interventions recomptées en points ─── */
+.trackTotal .trackCell,
+.trackTotal .trackDay {
+	border-top: 3px double var(--line-strong);
+	border-bottom: none;
+	padding-top: 1.1rem;
+	padding-bottom: 1.2rem;
+	align-items: flex-start;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.trackTotal .trackCell:nth-of-type(2) {
+	border-radius: 0 0 0 10px;
+}
+
+.trackTotal .trackCell:nth-of-type(3) {
+	border-radius: 0 0 10px 0;
+}
+
+.dots {
+	display: flex;
+	gap: 0.3rem;
+	align-items: center;
+}
+
+.dots i {
+	transform: none;
+}
+
+.trackTotal b {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.15rem;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+	margin-right: 0.3rem;
+}
+
+.trackTotal .trackGood b {
+	color: var(--orange-text);
+}
+
+@media (max-width: 52rem) {
+	.trackRow {
+		grid-template-columns: 1fr;
+	}
+
+	.trackHead {
+		display: none;
+	}
+
+	.trackDay {
+		color: var(--orange-text);
+		font-weight: 500;
+		padding: 1.1rem 0 0.4rem;
+		border-bottom: none;
+	}
+
+	.trackCell {
+		border-bottom: none;
+		padding: 0.6rem 1rem;
+	}
+
+	.trackCell:nth-of-type(2) {
+		border-radius: 8px 8px 0 0;
+	}
+
+	.trackCell:nth-of-type(3) {
+		border-radius: 0 0 8px 8px;
+	}
+
+	.trackCell::before {
+		font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+		font-size: 0.5625rem;
+		letter-spacing: 0.11em;
+		text-transform: uppercase;
+		color: var(--faint);
+		flex-shrink: 0;
+	}
+
+	.trackCell:nth-of-type(2)::before {
+		content: "Main";
+	}
+
+	.trackCell:nth-of-type(3)::before {
+		content: "Auto";
+	}
+
+	.trackTotal .trackCell::before,
+	.trackEnd .trackCell::before {
+		content: none;
+	}
+}
+
+/* ─── Promesse encadrée ─── */
+.promiseBox {
+	border: 1px solid var(--line-strong);
+	border-radius: 12px;
+	background: var(--surface);
+	padding: 2rem 2.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	align-items: flex-start;
+	box-shadow: var(--lift);
+}
+
+.promiseBig {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.35rem, 3.4vw, 1.85rem);
+	letter-spacing: -0.026em;
+	color: var(--ink);
+	text-wrap: balance;
+	line-height: 1.15;
+}
+
+.promiseBox p {
+	color: var(--ink-soft);
+	font-size: 0.9375rem;
+	max-width: 42rem;
+}
+
+.stackRow {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.375rem;
+}
+
+.chip {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.05em;
+	color: var(--ink-soft);
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	padding: 0.3rem 0.6rem;
+}
+
+/* ─── Sous le capot ─── */
+.shot {
+	border: 1px solid var(--line-strong);
+	border-radius: 12px;
+	overflow: hidden;
+	background: var(--surface);
+	box-shadow: var(--lift-hi);
+	/* La capture est une preuve, pas une démonstration : elle n'a pas besoin de
+	   toute la largeur du conteneur pour faire son travail. */
+	max-width: 46rem;
+}
+
+/* Encadré de prolongement : une question courte et le lien qui y répond. Il
+   guide vers la page dédiée au lieu de laisser un bouton nu sous la capture. */
+.nextStep {
+	margin-top: 2rem;
+	max-width: 46rem;
+	padding: 1.5rem 1.75rem;
+	border: 1px solid var(--inv-line);
+	border-radius: 12px;
+	background: var(--inv-bg);
+	box-shadow: var(--lift);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.25rem;
+}
+
+.nextStepText {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
+	font-size: 1.0625rem;
+	line-height: 1.4;
+	letter-spacing: -0.012em;
+	color: var(--inv-ink);
+	max-width: 24rem;
+}
+
+.shotImg {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	background: var(--surface-2);
+}
+
+.shotCap {
+	padding: 1rem 1.25rem;
+	border-top: 1px solid var(--line);
+	font-size: 0.8125rem;
+	color: var(--faint);
+}
+
+.shotCap b {
+	color: var(--ink-soft);
+	font-weight: 500;
+}
+
+/* ─── Emplacement du calendrier ───────────────────────────────────────────────
+   Le widget de prise de rendez-vous est injecté par un script tiers dans un
+   emplacement de hauteur fixe, et les états « en cours de chargement » et
+   « bloqué » se superposent à cet emplacement pendant qu'il est vide. Aucune
+   classe du socle ne pose un contexte de positionnement à hauteur imposée :
+   .shotImg fixe un ratio 16/9, et .panel n'empile rien. Le cadre extérieur, lui,
+   reste un .shot : c'est déjà la carte à filet du socle. */
+.calendarFrame {
+	position: relative;
+	min-width: 20rem;
+	height: 43.75rem;
+}
+
+.calendarState {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	padding: 2.5rem;
+	text-align: center;
+	background: var(--surface);
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: var(--ink-soft);
+}
+
+.calendarState a {
+	color: var(--orange-text);
+	font-weight: 500;
+}
+
+.calendarSpinner {
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: 50%;
+	border: 3px solid var(--line);
+	border-top-color: var(--orange);
+	animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ─── Méthode ─── */
+.steps {
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--line);
+}
+
+.step {
+	display: grid;
+	grid-template-columns: 5.25rem 1fr;
+	gap: 1.5rem;
+	padding: 1.25rem 0.75rem;
+	border-bottom: 1px solid var(--line);
+	align-items: baseline;
+	transition: background 0.22s;
+	border-radius: 8px;
+}
+
+.step:hover {
+	background: var(--surface);
+}
+
+.stepDay {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-variant-numeric: tabular-nums;
+	font-size: 0.9375rem;
+	color: var(--orange-text);
+	font-weight: 500;
+}
+
+.stepBody {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.stepTitle {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1.0625rem;
+	color: var(--ink);
+	letter-spacing: -0.014em;
+}
+
+.stepText {
+	font-size: 0.9375rem;
+	color: var(--ink-soft);
+	line-height: 1.55;
+}
+
+.pill {
+	display: inline-block;
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.5625rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--orange-text);
+	background: var(--orange-soft);
+	border-radius: 3px;
+	padding: 0.18rem 0.45rem;
+	margin-left: 0.5rem;
+	vertical-align: 0.12em;
+}
+
+/* ─── Carte offre ─── */
+.offer {
+	border: 1px solid var(--line-strong);
+	border-radius: 14px;
+	background: var(--surface);
+	overflow: hidden;
+	box-shadow: var(--lift-hi);
+}
+
+.offerTop {
+	padding: 2.25rem 2.25rem 1.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+	border-bottom: 1px solid var(--line);
+	background: linear-gradient(180deg, var(--orange-soft), transparent);
+}
+
+.offerName {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+	letter-spacing: -0.032em;
+	line-height: 1.05;
+	color: var(--ink);
+}
+
+.offerPromise {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
+	font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+	line-height: 1.35;
+	letter-spacing: -0.014em;
+	color: var(--orange-text);
+	text-wrap: balance;
+}
+
+.offerGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+	gap: 1px;
+	background: var(--line);
+}
+
+.offerCell {
+	background: var(--surface);
+	padding: 1.5rem 1.625rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	transition: background 0.25s;
+}
+
+.offerCell:hover {
+	background: var(--surface-2);
+}
+
+.offerK {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+.offerV {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.2rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.022em;
+	color: var(--ink);
+	line-height: 1.3;
+}
+
+.offerX {
+	font-size: 0.8125rem;
+	color: var(--faint);
+	line-height: 1.45;
+}
+
+.offerFoot {
+	padding: 1.75rem 2.25rem 2.25rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.25rem;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.offerFoot p {
+	font-size: 0.875rem;
+	color: var(--ink-soft);
+	max-width: 28rem;
+}
+
+/* ─── Pourquoi maintenant : le seul bloc chaud de la page, juste avant les garanties ─── */
+.whyNow {
+	margin-top: 1.5rem;
+	background: var(--orange-soft);
+	border: 1px solid color-mix(in srgb, var(--orange) 32%, transparent);
+	border-radius: 14px;
+	padding: 2rem 2.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+}
+
+.whyNowTitle {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.35rem, 3.4vw, 1.85rem);
+	letter-spacing: -0.026em;
+	line-height: 1.15;
+	color: var(--ink);
+	text-wrap: balance;
+}
+
+.whyNowGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+	gap: 1px;
+	background: color-mix(in srgb, var(--orange) 24%, transparent);
+	border: 1px solid color-mix(in srgb, var(--orange) 24%, transparent);
+	border-radius: 10px;
+	overflow: hidden;
+	margin-top: 0.25rem;
+}
+
+.whyNowCell {
+	background: var(--surface);
+	padding: 1.25rem 1.375rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.whyNowK {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.8125rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	font-weight: 500;
+	color: var(--orange-text);
+}
+
+.whyNowX {
+	font-size: 0.8125rem;
+	line-height: 1.5;
+	color: var(--ink-soft);
+}
+
+@media (max-width: 34rem) {
+	.whyNow {
+		padding: 1.5rem;
+	}
+}
+
+/* ─── Grilles de cartes : conséquences (02) et opportunités (05) ─── */
+.costs,
+.opps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: var(--lift);
+}
+
+.cost,
+.opp {
+	background: var(--surface);
+	padding: 1.75rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	transition: background 0.25s;
+}
+
+.cost:hover,
+.opp:hover {
+	background: var(--surface-2);
+}
+
+.costTitle,
+.oppTitle {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.05rem;
+	letter-spacing: -0.018em;
+	color: var(--ink);
+	line-height: 1.25;
+}
+
+.costQuote {
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	color: var(--ink-soft);
+	font-style: italic;
+	padding-left: 0.9rem;
+	border-left: 2px solid var(--orange);
+}
+
+.oppText {
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	color: var(--ink-soft);
+}
+
+/* ─── Ce que vous avez déjà tenté (03) : récit, puis verdict ─── */
+.tried {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: var(--lift);
+}
+
+@media (min-width: 62rem) {
+	.tried {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 34rem) {
+	.tried {
+		grid-template-columns: 1fr;
+	}
+}
+
+.triedCard {
+	background: var(--surface);
+	padding: 1.75rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	transition: background 0.25s;
+}
+
+.triedCard:hover {
+	background: var(--surface-2);
+}
+
+.triedTitle {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.05rem;
+	letter-spacing: -0.018em;
+	color: var(--ink);
+	line-height: 1.25;
+}
+
+/* Soulignement à main levée, repris à l'identique de .s-hl du site V1. Le tracé se
+   dessine une fois, à l'arrivée sur la page. */
+.hl {
+	color: var(--orange);
+	position: relative;
+	white-space: nowrap;
+}
+
+.hl svg {
+	position: absolute;
+	left: 0;
+	bottom: -6px;
+	width: 100%;
+	height: 12px;
+	overflow: visible;
+}
+
+.hl svg path {
+	fill: none;
+	stroke: var(--orange);
+	stroke-width: 3.5;
+	stroke-linecap: round;
+	opacity: 0.55;
+	stroke-dasharray: 320;
+	stroke-dashoffset: 320;
+	animation: underline 1s ease 0.9s forwards;
+}
+
+@keyframes underline {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hl svg path {
+		animation: none;
+		stroke-dashoffset: 0;
+	}
+}
+
+/* Pictogramme de carte : il porte le sens à la place d'une phrase, il ne décore pas. */
+.cardIcon {
+	width: 1.75rem;
+	height: 1.75rem;
+	color: var(--orange);
+	flex-shrink: 0;
+}
+
+/* Le verdict, poussé en bas de carte : la même ligne se lit d'une carte à l'autre. */
+.triedVerdict {
+	display: flex;
+	gap: 0.5rem;
+	align-items: baseline;
+	margin-top: auto;
+	padding-top: 0.875rem;
+	border-top: 1px solid var(--line);
+	font-size: 0.875rem;
+	line-height: 1.45;
+	font-weight: 500;
+	color: var(--orange-text);
+}
+
+.triedVerdict::before {
+	content: "→";
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	color: var(--orange);
+	flex-shrink: 0;
+}
+
+/* ─── Empilement de valeur et garanties ─── */
+/* Ce qui est compris, sans prix ligne à ligne : une valeur qu'on s'attribue
+   soi-même ne prouve rien à quelqu'un dont le métier est d'évaluer. */
+.included {
+	padding: 1.75rem 2.25rem 2rem;
+	border-bottom: 1px solid var(--line);
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+}
+
+.includedLabel {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+.includedList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap: 0.55rem 1.75rem;
+}
+
+.includedList li {
+	font-size: 0.9375rem;
+	color: var(--ink-soft);
+	display: flex;
+	gap: 0.6rem;
+	align-items: baseline;
+}
+
+.includedList li::before {
+	content: "✓";
+	color: var(--ok);
+	font-size: 0.8125rem;
+	flex-shrink: 0;
+}
+
+.includedNote {
+	font-size: 0.875rem;
+	color: var(--faint);
+	line-height: 1.55;
+	padding-top: 0.5rem;
+	border-top: 1px solid var(--line);
+	max-width: 40rem;
+}
+
+/* Note seule sous la grille de prix : la carte fournit déjà la séparation au-dessus,
+   le filet interne ferait un trait orphelin. */
+.included > .includedNote:only-child {
+	padding-top: 0;
+	border-top: none;
+}
+
+/* Dernier bloc de la carte offre : son filet toucherait la bordure de la carte et se
+   lirait comme un trait double. */
+.offer .included:last-child {
+	border-bottom: none;
+}
+
+@media (max-width: 34rem) {
+	.included {
+		padding: 1.5rem;
+	}
+}
+
+.guarantees {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap: 1px;
+	background: var(--inv-line);
+	border: 1px solid var(--inv-line);
+	border-radius: 10px;
+	overflow: hidden;
+	margin-top: 0.75rem;
+}
+
+.gtype {
+	background: color-mix(in srgb, var(--inv-bg) 92%, #fff);
+	padding: 1.375rem 1.375rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.gtypeK {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.5625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+
+.gtypeV {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1rem;
+	letter-spacing: -0.015em;
+	color: var(--inv-ink);
+	line-height: 1.3;
+}
+
+.gtypeX {
+	font-size: 0.875rem;
+	color: var(--inv-soft);
+	line-height: 1.5;
+}
+
+/* ─── Conformité ─── */
+.conf {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+	gap: 1px;
+	background: var(--inv-line);
+	border: 1px solid var(--inv-line);
+	border-radius: 10px;
+	overflow: hidden;
+	margin-top: 0.75rem;
+}
+
+.confCell {
+	background: color-mix(in srgb, var(--inv-bg) 92%, #fff);
+	padding: 1.25rem 1.375rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.confK {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.5625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+
+.confV {
+	font-size: 0.9375rem;
+	color: var(--inv-ink);
+	line-height: 1.45;
+	font-weight: 500;
+}
+
+/* ─── Qui je suis ────────────────────────────────────────────────────────────
+   Une note signée, pas une carte « à propos ». Sans référence client dans la
+   niche, c-est la personne qui fait preuve : le portrait est grand, le texte se
+   lit comme une lettre, et la signature reprend le trait à main levée du titre. */
+.founder {
+	display: grid;
+	grid-template-columns: 14rem minmax(0, 1fr);
+	gap: 3rem;
+	align-items: start;
+	background: var(--surface);
+	border: 1px solid var(--line-strong);
+	border-radius: 14px;
+	padding: 2.75rem;
+	box-shadow: var(--lift-hi);
+	max-width: 58rem;
+}
+
+.founderAside {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+	align-items: flex-start;
+}
+
+/* Cadre carré : la photo est carrée et sa composition tient dans un halo circulaire.
+   Un cadre portrait rognerait les côtés et couperait le cercle. */
+.founderPhoto {
+	position: relative;
+	width: 14rem;
+	aspect-ratio: 1;
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--surface-2);
+	box-shadow: var(--lift);
+}
+
+/* Le nom sous le portrait : prénom en clair, patronyme en capitales, comme il signe. */
+.founderName {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
+	font-size: 1.15rem;
+	letter-spacing: -0.015em;
+	color: var(--ink);
+	line-height: 1.2;
+}
+
+.founderName b {
+	font-weight: 800;
+	letter-spacing: 0.01em;
+}
+
+.founderRole {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--faint);
+	margin-top: -0.55rem;
+}
+
+.founderBody {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.founderBody p {
+	color: var(--ink-soft);
+	font-size: 0.9875rem;
+	line-height: 1.62;
+}
+
+/* La première phrase porte le métier : elle se lit avant les autres. */
+.founderLead {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
+	font-size: 1.1rem;
+	line-height: 1.45;
+	letter-spacing: -0.014em;
+	color: var(--ink);
+}
+
+.founderBody strong {
+	color: var(--ink);
+	font-weight: 600;
+}
+
+/* Signature : le même geste que le soulignement du titre, en plus discret. */
+.founderSign {
+	position: relative;
+	align-self: flex-start;
+	margin-top: 0.75rem;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1.15rem;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+	white-space: nowrap;
+}
+
+.founderSign svg {
+	position: absolute;
+	left: 0;
+	bottom: -8px;
+	width: 100%;
+	height: 12px;
+	overflow: visible;
+}
+
+.founderSign svg path {
+	fill: none;
+	stroke: var(--orange);
+	stroke-width: 3;
+	stroke-linecap: round;
+	opacity: 0.5;
+}
+
+@media (max-width: 46rem) {
+	.founder {
+		grid-template-columns: 1fr;
+		gap: 1.75rem;
+		padding: 1.75rem;
+	}
+
+	.founderAside {
+		flex-direction: row;
+		align-items: center;
+		gap: 1.125rem;
+	}
+
+	.founderPhoto {
+		width: 7rem;
+		flex-shrink: 0;
+	}
+}
+
+/* ─── Questions fréquentes ────────────────────────────────────────────────────
+   Aucune classe du socle ne couvrait un dépliable : ni .steps, qui affiche tout, ni
+   .conf, qui n'a pas d'interaction. Le dessin reste celui du reste de la page, une
+   suite de lignes séparées par un filet, sans carte ni ombre : dix questions
+   encadrées feraient dix objets à regarder au lieu d'une liste à parcourir.
+   L'ouverture passe par grid-template-rows, seule façon d'animer vers une hauteur
+   inconnue sans mesurer le contenu en JavaScript. */
+.faq {
+	border-top: 1px solid var(--line);
+	max-width: 50rem;
+}
+
+.faqItem {
+	border-bottom: 1px solid var(--line);
+}
+
+.faqQ {
+	width: 100%;
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1.5rem;
+	padding: 1.15rem 0.25rem;
+	background: none;
+	border: 0;
+	text-align: left;
+	cursor: pointer;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1.0625rem;
+	line-height: 1.35;
+	letter-spacing: -0.014em;
+	color: var(--ink);
+	transition: color 0.2s;
+}
+
+.faqQ:hover {
+	color: var(--orange-text);
+}
+
+/* Le signe : un plus qui devient un moins. Tracé en CSS, pas en SVG, pour que la
+   barre verticale s'escamote au lieu de pivoter. */
+.faqSign {
+	position: relative;
+	flex-shrink: 0;
+	width: 0.85rem;
+	height: 0.85rem;
+	color: var(--orange);
+	transform: translateY(0.1rem);
+}
+
+.faqSign::before,
+.faqSign::after {
+	content: "";
+	position: absolute;
+	background: currentColor;
+	border-radius: 1px;
+}
+
+.faqSign::before {
+	left: 0;
+	right: 0;
+	top: 50%;
+	height: 1.5px;
+	margin-top: -0.75px;
+}
+
+.faqSign::after {
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 1.5px;
+	margin-left: -0.75px;
+	transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.faqOpen .faqSign::after {
+	transform: scaleY(0);
+}
+
+.faqPanel {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.3s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.faqOpen .faqPanel {
+	grid-template-rows: 1fr;
+}
+
+.faqPanelIn {
+	overflow: hidden;
+	min-height: 0;
+}
+
+.faqA {
+	font-size: 0.9375rem;
+	line-height: 1.62;
+	color: var(--ink-soft);
+	max-width: 44rem;
+	padding: 0 2.5rem 1.35rem 0.25rem;
+}
+
+@media (max-width: 34rem) {
+	.faqQ {
+		font-size: 1rem;
+		gap: 1rem;
+	}
+
+	.faqA {
+		padding-right: 0.25rem;
+	}
+}
+
+/* ─── Pied de page ────────────────────────────────────────────────────────────
+   Commun à toutes les pages. Il porte les liens légaux, obligatoires, et sort le
+   lecteur du cul-de-sac : arrivé en bas, il doit pouvoir aller quelque part. */
+.foot {
+	border-top: 1px solid var(--line);
+	padding: 3.5rem 0 3rem;
+	margin-top: 4.5rem;
+	background: var(--ground-2);
+}
+
+.footGrid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+	gap: 2.5rem;
+	padding-bottom: 2.5rem;
+	border-bottom: 1px solid var(--line);
+}
+
+.footBrand {
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+	align-items: flex-start;
+}
+
+.footBaseline {
+	font-size: 0.875rem;
+	line-height: 1.6;
+	color: var(--faint);
+	max-width: 22rem;
+}
+
+.footCol {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	align-items: flex-start;
+}
+
+.footHead {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--faint);
+	margin-bottom: 0.2rem;
+}
+
+.footLink {
+	font-size: 0.875rem;
+	color: var(--ink-soft);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.footLink:hover {
+	color: var(--orange);
+}
+
+.footBottom {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 2rem;
+	justify-content: space-between;
+	align-items: baseline;
+	padding-top: 1.75rem;
+}
+
+.footBottom span {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.75rem;
+	color: var(--faint);
+}
+
+@media (max-width: 56rem) {
+	.footGrid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+	}
+
+	.footBrand {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 34rem) {
+	.footGrid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 34rem) {
+	.page {
+		font-size: 16px;
+	}
+
+	.block {
+		padding: 3.75rem 0;
+	}
+
+	.band {
+		padding: 2.25rem 1.5rem;
+	}
+
+	.promiseBox {
+		padding: 1.5rem;
+	}
+
+	.offerTop,
+	.offerFoot {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+
+	.step {
+		grid-template-columns: 3.75rem 1fr;
+		gap: 0.75rem;
+	}
+
+	.panelGauge {
+		gap: 1rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page *,
+	.ringValue {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Accueil, échelle V3 (classe `.v3` sur /) · ajouts seuls
+   Cette feuille est partagée par /, /offres, /methode et /rendez-vous : rien
+   au-dessus n-est modifié. Ce qui suit ne sert qu-à la structure empruntée à
+   vccimpact.fr, que le socle ne portait pas : une ligne d-engagements chiffrés,
+   des phases numérotées, un parcours en trois cartes.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Ligne d-engagements du hero ───────────────────────────────────────────
+   Quatre chiffres qui se posent en entrant dans le champ. Ce ne sont pas des
+   résultats passés, d-où le libellé mono juste au-dessus : ce sont des clauses. */
+.heroPledge {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+}
+
+.heroStats {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1rem;
+	align-items: start;
+	padding-top: 0.9rem;
+	border-top: 1px solid var(--line-strong);
+}
+
+.heroStat {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.heroStatN {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.028em;
+	line-height: 1;
+	color: var(--orange-text);
+	white-space: nowrap;
+}
+
+.heroStatL {
+	font-size: 0.6875rem;
+	line-height: 1.35;
+	color: var(--faint);
+}
+
+@media (max-width: 34rem) {
+	.heroStats {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.35rem 1.25rem;
+	}
+}
+
+/* ─── Phases numérotées ─────────────────────────────────────────────────────
+   Le badge remplace les passerelles entre les trois premiers mouvements : il dit
+   l-enchaînement d-un coup d-œil, la phrase de liaison le redirait une fois de
+   trop. */
+.phaseBlock {
+	display: grid;
+	grid-template-columns: 3.75rem minmax(0, 1fr);
+	gap: 1.1rem 1.375rem;
+	align-items: start;
+}
+
+/* Le socle espace déjà les sections (.block) : l'écart entre deux phases reste
+   net sans y ajouter un intervalle de même ampleur. */
+.phaseBlock + .phaseBlock {
+	margin-top: 2.25rem;
+	padding-top: 2.25rem;
+	border-top: 1px solid var(--line);
+}
+
+.phaseBadge {
+	grid-column: 1;
+	grid-row: 1;
+	width: 3.75rem;
+	height: 3.75rem;
+	flex-shrink: 0;
+	border-radius: 50%;
+	border: 1.5px solid var(--orange);
+	background: var(--surface);
+	display: grid;
+	place-items: center;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.45rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.04em;
+	line-height: 1;
+	color: var(--orange-text);
+}
+
+/* La spécificité doit dépasser celle de `.page h3`, sinon le titre de phase
+   retomberait à la taille d-un intertitre courant. */
+.page .phaseTitle {
+	grid-column: 2;
+	grid-row: 1;
+	align-self: center;
+	font-weight: 800;
+	font-size: clamp(1.1rem, 2vw, 1.35rem);
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+.phaseBody {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+/* Rythme interne d-une phase. Les écarts déjà réglés ailleurs, comme le pied du
+   relevé ou le couple bouton + mention, gardent la main : leurs sélecteurs sont
+   plus précis que celui-ci. */
+.phaseBody > * + * {
+	margin-top: 1.15rem;
+}
+
+@media (max-width: 52rem) {
+	.phaseBlock {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.1rem;
+	}
+
+	.phaseBadge {
+		grid-column: 1;
+		grid-row: 1;
+		width: 3.25rem;
+		height: 3.25rem;
+		font-size: 1.15rem;
+	}
+
+	.page .phaseTitle {
+		grid-column: 1;
+		grid-row: 2;
+	}
+
+	.phaseBody {
+		grid-column: 1;
+		grid-row: 3;
+	}
+}
+
+/* ─── Note signée, version segmentée ────────────────────────────────────────
+   Les mêmes phrases que sur l-accueil, coupées par deux intertitres et allégées
+   d-une ligne mise en exergue : six paragraphes d-affilée se lisent mal quand ils
+   arrivent après une page entière de démonstration. */
+.founderSubhead {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--orange);
+	margin-top: 0.5rem;
+}
+
+/* Variante compacte de .pullQuote : ni centrée ni en display, elle tient dans une
+   colonne de texte. La spécificité passe devant celle de `.founderBody p`. */
+.page .pullQuoteSmall {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 1.1rem;
+	line-height: 1.3;
+	letter-spacing: -0.018em;
+	color: var(--ink);
+	text-wrap: balance;
+	padding: 0.05rem 0 0.05rem 0.9rem;
+	border-left: 2px solid var(--orange);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Échelle V3 : typographie resserrée, dans l-esprit du site de référence choisi
+   par l-utilisateur (vccimpact.fr) : titres plus discrets, corps de texte plus
+   léger, davantage de vide entre les mots et les blocs. Ces règles ne portent
+   que sur `.v3` : le socle et les autres pages gardent l-échelle actuelle.
+   La spécificité (deux classes + élément) passe devant les règles `.page h1`
+   etc. déjà déclarées plus haut, sans qu-il soit besoin d-y toucher.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v3.page h1 {
+	font-size: clamp(1.55rem, 2.9vw, 2.15rem);
+	line-height: 1.15;
+}
+
+.v3.page h2 {
+	font-size: clamp(1.2rem, 2vw, 1.45rem);
+	line-height: 1.25;
+}
+
+.v3.page h3 {
+	font-size: 0.9375rem;
+	line-height: 1.35;
+}
+
+/* Le texte courant de la page tient sur une seule taille, 15 px : les sous-titres
+   de section, les phrases de clôture et les paragraphes des blocs sombres. En
+   dessous, la ligne devient trop menue sous un titre en Archivo 800. */
+.v3 .sub {
+	font-size: 0.9375rem;
+	line-height: 1.6;
+}
+
+.v3 .eyebrow {
+	font-size: 0.625rem;
+}
+
+.v3 .mechanismLead,
+.v3 .mechanismEnd,
+.v3 .mechanismEndSoft {
+	font-size: 0.875rem;
+}
+
+.v3 .mechanismList li {
+	font-size: 0.8125rem;
+}
+
+.v3 .offerName {
+	font-size: clamp(1.35rem, 2.6vw, 1.65rem);
+}
+
+.v3 .offerPromise {
+	font-size: 0.9375rem;
+}
+
+.v3 .offerV {
+	font-size: 1.0625rem;
+}
+
+.v3 .offerX {
+	font-size: 0.75rem;
+}
+
+.v3 .pullQuote {
+	font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+	padding-top: 1.75rem;
+}
+
+.v3 .promiseBig {
+	font-size: clamp(1.05rem, 1.9vw, 1.3rem);
+}
+
+.v3 .founderLead {
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+.v3 .founderBody p {
+	font-size: 0.875rem;
+}
+
+.v3 .costTitle,
+.v3 .triedTitle,
+.v3 .oppTitle {
+	font-size: 0.9375rem;
+}
+
+.v3 .costQuote,
+.v3 .oppText {
+	font-size: 0.8125rem;
+}
+
+.v3 .triedVerdict {
+	font-size: 0.8125rem;
+}
+
+.v3 .sheetTask {
+	font-size: 0.875rem;
+}
+
+.v3 .sheetMoment {
+	font-size: 0.8125rem;
+}
+
+/* Le seul display de la page, plafonné au maximum du h1 : sous l'échelle V3, un
+   titre de section ne peut pas être plus gros que le titre de la page. */
+.v3 .displayHuge {
+	font-size: clamp(1.6rem, 3.2vw, 2.15rem);
+}
+
+.v3 .founderName {
+	font-size: 1rem;
+}
+
+.v3 .founderSign {
+	font-size: 1rem;
+}
+
+/* Le badge de phase perd un peu de poids pour rester sous la nouvelle échelle
+   de h2 : il ne doit plus dépasser le titre de section qu-il introduit. */
+.v3 .phaseBadge {
+	width: 3.25rem;
+	height: 3.25rem;
+	font-size: 1.25rem;
+}
+
+/* Trois classes pour battre `.v3.page h3` juste au-dessus (deux classes plus
+   un élément) : sans ça, la règle h3 générique écraserait ce réglage propre à
+   phaseTitle. */
+.v3.page .phaseTitle {
+	font-size: 1.0625rem;
+}
+
+/* La statistique sourcée passe en légende : elle documente la grille au-dessus,
+   elle n-est pas un bloc de texte de plus. Plus de filet à gauche, qui en faisait
+   une citation autonome. */
+.v3 .sourceNote {
+	margin-top: 1rem;
+	padding-left: 0;
+	border-left: none;
+	font-size: 0.625rem;
+}
+
+/* Trois cartes, donc trois colonnes : la règle du socle en prévoit quatre. */
+.v3 .tried {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 52rem) {
+	.v3 .tried {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* Le signe de la FAQ ne s-allume qu-une fois ouvert : cinq plus orange alignés
+   feraient cinq accents sur un même écran, là où la règle en veut un. */
+.v3 .faqSign {
+	color: var(--faint);
+}
+
+.v3 .faqOpen .faqSign {
+	color: var(--orange);
+}
+
+/* ─── Deuxième ligne du panneau mécanisme ───────────────────────────────────
+   La conséquence de la première, donc sans filet à son tour : deux traits
+   d-affilée se liraient comme une double barre. Le sélecteur reprend aussi
+   l-écart de `.page p + p`, qui viendrait s-ajouter au `gap` du panneau. */
+.mechanismEndSoft {
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
+	font-size: 0.9875rem;
+	line-height: 1.35;
+	letter-spacing: -0.012em;
+	color: var(--ink-soft);
+}
+
+.page .mechanism p + p {
+	margin-top: -0.25rem;
+}
+
+/* ─── Section sombre, plein cadre ───────────────────────────────────────────
+   Deux moments de la page ne sont pas des cartes posées dans un mouvement : le
+   constat, qui répond aux trois phases d-un coup, et la décision finale. Le fond
+   va donc d-un bord à l-autre, sans arrondi ni halo, avec le même rythme vertical
+   que `.block`. Un seul élément coloré par section : l-intertitre pour l-un, le
+   bouton pour l-autre. */
+.blockDark {
+	background: var(--inv-bg);
+	color: var(--inv-ink);
+	border-top: 1px solid var(--inv-line);
+	border-bottom: 1px solid var(--inv-line);
+}
+
+.blockDark h2,
+.blockDark h3 {
+	color: var(--inv-ink);
+}
+
+.blockDark p {
+	color: var(--inv-soft);
+}
+
+.blockDark strong,
+.blockDark b {
+	color: var(--inv-ink);
+}
+
+.blockDark .sub {
+	color: var(--inv-soft);
+}
+
+.blockDark .eyebrow {
+	color: var(--orange);
+}
+
+/* Déclarée après la règle ci-dessus, à spécificité égale : l-intertitre discret
+   le reste sur fond sombre, sinon la section porterait deux accents. */
+.blockDark .eyebrowQuiet {
+	color: var(--inv-soft);
+}
+
+.pivot {
+	display: flex;
+	flex-direction: column;
+	gap: 1.125rem;
+	max-width: 52rem;
+}
+
+.pivotText {
+	font-size: 0.9375rem;
+	line-height: 1.65;
+	max-width: 42rem;
+}
+
+/* La cadence sur fond sombre : en orange, elle disputerait l-accent au bouton.
+   Elle passe en clair sur sombre, le bouton garde l-orange. */
+.blockDark .whyNow {
+	background: transparent;
+	border-color: var(--inv-line);
+}
+
+.blockDark .whyNowGrid {
+	background: var(--inv-line);
+	border-color: var(--inv-line);
+}
+
+.blockDark .whyNowCell {
+	background: color-mix(in srgb, var(--inv-bg) 92%, #fff);
+}
+
+.blockDark .whyNowK {
+	color: var(--inv-ink);
+}
+
+.blockDark .whyNowX {
+	color: var(--inv-soft);
+}
+
+/* L-orange profond des boutons est calculé pour le fond crème : sur l-encre, il
+   s-éteint. C-est l-orange plein qui porte, avec le même texte d-accent. */
+.blockDark .btnPrimary {
+	background: var(--orange);
+	color: var(--on-accent);
+}
+
+.blockDark .btnPrimary:hover {
+	background: var(--orange-deep);
+}
+
+.blockDark .btnGhost {
+	border-color: var(--inv-line);
+	color: var(--inv-ink);
+}
+
+.blockDark .btnGhost:hover {
+	border-color: var(--inv-soft);
+	color: var(--inv-ink);
+}
+
+/* ─── Le parcours en trois temps ────────────────────────────────────────────
+   Trois cartes de hauteur égale : le montant et le lien sont poussés en bas, pour
+   que les trois prix se comparent sur une même ligne. Un seul élément coloré par
+   carte, le montant — le numéro reste un repère de lecture, pas un accent. */
+.pathGrid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: var(--lift);
+}
+
+@media (max-width: 56rem) {
+	.pathGrid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.pathCard {
+	background: var(--surface);
+	padding: 1.75rem 1.625rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	transition: background 0.25s;
+}
+
+.pathCard:hover {
+	background: var(--surface-2);
+}
+
+.pathNum {
+	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	font-size: 0.625rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.13em;
+	color: var(--faint);
+}
+
+/* Trois classes pour passer devant `.v3.page h3`, comme pour `.phaseTitle`. */
+.v3.page .pathTitle {
+	font-weight: 800;
+	font-size: 1.05rem;
+	line-height: 1.25;
+	letter-spacing: -0.018em;
+}
+
+.pathLead {
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	color: var(--ink-soft);
+}
+
+.pathList {
+	margin: 0.15rem 0 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.pathList li {
+	display: flex;
+	gap: 0.6rem;
+	align-items: baseline;
+	font-size: 0.8125rem;
+	line-height: 1.45;
+	color: var(--ink-soft);
+}
+
+/* Le repère est un filet, pas un tiret de clavier : même vocabulaire que la liste
+   du panneau mécanisme, en gris parce que la couleur est prise par le montant. */
+.pathList li::before {
+	content: "";
+	flex-shrink: 0;
+	width: 0.55rem;
+	height: 1px;
+	background: var(--line-strong);
+	transform: translateY(-0.25rem);
+}
+
+.pathPrice {
+	margin-top: auto;
+	padding-top: 1.125rem;
+	border-top: 1px solid var(--line);
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 1.0625rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.022em;
+	line-height: 1.3;
+	color: var(--orange-text);
+}
+
+.pathNote {
+	font-size: 0.75rem;
+	line-height: 1.45;
+	color: var(--faint);
+}
+
+/* L-appel de note, accroché au montant : il garde la couleur du prix pour qu-on
+   voie que la condition porte sur ce chiffre-là, pas sur la carte entière. */
+.pathStar {
+	font-size: 0.6em;
+	line-height: 0;
+	vertical-align: super;
+	margin-left: 0.1em;
+}
+
+/* La condition d-imputation du cadrage (contrat, art. 6.5). Plus discrète que
+   `.pathNote` : c-est une réserve, pas une information de vente. */
+.pathFootnote {
+	margin-top: 0.1rem;
+	font-size: 0.6875rem;
+	line-height: 1.5;
+	color: var(--faint);
+	text-wrap: pretty;
+}
+
+/* Un lien de renvoi, pas un bouton : le seul appel à l-action de cette moitié de
+   page est en bas, et trois boutons alignés le videraient de sa force. */
+.pathLink {
+	align-self: flex-start;
+	margin-top: 0.5rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+	font-weight: 700;
+	font-size: 0.8125rem;
+	letter-spacing: -0.01em;
+	color: var(--ink-soft);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.pathLink:hover {
+	color: var(--ink);
+}
+
+.pathLink:hover .arr {
+	transform: translateX(4px);
+}
+
+/* ─── Phrase de clôture ─────────────────────────────────────────────────────
+   Ce que le temps repris devient, en une ligne plutôt qu-en grille de cartes :
+   une section porte une idée, et celle-ci est déjà celle du périmètre. */
+.closing {
+	max-width: 46rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--line);
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: var(--ink-soft);
+}
+
+/* Le centrage vertical doit passer devant la remise à zéro des marges de .page p. */
+.page .closing {
+	margin-top: 2.75rem;
+}

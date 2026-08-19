@@ -327,7 +327,7 @@ export default function DiagnosticForm() {
 
 						{step === 2 && (
 							<>
-								<h2 className="dg-qtitle">Qu&apos;est-ce qui mange vos semaines ?</h2>
+								<h2 className="dg-qtitle">Qu&apos;est-ce qui vous prend le plus de temps dans la semaine ?</h2>
 								<p className="dg-qhelp">Cochez tout ce qui vous parle. C&apos;est ce qui déterminera par quoi commencer.</p>
 								<div className="dg-opts">
 									{TASKS.map((t, i) => (
@@ -353,7 +353,7 @@ export default function DiagnosticForm() {
 
 						{step === 3 && (
 							<>
-								<h2 className="dg-qtitle">Vous, combien d&apos;heures par semaine sur ces tâches ?</h2>
+								<h2 className="dg-qtitle">Et vous, combien d&apos;heures par semaine vous passez sur ces tâches ?</h2>
 								<p className="dg-qhelp">Le temps que vous y passez personnellement, au lieu de développer le cabinet.</p>
 								{single(OWNER_HOURS, ownerH, setOwnerH, 4)}
 							</>
@@ -369,16 +369,16 @@ export default function DiagnosticForm() {
 
 						{step === 5 && (
 							<>
-								<h2 className="dg-qtitle">Votre taux horaire moyen réellement encaissé ?</h2>
-								<p className="dg-qhelp">Forfaits ramenés à l&apos;heure, pas le tarif affiché.</p>
+								<h2 className="dg-qtitle">Quel est votre taux horaire moyen ?</h2>
+								<p className="dg-qhelp">Forfaits ramenés à l&apos;heure.</p>
 								{single(RATES, rate, setRate, 6)}
 							</>
 						)}
 
 						{step === 6 && (
 							<>
-								<h2 className="dg-qtitle">Aujourd&apos;hui, qu&apos;est-ce qui vous ferait le plus de bien ?</h2>
-								<p className="dg-qhelp">Une seule réponse. Elle ne change pas les calculs, elle change ce que je vous montre en premier.</p>
+								<h2 className="dg-qtitle">Aujourd&apos;hui, qu&apos;avez vous le plus besoin ?</h2>
+								<p className="dg-qhelp">Celle que vous avez le plus besoin en ce moment pour vous.</p>
 								{single(WANTS, want, setWant, 7)}
 							</>
 						)}
@@ -514,7 +514,7 @@ export default function DiagnosticForm() {
 												<input id="dg-em" type="email" autoComplete="email" placeholder="vous@cabinet.fr" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
 											</div>
 											<div className="dg-fld full">
-												<label htmlFor="dg-ph">Téléphone</label>
+												<label htmlFor="dg-ph">Téléphone (facultatif)</label>
 												<input id="dg-ph" type="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} />
 											</div>
 										</div>
@@ -523,7 +523,7 @@ export default function DiagnosticForm() {
 											{sending ? "Envoi…" : "Recevoir mon plan"} <span className="arr">→</span>
 										</button>
 										<p className="dg-legal">
-											Vos coordonnées servent uniquement à vous recontacter au sujet de ce diagnostic. Pas de newsletter, pas de revente, désinscription immédiate sur simple demande.
+											Vos coordonnées servent uniquement à vous recontacter au sujet de ce diagnostic. Pas de newsletter, pas de revente, désinscription immédiate sur simple demande. Vos réponses au diagnostic peuvent être utilisées de façon anonymisée et agrégée à des fins d&apos;étude statistique sur la profession.
 										</p>
 									</form>
 								</>

@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 
+const DESCRIPTION =
+	"Trente minutes pour regarder vos outils, votre portefeuille et ce que vous avez déjà tenté. Je vous dis franchement si l'automatisation est la bonne réponse pour votre cabinet.";
+
 export const metadata: Metadata = {
-	title: "Réserver un appel de découverte gratuit",
-	description: "30 minutes pour identifier vos processus chronophages et estimer le gain potentiel d'une automatisation. Gratuit, sans engagement.",
+	title: "Rendez-vous · Trente minutes",
+	description: DESCRIPTION,
 	alternates: {
 		canonical: "/rendez-vous",
 	},
 	openGraph: {
-		title: "Réserver un appel de découverte gratuit | Synapsis",
-		description: "30 minutes pour identifier vos processus chronophages et estimer le gain potentiel d'une automatisation. Gratuit, sans engagement.",
+		title: "Rendez-vous · Trente minutes | Synapsis",
+		description: DESCRIPTION,
 		url: "/rendez-vous",
 	},
 };

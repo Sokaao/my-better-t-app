@@ -1,286 +1,418 @@
 "use client";
 
-import { CheckCircle2, ChevronDown, Sparkles, Rocket, Zap, MessageSquare, Clock, Shield, ShieldCheck, Wrench } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { track } from "@vercel/analytics";
-import SiteNav from "@/components/site-nav";
-import SiteFooter from "@/components/site-footer";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import Bridge from "@/components/site/Bridge";
+import Icon, { type IconName } from "@/components/site/Icon";
+import SiteNavV2, { type NavLink } from "@/components/site/SiteNavV2";
+import SiteFooter from "@/components/site/SiteFooter";
+import s from "@/styles/site.module.css";
 import { faqs } from "./faqs";
+
+// La page n'a pas de mouvements numérotés comme l'accueil : elle répond à quatre
+// questions, dans l'ordre où on les pose au téléphone. La nav suit cet ordre.
+const NAV_LINKS: NavLink[] = [
+	{ href: "#prix", label: "Le prix" },
+	{ href: "#garanties", label: "Les garanties" },
+	{ href: "#calendrier", label: "Le calendrier" },
+	{ href: "#faq", label: "Questions" },
+];
+
+// Deux temps, deux décisions. Le cadrage se suffit à lui-même, l'installation ne
+// se chiffre qu'une fois les dossiers et les outils connus.
+const PRIX = [
+	{
+		k: "Le cadrage",
+		v: "600 €",
+		x: "Relevé d'une semaine, analyse, périmètre technique et plan chiffré. Livré en sept jours. Facturé à la livraison, donc vous le lisez avant de le payer. Déduit du projet si vous continuez.",
+	},
+	{
+		k: "L'installation",
+		v: "À partir de 4 500 €",
+		x: "Chiffrée dans le plan du cadrage, une fois vos dossiers et vos outils connus. Moitié à la signature, moitié à la mise en production.",
+	},
+];
+
+// Ce qui est livré, sans prix ligne à ligne : une valeur qu'on s'attribue soi-même
+// ne prouve rien à quelqu'un dont le métier est d'évaluer ce que valent les choses.
+const INCLUS = [
+	"Le système de collecte et de relance",
+	"Le cadrage et le relevé de référence",
+	"La bibliothèque de relances prêtes à l'emploi",
+	"Le tableau de bord de complétude",
+	"La formation, la documentation et les vidéos de passation",
+	"La marche à blanc de deux semaines",
+	"La surveillance pendant les 90 jours de garantie",
+];
+
+// Trois garanties de nature différente, empilées : c'est l'empilement qui rend le
+// refus difficile, pas une garantie isolée.
+const GARANTIES = [
+	{
+		k: "Sur vos clients",
+		v: "Rien ne part sans votre accord",
+		x: "Aucun message n'atteint un de vos clients sans qu'une personne de votre cabinet l'ait validé. Les deux premières semaines, rien ne part du tout.",
+	},
+	{
+		k: "Sur le résultat",
+		v: "Si le temps n'a pas baissé, je rembourse",
+		x: "Un second relevé d'une semaine à J+90, même équipe et même méthode qu'au cadrage. Aucune baisse mesurée, remboursement intégral de l'installation. Ou je continue gratuitement, à vous de choisir.",
+	},
+	{
+		k: "Sur votre temps",
+		v: "Deux heures par semaine, pas plus",
+		x: "C'est tout ce que l'installation vous demande. Au-delà, les heures supplémentaires sont à ma charge.",
+	},
+];
+
+// Le calendrier porte les deux dates qui engagent : le prix au démarrage, le constat
+// à J+90. Elles sont marquées d'une pastille, les autres étapes non.
+const STEPS: { day: string; title: string; pill: string | null; text: string }[] = [
+	{
+		day: "J+0",
+		title: "Le cadrage démarre",
+		pill: "600 €",
+		text: "Vos équipes remplissent le relevé d'une semaine.",
+	},
+	{
+		day: "J+7",
+		title: "Cadrage livré",
+		pill: null,
+		text: "Vos chiffres, votre périmètre, le plan chiffré. Il est à vous, même si vous vous arrêtez là.",
+	},
+	{
+		day: "J+21",
+		title: "Mise en production",
+		pill: null,
+		text: "Une heure de formation pour vos collaborateurs. Le système tourne.",
+	},
+	{
+		day: "J+35",
+		title: "Fin de la marche à blanc",
+		pill: null,
+		text: "Deux semaines à blanc avant le premier envoi.",
+	},
+	{
+		day: "J+90",
+		title: "Second relevé",
+		pill: "le constat",
+		text: "Même équipe, même méthode qu'au cadrage. On compare les deux chiffres.",
+	},
+];
+
+// Les quatre objections qui reviennent avant le prix, traitées en cartes : ce qui ne
+// bouge pas dans le cabinet. Faute de pictogramme « bouclier », l'acte professionnel
+// reprend celui du document réglementaire.
+const REASSURANCES: { icon: IconName; title: string; text: string }[] = [
+	{
+		icon: "logiciel",
+		title: "Zéro migration",
+		text: "Vous gardez Cegid, MyUnisoft, Pennylane, ACD, Agiris, Silae. Le système se branche autour, en amont de la production.",
+	},
+	{
+		icon: "reforme",
+		title: "Aucun acte professionnel",
+		text: "Aucune écriture, aucune révision, aucun avis, aucune signature. Votre déontologie n'est jamais engagée par une machine.",
+	},
+	{
+		icon: "tableau",
+		title: "Vos données restent chez vous",
+		text: "Tout est déployé sur votre compte, à votre nom, en région Union européenne. Je n'héberge rien.",
+	},
+	{
+		icon: "equipe",
+		title: "Zéro dépendance",
+		text: "Documentation et vidéos de passation à la livraison. N'importe quel prestataire peut reprendre derrière moi.",
+	},
+];
+
+// Ce que coûte l'attente : en places, en calendrier, en mois de collecte à la main.
+const CADENCE = [
+	{
+		k: "3 places",
+		x: "Trois cabinets d'ici décembre, pour pouvoir m'occuper de chacun personnellement.",
+	},
+	{
+		k: "Avant le 1er décembre",
+		x: "Installé avant décembre, le système tourne pour la campagne. Après, c'est un an de retard.",
+	},
+	{
+		k: "Un mois perdu",
+		x: "Chaque mois d'attente est un mois de collecte fait à la main.",
+	},
+	{
+		k: "Septembre 2027",
+		x: "Vos clients passent à la facture électronique. La collecte d'abord, la migration ensuite.",
+	},
+];
 
 export default function Offres() {
 	useScrollReveal();
 	const [openFaq, setOpenFaq] = useState<number | null>(null);
 
 	return (
-		<>
-			<div className="s-bg-grid" />
-			<SiteNav />
+		<div className={s.page}>
+			<SiteNavV2 links={NAV_LINKS} ctaLocation="offre_nav" />
 
-			<main>
-			<section className="s-page-hero">
-				<div className="s-wrap">
-					<span className="s-eyebrow" style={{ justifyContent: "center" }}>Offres &amp; tarifs</span>
-					<h1>
-						Automatisez votre business. <span style={{ color: "var(--orange)" }}>Récupérez 1 jour par semaine.</span>
-					</h1>
-					<p>
-						Vous passez encore <strong>4h par semaine</strong> sur des tâches que vous pourriez ne plus jamais faire.
-					</p>
-					<p>
-						Relances, facturation, suivi client : on automatise ça en moins d&apos;une semaine.{" "}
-						<strong style={{ color: "var(--orange)" }}>ROI garanti sous 60 jours.</strong>
-					</p>
-					<div style={{ marginTop: 24 }}>
-						<Link
-							href="/rendez-vous"
-							className="s-btn s-btn-primary"
-							onClick={() => track("cta_reserver_appel", { location: "offres_hero" })}
-						>
-							Réserver mon appel découverte gratuit <span className="arr">→</span>
-						</Link>
-					</div>
-				</div>
-			</section>
-
-			<section className="s-blk" style={{ padding: "56px 0" }}>
-				<div className="s-wrap">
-					<div className="s-info-strip rv">
-						<div className="s-info-item">
-							<div className="s-cico"><Shield size={20} /></div>
-							<div>
-								<strong>100% indépendant</strong>
-								<span>Tous les workflows vous appartiennent</span>
-							</div>
-						</div>
-						<div className="s-info-item">
-							<div className="s-cico"><Wrench size={20} /></div>
-							<div>
-								<strong>Prérequis</strong>
-								<span>Compte n8n Cloud (~20 €/mois)</span>
-							</div>
-						</div>
-						<div className="s-info-item">
-							<div className="s-cico"><Zap size={20} /></div>
-							<div>
-								<strong>Intégrations</strong>
-								<span>Notion, Pennylane, Calendly, HubSpot</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section className="s-blk" id="offres" style={{ paddingTop: 0 }}>
-				<div className="s-wrap">
-					<div className="s-sec-head rv" style={{ margin: "0 auto 52px", textAlign: "center", maxWidth: "640px" }}>
-						<span className="s-eyebrow" style={{ justifyContent: "center" }}>Nos formules</span>
-						<h2>Choisissez l&apos;offre adaptée à vos besoins</h2>
-						<p>3 packs clairs + une option sur-mesure pour les projets spécifiques</p>
-					</div>
-
-					<div className="s-price-grid">
-						{/* Offre 1 - Zéro Relance */}
-						<div className="s-price-card rv rv-d1">
-							<div className="s-cico"><Sparkles size={20} /></div>
-							<h3>Zéro Relance Manuelle</h3>
-							<p className="s-price-desc">Pour les entreprises qui perdent du chiffre d&apos;affaires parce que personne ne relance systématiquement</p>
-							<div className="s-price-amount">
-								<span className="num">900</span>
-								<span className="unit">€</span>
-							</div>
-							<p className="s-price-note">Paiement unique</p>
-
-							<ul className="s-price-list">
-								<li><CheckCircle2 size={15} className="ck" /><span>Audit de votre flux actuel (45 min)</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>1 automatisation déployée au choix : relances devis, rappels RDV ou facturation récurrente</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Formation de votre équipe (1h)</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Support 30 jours inclus</span></li>
-								<li><Clock size={15} className="ck" /><span><strong>Livraison : 7 jours</strong> après l&apos;audit</span></li>
-							</ul>
-
-							<div className="s-price-sub">
-								<p className="s-price-punch">Ce processus tourne tout seul, sans intervention humaine, à vie.</p>
-								<Link
-									href="/rendez-vous"
-									className="s-btn s-btn-primary"
-									onClick={() => track("cta_reserver_appel", { location: "offres_pack_zero_relance" })}
-								>
-									Choisir cette offre <span className="arr">→</span>
-								</Link>
-							</div>
-						</div>
-
-						{/* Offre 2 - Pilote Automatique */}
-						<div className="s-price-card featured rv rv-d2">
-							<span className="s-price-ribbon">Populaire</span>
-							<div className="s-cico"><Rocket size={20} /></div>
-							<h3>Pilote Automatique</h3>
-							<p className="s-price-desc">Pour les entreprises qui veulent supprimer les 3 principales pertes de temps en une fois</p>
-							<div className="s-price-amount">
-								<span className="num">2 200</span>
-								<span className="unit">€</span>
-							</div>
-							<p className="s-price-note">Paiement unique</p>
-
-							<ul className="s-price-list">
-								<li><CheckCircle2 size={15} className="ck" /><span>Audit complet de vos processus (1h30)</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span><strong>3 automatisations</strong> au choix</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Intégration avec vos outils existants</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Formation équipe (2h)</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Support 60 jours inclus</span></li>
-								<li><Clock size={15} className="ck" /><span><strong>Livraison : 14 jours</strong> ouvrés</span></li>
-							</ul>
-							<p style={{ fontSize: 12.5, color: "var(--ink-soft)", marginBottom: 16 }}>
-								<strong style={{ color: "var(--ink)" }}>Option maintenance :</strong> surveillance, corrections, 1 ajustement/mois
+			<main className={s.main}>
+				{/* ══ HERO ══
+				    Le nom de l'offre en titre, la promesse en panneau teinté, le périmètre
+				    en dessous. Le premier bouton mène au diagnostic, pas à l'appel : on ne
+				    demande pas trente minutes à quelqu'un qui ne connaît pas encore son
+				    chiffre. */}
+				<header className={s.hero}>
+					<div className={s.wrap}>
+						<div className={s.heroIn}>
+							<p className={`${s.eyebrow} ${s.in}`}>L&apos;offre</p>
+							<h1 className={`${s.in} ${s.in1}`}>Zéro Pièce Manquante</h1>
+							<p className={`${s.mechanism} ${s.in} ${s.in2}`}>
+								Vos dossiers complets au 10 du mois, sans qu&apos;un collaborateur relance à la main.
 							</p>
-
-							<div className="s-price-sub">
-								<p className="s-price-punch">4 à 6h récupérées chaque semaine. Zéro lead perdu.</p>
-								<Link
-									href="/rendez-vous"
-									className="s-btn s-btn-primary"
-									onClick={() => track("cta_reserver_appel", { location: "offres_pack_pilote_auto" })}
-								>
-									Choisir cette offre <span className="arr">→</span>
-								</Link>
-							</div>
-						</div>
-
-						{/* Offre 3 - Transformation Complète */}
-						<div className="s-price-card premium rv rv-d3">
-							<div className="s-cico"><Zap size={20} /></div>
-							<h3>Transformation Complète</h3>
-							<p className="s-price-desc">Pour les entreprises qui veulent déléguer l&apos;ensemble de leur back-office opérationnel</p>
-							<div className="s-price-amount">
-								<span className="num">4 000</span>
-								<span className="unit">€</span>
-							</div>
-							<p className="s-price-note">+ 400 €/mois d&apos;accompagnement</p>
-
-							<ul className="s-price-list">
-								<li><CheckCircle2 size={15} className="ck" /><span><strong>5 automatisations clés</strong> complètes</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span><strong>Agents IA sur-mesure</strong></span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Intégrations avancées multi-outils</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>3 mois d&apos;accompagnement inclus</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Reporting mensuel des gains</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Support prioritaire</span></li>
-							</ul>
-
-							<div className="s-price-sub">
-								<p className="s-price-punch">Entreprise autonome sur les tâches répétitives. Mesuré à 90 jours.</p>
-								<Link
-									href="/rendez-vous"
-									className="s-btn s-btn-primary"
-									onClick={() => track("cta_reserver_appel", { location: "offres_pack_transformation" })}
-								>
-									Choisir cette offre <span className="arr">→</span>
-								</Link>
-							</div>
-						</div>
-
-						{/* Offre 4 - Personnalisée */}
-						<div className="s-price-card custom rv rv-d4">
-							<div className="s-cico"><MessageSquare size={20} /></div>
-							<h3>Offre Personnalisée</h3>
-							<p className="s-price-desc">Pour les projets spécifiques qui ne rentrent pas dans les cases</p>
-							<div className="s-price-amount">
-								<span className="num" style={{ fontSize: 24 }}>Sur devis</span>
-							</div>
-							<p className="s-price-note">Adapté à vos besoins</p>
-
-							<ul className="s-price-list">
-								<li><CheckCircle2 size={15} className="ck" /><span>Projets d&apos;automatisation complexes</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Intégrations API spécifiques</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Développement d&apos;agents IA sur-mesure</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Accompagnement long terme</span></li>
-								<li><CheckCircle2 size={15} className="ck" /><span>Formation approfondie des équipes</span></li>
-							</ul>
-
-							<div className="s-price-sub">
-								<p className="s-price-punch" style={{ color: "var(--ink-soft)" }}>On en discute ensemble pour construire la solution idéale.</p>
-								<Link
-									href="/rendez-vous"
-									className="s-btn s-btn-ghost"
-									onClick={() => track("cta_reserver_appel", { location: "offres_pack_personnalise" })}
-								>
-									Discutons de votre projet <span className="arr">→</span>
-								</Link>
-							</div>
-						</div>
-					</div>
-
-					<div className="s-guarantee rv" style={{ marginTop: 40 }}>
-						<div className="s-guarantee-icon"><ShieldCheck size={24} /></div>
-						<div>
-							<h3>Garantie remboursement intégral</h3>
-							<p>
-								Sur les 3 offres packagées ci-dessus : si l&apos;automatisation n&apos;est pas livrée dans le délai annoncé, ou si vous ne constatez aucun résultat mesurable après 60 jours d&apos;utilisation, vous êtes remboursé à 100%. Sans condition cachée.
+							<p className={`${s.sub} ${s.in} ${s.in2}`}>
+								Je relance vos clients, je récupère les pièces, je les classe. Vous gardez votre
+								logiciel.
 							</p>
-							<div className="s-guarantee-terms">
-								<span><CheckCircle2 size={15} className="ck" /> Délai de livraison non tenu → remboursé</span>
-								<span><CheckCircle2 size={15} className="ck" /> Zéro résultat mesurable sous 60 jours → remboursé</span>
+							<div className={`${s.heroCta} ${s.in} ${s.in3}`}>
+								<Link
+									href="/diagnostic"
+									className={`${s.btn} ${s.btnPrimary}`}
+									onClick={() => track("cta_diagnostic", { location: "offre_hero" })}
+								>
+									Commencer par le diagnostic <span className={s.arr}>→</span>
+								</Link>
+								<Link
+									href="/rendez-vous"
+									className={`${s.btn} ${s.btnGhost}`}
+									onClick={() => track("cta_reserver_appel", { location: "offre_hero" })}
+								>
+									Réserver 30 minutes
+								</Link>
 							</div>
-							<p className="s-guarantee-note">Offre Personnalisée (sur devis) : conditions définies ensemble selon le périmètre du projet.</p>
+							<p className={`${s.heroNote} ${s.in} ${s.in3}`}>
+								6 questions · 2 min · aucun email demandé pour voir le résultat
+							</p>
 						</div>
 					</div>
-				</div>
-			</section>
+				</header>
 
-			<section className="s-blk" style={{ paddingTop: 0 }}>
-				<div className="s-wrap">
-					<div className="s-sec-head rv" style={{ margin: "0 auto 40px", textAlign: "center", maxWidth: "640px" }}>
-						<span className="s-eyebrow" style={{ justifyContent: "center" }}>Questions fréquentes</span>
-						<h2>Avant de vous lancer</h2>
+				{/* ══ POURQUOI CETTE BRIQUE ══
+				    Avant le prix, justifier le périmètre : une offre étroite se défend, elle
+				    ne s'excuse pas. */}
+				<section className={`${s.block} ${s.blockAlt}`}>
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Le problème choisi</p>
+							<h2>Un seul irritant, précis et mensuel.</h2>
+							<p className={s.sub}>
+								La collecte des pièces est le seul point de friction à la fois universel, mensuel,
+								mesurable et bloquant pour tout le reste. Tant qu&apos;une pièce manque, le dossier
+								n&apos;avance pas, et le retard se propage jusqu&apos;à la campagne. C&apos;est aussi
+								la brique la moins dépendante de votre outil de production, donc la plus rapide à
+								installer.
+							</p>
+						</div>
 					</div>
+				</section>
 
-					<div className="s-faq-list rv" style={{ margin: "0 auto" }}>
-						{faqs.map((item, i) => {
-							const isOpen = openFaq === i;
-							return (
-								<div key={item.q} className={`s-faq-item${isOpen ? " open" : ""}`}>
-									<button
-										type="button"
-										className="s-faq-q-btn"
-										aria-expanded={isOpen}
-										onClick={() => setOpenFaq(isOpen ? null : i)}
-									>
-										<span className="s-faq-q-text"><span className="qm">Q.</span> {item.q}</span>
-										<ChevronDown className="s-faq-chevron" size={18} />
-									</button>
-									<div className="s-faq-panel">
-										<div className="s-faq-panel-inner">
-											<p className="s-faq-a">{item.a}</p>
-										</div>
+				<Bridge>Ça se vend en deux temps, et vous décidez entre les deux.</Bridge>
+
+				{/* ══ LE PRIX EN DEUX TEMPS ══
+				    Une seule carte porte les deux temps et ce qui est compris : séparer le
+				    prix de ce qu'il achète obligerait à remonter pour comparer. */}
+				<section className={s.block} id="prix">
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Prix</p>
+							<h2>Le cadrage d&apos;abord. L&apos;installation ensuite, si vous le décidez.</h2>
+						</div>
+
+						<div className={`${s.offer} rv rv-d1`}>
+							<div className={s.offerGrid}>
+								{PRIX.map((p) => (
+									<div key={p.k} className={s.offerCell}>
+										<span className={s.offerK}>{p.k}</span>
+										<span className={s.offerV}>{p.v}</span>
+										<span className={s.offerX}>{p.x}</span>
+									</div>
+								))}
+							</div>
+
+							<div className={s.included}>
+								<p className={s.includedNote}>
+									Pour situer : le budget complet reste une fraction du coût annuel chargé d&apos;un
+									collaborateur. Celui que vous cherchez depuis des mois.
+								</p>
+							</div>
+
+							<div className={s.included}>
+								<p className={s.includedLabel}>Compris, sans supplément</p>
+								<ul className={s.includedList}>
+									{INCLUS.map((v) => (
+										<li key={v}>{v}</li>
+									))}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<Bridge>Reste à savoir ce qui se passe si ça ne marche pas.</Bridge>
+
+				{/* ══ LES TROIS GARANTIES ══ */}
+				<section className={`${s.block} ${s.blockAlt}`} id="garanties">
+					<div className={s.wrap}>
+						<div className={`${s.band} rv`}>
+							<p className={s.eyebrow}>Le risque, renversé</p>
+							<h2>Ce projet peut mal tourner de trois façons.</h2>
+							<p>J&apos;ai prévu une réponse pour chacune, et elles sont dans le contrat.</p>
+							<div className={s.guarantees}>
+								{GARANTIES.map((g) => (
+									<div key={g.k} className={s.gtype}>
+										<span className={s.gtypeK}>{g.k}</span>
+										<span className={s.gtypeV}>{g.v}</span>
+										<span className={s.gtypeX}>{g.x}</span>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</section>
+
+				{/* ══ LE CALENDRIER ══ */}
+				<section className={s.block} id="calendrier">
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Le déroulement</p>
+							<h2>Sept jours pour le cadrage. Trois semaines pour installer.</h2>
+						</div>
+
+						<div className={`${s.steps} rv rv-d1`}>
+							{STEPS.map((st) => (
+								<div key={st.day} className={s.step}>
+									<span className={s.stepDay}>{st.day}</span>
+									<div className={s.stepBody}>
+										<span className={s.stepTitle}>
+											{st.title}
+											{st.pill ? <span className={s.pill}>{st.pill}</span> : null}
+										</span>
+										<span className={s.stepText}>{st.text}</span>
 									</div>
 								</div>
-							);
-						})}
+							))}
+						</div>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<section className="s-blk" style={{ paddingTop: 0 }}>
-				<div className="s-wrap">
-					<div className="s-band rv">
-						<h2>Pas sûr du bon pack ?</h2>
-						<p>
-							L&apos;appel découverte est <strong style={{ color: "#fff" }}>gratuit, 30 minutes, sans engagement</strong>. On identifie ensemble ce qui vous fait perdre le plus de temps et je vous dis lequel des trois packs correspond exactement à votre situation.
-						</p>
-						<Link
-							href="/rendez-vous"
-							className="s-btn s-btn-primary"
-							onClick={() => track("cta_reserver_appel", { location: "offres_band" })}
-						>
-							Réserver mon appel découverte gratuit <span className="arr">→</span>
-						</Link>
+				{/* ══ QUATRE RÉASSURANCES ══
+				    Les quatre « et si » qui bloquent une signature, traités avant qu'ils
+				    n'arrivent en FAQ. */}
+				<section className={`${s.block} ${s.blockAlt}`}>
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Ce qui ne bouge pas</p>
+							<h2>Votre métier, vos outils, vos données.</h2>
+						</div>
+
+						<div className={`${s.opps} rv rv-d1`}>
+							{REASSURANCES.map((r) => (
+								<div key={r.title} className={s.opp}>
+									<Icon name={r.icon} />
+									<span className={s.oppTitle}>{r.title}</span>
+									<p className={s.oppText}>{r.text}</p>
+								</div>
+							))}
+						</div>
 					</div>
-				</div>
-			</section>
+				</section>
+
+				{/* ══ POURQUOI MAINTENANT ══ */}
+				<section className={s.block}>
+					<div className={s.wrap}>
+						<div className={`${s.whyNow} rv`}>
+							<p className={s.eyebrow}>Cadence</p>
+							<h3 className={s.whyNowTitle}>Attendre coûte plus cher que décider.</h3>
+							<div className={s.whyNowGrid}>
+								{CADENCE.map((c) => (
+									<div key={c.k} className={s.whyNowCell}>
+										<span className={s.whyNowK}>{c.k}</span>
+										<span className={s.whyNowX}>{c.x}</span>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</section>
+
+				{/* ══ FAQ ══
+				    Dépliable, une seule ouverte à la fois : la page reste lisible et la
+				    question suivante reste à portée d'œil. */}
+				<section className={`${s.block} ${s.blockAlt}`} id="faq">
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Questions fréquentes</p>
+							<h2>Ce qu&apos;on me demande à chaque appel.</h2>
+						</div>
+
+						<div className={`${s.faq} rv rv-d1`}>
+							{faqs.map((item, i) => {
+								const isOpen = openFaq === i;
+								return (
+									<div key={item.q} className={`${s.faqItem}${isOpen ? ` ${s.faqOpen}` : ""}`}>
+										<button
+											type="button"
+											className={s.faqQ}
+											aria-expanded={isOpen}
+											onClick={() => setOpenFaq(isOpen ? null : i)}
+										>
+											<span>{item.q}</span>
+											<span className={s.faqSign} aria-hidden="true" />
+										</button>
+										<div className={s.faqPanel}>
+											<div className={s.faqPanelIn}>
+												<p className={s.faqA}>{item.a}</p>
+											</div>
+										</div>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				</section>
+
+				{/* ══ CTA FINAL ══ */}
+				<section className={s.block}>
+					<div className={s.wrap}>
+						<div className={`${s.secHead} rv`}>
+							<p className={`${s.eyebrow} ${s.eyebrowQuiet}`}>Par où commencer</p>
+							<h2>Le diagnostic d&apos;abord. Il est gratuit et il dure deux minutes.</h2>
+							<p className={s.sub}>
+								Vous saurez combien d&apos;heures votre cabinet perd sur ces tâches avant même
+								qu&apos;on se parle.
+							</p>
+						</div>
+						<div className={`${s.heroCta} rv rv-d1`}>
+							<Link
+								href="/diagnostic"
+								className={`${s.btn} ${s.btnPrimary}`}
+								onClick={() => track("cta_diagnostic", { location: "offre_bas_de_page" })}
+							>
+								Lancer le diagnostic <span className={s.arr}>→</span>
+							</Link>
+							<Link
+								href="/rendez-vous"
+								className={`${s.btn} ${s.btnGhost}`}
+								onClick={() => track("cta_reserver_appel", { location: "offre_bas_de_page" })}
+							>
+								Réserver 30 minutes
+							</Link>
+						</div>
+					</div>
+				</section>
 			</main>
 
 			<SiteFooter />
-		</>
+		</div>
 	);
 }

@@ -23,8 +23,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://www.mysynapsis.fr";
-const defaultTitle = "Synapsis · Systèmes d'automatisation sur-mesure";
-const defaultDescription = "Je construis les systèmes qui font tourner votre business sans vous : prospection, relances, devis, reporting automatisés avec n8n, API et agents IA.";
+const defaultTitle = "Synapsis · Automatisation pour cabinets d'expertise comptable";
+const defaultDescription = "J'installe dans les cabinets d'expertise comptable des systèmes qui reprennent tout ce qui entoure la comptabilité : collecte des pièces, relances clients, classement, rappels d'échéance. Sans toucher à votre outil de production.";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -67,7 +67,7 @@ const professionalServiceLd = {
 		addressCountry: "FR",
 	},
 	areaServed: "FR",
-	priceRange: "900€–4000€",
+	priceRange: "600 EUR a 4500 EUR",
 	founder: {
 		"@type": "Person",
 		name: "Frédéric Mallet",

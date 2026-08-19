@@ -14,7 +14,7 @@ export async function submitDiagnostic(input: LeadInput): Promise<SubmitResult> 
 
 	if (!prenom || !nom) return { ok: false, error: "Il manque votre nom ou votre prénom." };
 	if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return { ok: false, error: "Cette adresse email ne semble pas valide." };
-	if (telephone.replace(/\D/g, "").length < 9) return { ok: false, error: "Ce numéro de téléphone ne semble pas valide." };
+	if (telephone && telephone.replace(/\D/g, "").length < 9) return { ok: false, error: "Ce numéro de téléphone ne semble pas valide." };
 	if (!OBJECTIFS.includes(input.objectif as Objectif)) return { ok: false, error: "Réponse manquante à la dernière question." };
 
 	const num = (v: unknown, max: number) => {

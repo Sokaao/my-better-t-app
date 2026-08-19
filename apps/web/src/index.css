@@ -3429,3 +3429,14 @@ svg.s-wires path.s-wire.s-flowing {
   color: var(--faint);
   line-height: 1.6;
 }
+
+/* Le quiz a des écrans courts : sans cette colonne, le pied de page remonte au
+   milieu de l'écran. Le main occupe l'espace restant et repousse le footer. */
+.dg-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+.dg-page > main {
+  flex: 1;
+}

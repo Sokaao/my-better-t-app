@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Synapsis · Systèmes d'automatisation sur-mesure";
+export const alt = "Synapsis · Automatisation pour cabinets d'expertise comptable";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -49,7 +49,7 @@ export default function OpengraphImage() {
 						maxWidth: 920,
 					}}
 				>
-					Je construis les systèmes qui font tourner votre business sans vous.
+					Synapsis · Automatisation pour cabinets d&apos;expertise comptable
 				</div>
 
 				<div
@@ -62,13 +62,7 @@ export default function OpengraphImage() {
 						color: "#5c5347",
 					}}
 				>
-					<span>n8n</span>
-					<span style={{ color: "#e8500f" }}>·</span>
-					<span>API</span>
-					<span style={{ color: "#e8500f" }}>·</span>
-					<span>Agents IA</span>
-					<span style={{ color: "#e8500f" }}>·</span>
-					<span>ROI chiffré sous 60 jours</span>
+					<span>Vos dossiers complets au 10 du mois</span>
 				</div>
 			</div>
 		),

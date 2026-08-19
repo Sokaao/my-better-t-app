@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
 import { faqs } from "./faqs";
 
+const DESCRIPTION =
+	"Vos dossiers complets au 10 du mois, sans qu'un collaborateur relance à la main. Cadrage 600 €, installation à partir de 4 500 €, remboursé si le temps de relance ne baisse pas.";
+
 export const metadata: Metadata = {
-	title: "Offres & Tarifs · Automatisation dès 900€",
-	description: "3 offres packagées pour automatiser vos relances, devis et facturation avec n8n, dès 900€ en paiement unique. Garantie remboursement intégral.",
+	title: "L'offre · Zéro Pièce Manquante",
+	description: DESCRIPTION,
 	alternates: {
 		canonical: "/offres",
 	},
 	openGraph: {
-		title: "Offres & Tarifs · Automatisation dès 900€ | Synapsis",
-		description: "3 offres packagées pour automatiser vos relances, devis et facturation avec n8n, dès 900€ en paiement unique. Garantie remboursement intégral.",
+		title: "L'offre · Zéro Pièce Manquante | Synapsis",
+		description: DESCRIPTION,
 		url: "/offres",
 	},
 };
 
+// Les dix questions de la page, republiées en FAQPage : ce sont les mêmes objets que
+// ceux affichés, donc l'un ne peut pas dériver de l'autre.
 const faqPageLd = {
 	"@context": "https://schema.org",
 	"@type": "FAQPage",
@@ -27,10 +32,14 @@ const faqPageLd = {
 	})),
 };
 
-const servicesLd = {
+// L'offre se vend en deux temps : le cadrage à prix fixe, puis l'installation
+// chiffrée dans le plan du cadrage. Les données structurées disent exactement ça.
+const serviceLd = {
 	"@context": "https://schema.org",
 	"@type": "Service",
-	serviceType: "Automatisation de processus métier (n8n, API, agents IA)",
+	name: "Zéro Pièce Manquante",
+	serviceType:
+		"Collecte et relance automatisées des pièces comptables pour cabinets d'expertise comptable",
 	provider: {
 		"@type": "ProfessionalService",
 		name: "Synapsis",
@@ -39,30 +48,28 @@ const servicesLd = {
 	areaServed: "FR",
 	hasOfferCatalog: {
 		"@type": "OfferCatalog",
-		name: "Offres Synapsis",
+		name: "Zéro Pièce Manquante",
 		itemListElement: [
 			{
 				"@type": "Offer",
-				name: "Zéro Relance Manuelle",
-				price: "900",
+				name: "Le cadrage",
+				price: "600",
 				priceCurrency: "EUR",
-				description: "Une automatisation déployée au choix (relances devis, rappels RDV ou facturation récurrente), livrée en 7 jours.",
+				description:
+					"Relevé d'une semaine, analyse, périmètre technique et plan chiffré, livrés en sept jours. Facturé à la livraison, déduit du projet si vous continuez.",
 				url: "https://www.mysynapsis.fr/offres",
 			},
 			{
 				"@type": "Offer",
-				name: "Pilote Automatique",
-				price: "2200",
+				name: "L'installation",
 				priceCurrency: "EUR",
-				description: "3 automatisations au choix intégrées à vos outils existants, livrées en 14 jours ouvrés.",
-				url: "https://www.mysynapsis.fr/offres",
-			},
-			{
-				"@type": "Offer",
-				name: "Transformation Complète",
-				price: "4000",
-				priceCurrency: "EUR",
-				description: "5 automatisations clés, agents IA sur-mesure et 3 mois d'accompagnement inclus.",
+				priceSpecification: {
+					"@type": "PriceSpecification",
+					minPrice: "4500",
+					priceCurrency: "EUR",
+				},
+				description:
+					"Système de collecte et de relance installé sur votre compte, marche à blanc de deux semaines et garantie de résultat mesurée à J+90.",
 				url: "https://www.mysynapsis.fr/offres",
 			},
 		],
@@ -78,7 +85,7 @@ export default function OffresLayout({ children }: { children: React.ReactNode }
 			/>
 			<script
 				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesLd) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }}
 			/>
 			{children}
 		</>
