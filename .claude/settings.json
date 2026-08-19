@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f _css.txt _tail.txt)",
+      "Bash(node -e ' *)",
+      "Bash(node --input-type=module -e ' *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"tsc exit=$?\")",
+      "Bash(sed -n '/01 · Le problème/,/Bridge/p' src/app/v2/page.tsx)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:www.vccimpact.fr)"
+    ]
+  }
+}
