@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Mallet;Frédéric;;;
+FN:Frédéric Mallet
+ORG:Synapsis
+TITLE:Fondateur · Du temps rendu aux PME
+TEL;TYPE=CELL:+33754083258
+EMAIL;TYPE=WORK:contact@mysynapsis.fr
+URL:https://mysynapsis.fr
+X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/mysynapsis
+X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/synaps_is/
+END:VCARD

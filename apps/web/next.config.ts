@@ -23,6 +23,26 @@ const nextConfig: NextConfig = {
 			},
 		];
 	},
+
+	// Carte de contact : page HTML statique servie depuis public/carte.
+	async rewrites() {
+		return [
+			{
+				source: "/carte",
+				destination: "/carte/index.html",
+			},
+		];
+	},
+
+	// Sans ce Content-Type, l'iPhone affiche le .vcf en texte au lieu d'ouvrir la fiche contact.
+	async headers() {
+		return [
+			{
+				source: "/carte/:path*.vcf",
+				headers: [{ key: "Content-Type", value: "text/vcard; charset=utf-8" }],
+			},
+		];
+	},
 };
 
 export default nextConfig;

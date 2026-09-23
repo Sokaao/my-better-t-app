@@ -1,0 +1,2 @@
+# vCard : CRLF exige par la RFC 2426, ne pas normaliser
+*.vcf -text
