@@ -584,6 +584,12 @@
 	align-items: center;
 }
 
+/* Quand la colonne de texte est bien plus courte que le panneau, les deux partent
+   du même haut : centrée, elle flotterait à mi-hauteur. */
+.heroGridTop {
+	align-items: start;
+}
+
 @media (max-width: 62rem) {
 	.heroGrid {
 		grid-template-columns: 1fr;
@@ -918,6 +924,13 @@
 	background: var(--orange);
 }
 
+/* Étape à venir : ni faite, ni en attente du client. Un anneau vide, pas une
+   pastille pâle : il se lit dans les deux thèmes sans passer pour désactivé. */
+.dotIdle {
+	background: transparent;
+	box-shadow: inset 0 0 0 1.5px var(--ink-soft);
+}
+
 .rowName {
 	font-size: 0.875rem;
 	color: var(--ink);
@@ -934,7 +947,8 @@
 }
 
 .tagOk,
-.tagWait {
+.tagWait,
+.tagIdle {
 	font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
 	font-size: 0.625rem;
 	letter-spacing: 0.08em;
@@ -952,6 +966,11 @@
 .tagWait {
 	color: var(--orange-text);
 	background: var(--orange-soft);
+}
+
+.tagIdle {
+	color: var(--ink-soft);
+	background: var(--surface-2);
 }
 
 .panelFoot {
@@ -2287,15 +2306,27 @@
 		padding: 1.75rem;
 	}
 
+	/* Photo à gauche, nom et rôle empilés à droite : en simple rangée flex, le rôle
+	   partait dans une troisième colonne. */
 	.founderAside {
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: 7rem minmax(0, 1fr);
+		column-gap: 1.125rem;
+		row-gap: 0.9rem;
 		align-items: center;
-		gap: 1.125rem;
 	}
 
 	.founderPhoto {
 		width: 7rem;
-		flex-shrink: 0;
+		grid-row: span 2;
+	}
+
+	.founderName {
+		align-self: end;
+	}
+
+	.founderRole {
+		align-self: start;
 	}
 }
 

@@ -17,12 +17,15 @@ const DEFAULT_LINKS: NavLink[] = [
 
 // Navigation des pages nichées : la marque, les ancres, le bouton diagnostic.
 // `ctaLocation` nomme l'événement analytics du bouton, propre à chaque page.
+// `cta={false}` retire le bouton, pour les pages où le visiteur est déjà client.
 export default function SiteNavV2({
 	links = DEFAULT_LINKS,
 	ctaLocation = "home_nav",
+	cta = true,
 }: {
 	links?: NavLink[];
 	ctaLocation?: string;
+	cta?: boolean;
 }) {
 	return (
 		<nav className={s.nav}>
@@ -40,13 +43,15 @@ export default function SiteNavV2({
 							{l.label}
 						</a>
 					))}
-					<Link
-						href="/diagnostic"
-						className={`${s.btn} ${s.btnPrimary}`}
-						onClick={() => track("cta_diagnostic", { location: ctaLocation })}
-					>
-						Faire le diagnostic <span className={s.arr}>→</span>
-					</Link>
+					{cta && (
+						<Link
+							href="/diagnostic"
+							className={`${s.btn} ${s.btnPrimary}`}
+							onClick={() => track("cta_diagnostic", { location: ctaLocation })}
+						>
+							Faire le diagnostic <span className={s.arr}>→</span>
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>
