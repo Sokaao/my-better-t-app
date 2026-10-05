@@ -22,11 +22,13 @@ const CADRAGE_URL = "https://cal.com/synapsis/cadrage";
 
 // Le panneau du hero : l'état du projet au moment où le client arrive. Une seule
 // ligne est faite, la signature ; les autres disent ce qui vient, dans l'ordre.
+// La facture d'acompte part automatiquement à la signature (n8n), et le projet ne
+// démarre qu'à sa réception : c'est l'action que toute la page pousse.
 const ETAT: { name: string; sub: string; state: "ok" | "wait" | "idle"; tag: string }[] = [
 	{ name: "Devis signé", sub: "Reçu à l'instant", state: "ok", tag: "Fait" },
-	{ name: "Facture d'acompte", sub: "Par email, dans les prochaines heures", state: "wait", tag: "En cours" },
+	{ name: "Acompte de 30 %", sub: "Facture et lien de paiement par email", state: "wait", tag: "À régler" },
 	{ name: "Réunion de cadrage", sub: "45 minutes, dans la semaine", state: "wait", tag: "À réserver" },
-	{ name: "Construction", sub: "Suivie dans votre espace client", state: "idle", tag: "Ensuite" },
+	{ name: "Construction", sub: "Démarre à réception de l'acompte", state: "idle", tag: "Ensuite" },
 ];
 
 // Une étape franchie sur quatre. Le cercle du socle est réglé sur 92 % : on ne
@@ -39,20 +41,20 @@ const RING_OFFSET = 160.2;
 const SUITE: { n: string; title: string; lead: string; when: string }[] = [
 	{
 		n: "01",
-		title: "Votre facture d'acompte",
-		lead: "Vous la recevez par email : 30 % du montant, avec les prochaines étapes de votre projet.",
-		when: "Dans les prochaines heures",
+		title: "Réglez votre acompte",
+		lead: "Votre facture d'acompte (30 % du montant) arrive par email dans les minutes qui suivent, avec le lien de paiement et les prochaines étapes de votre projet.",
+		when: "Maintenant",
 	},
 	{
 		n: "02",
 		title: "La réunion de cadrage",
-		lead: "45 minutes pour valider ensemble le fonctionnement attendu. Vous retrouverez aussi le lien dans l'email de la facture d'acompte.",
+		lead: "45 minutes pour valider ensemble le fonctionnement attendu. Le lien de réservation est aussi dans l'email.",
 		when: "Dans la semaine",
 	},
 	{
 		n: "03",
 		title: "La construction",
-		lead: "Je construis votre solution, et vous suivez son avancement dans votre espace client.",
+		lead: "Elle démarre à réception de l'acompte. Je construis votre solution, et vous suivez son avancement dans votre espace client.",
 		when: "Ensuite",
 	},
 ];
@@ -69,7 +71,7 @@ export default function MerciSignature() {
 						<div className={s.heroTop}>
 							<p className={`${s.eyebrow} ${s.in}`}>Devis signé</p>
 							<h1 className={`${s.in} ${s.in1}`}>
-								Votre signature a bien été{" "}
+								Merci, votre signature a bien été{" "}
 								<span className={s.hl}>
 									reçue
 									<svg viewBox="0 0 320 12" preserveAspectRatio="none" aria-hidden="true">
@@ -83,10 +85,15 @@ export default function MerciSignature() {
 						<div className={`${s.heroGrid} ${s.heroGridTop}`}>
 							<div className={s.heroIn}>
 								<div className={`${s.mechanism} ${s.in} ${s.in2}`}>
-									<p className={s.mechanismLead}>Merci pour votre confiance.</p>
+									<p className={s.mechanismLead}>Dernière étape : votre acompte.</p>
+									<ul className={s.mechanismList}>
+										<li>votre facture d&apos;acompte (30 % du montant) arrive par email dans les minutes qui suivent</li>
+										<li>elle contient le lien de paiement</li>
+										<li>votre projet démarre dès sa réception</li>
+									</ul>
+									<p className={s.mechanismEnd}>Vérifiez votre boîte mail dès maintenant.</p>
 									<p className={s.mechanismEndSoft}>
-										Votre projet est lancé. La suite arrive par email. De votre côté, il reste à
-										réserver la réunion de cadrage.
+										Rien reçu d&apos;ici quelques minutes ? Regardez dans vos courriers indésirables.
 									</p>
 								</div>
 
@@ -95,14 +102,14 @@ export default function MerciSignature() {
 										href={CADRAGE_URL}
 										target="_blank"
 										rel="noopener noreferrer"
-										aria-label="Réserver mon créneau de cadrage (nouvel onglet)"
-										className={`${s.btn} ${s.btnPrimary}`}
+										aria-label="Réserver la réunion de cadrage (nouvel onglet)"
+										className={`${s.btn} ${s.btnGhost}`}
 									>
-										Réserver mon créneau <span className={s.arr} aria-hidden="true">→</span>
+										Réserver la réunion de cadrage <span className={s.arr} aria-hidden="true">→</span>
 									</a>
 								</div>
 								<p className={`${s.heroNote} ${s.in} ${s.in3}`}>
-									45 minutes · <b>le lien sera aussi dans l&apos;email de votre facture d&apos;acompte</b>
+									45 minutes, dans la semaine · <b>le lien est aussi dans l&apos;email</b>
 								</p>
 							</div>
 
@@ -130,7 +137,7 @@ export default function MerciSignature() {
 										<span className={s.gaugeSmall}>
 											Signature reçue.
 											<br />
-											Prochaine étape : votre facture d&apos;acompte.
+											Prochaine étape : régler votre acompte.
 										</span>
 									</div>
 								</div>
@@ -210,8 +217,8 @@ export default function MerciSignature() {
 
 							<div className={s.founderBody}>
 								<p className={s.founderLead}>
-									Une question sur votre devis, l&apos;acompte ou la suite du projet ? Appelez-moi ou
-									écrivez-moi, c&apos;est moi qui vous réponds.
+									Pas reçu votre facture, une question sur le paiement ou la suite du projet ?
+									Appelez-moi ou écrivez-moi, c&apos;est moi qui vous réponds.
 								</p>
 
 								<div className={s.heroCta}>
