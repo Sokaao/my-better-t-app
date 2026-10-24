@@ -1,0 +1,27 @@
+{
+	"name": "setter",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --port=3002",
+		"build": "next build",
+		"start": "next start"
+	},
+	"dependencies": {
+		"@synapsis/brand": "*",
+		"@vercel/analytics": "^2.0.1",
+		"babel-plugin-react-compiler": "^1.0.0",
+		"lucide-react": "^0.546.0",
+		"next": "^16.0.7",
+		"react": "19.1.2",
+		"react-dom": "19.1.2"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4.1.10",
+		"@types/node": "^20",
+		"@types/react": "19.2.2",
+		"@types/react-dom": "19.2.2",
+		"tailwindcss": "^4.1.10",
+		"typescript": "^5"
+	}
+}

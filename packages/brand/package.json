@@ -1,0 +1,12 @@
+{
+	"name": "@synapsis/brand",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Design system Synapsis (theme creme / orange) partage entre les apps du monorepo.",
+	"exports": {
+		"./synapsis.css": "./synapsis.css"
+	},
+	"files": [
+		"synapsis.css"
+	]
+}

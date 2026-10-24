@@ -8,7 +8,9 @@
       "Bash(echo \"tsc exit=$?\")",
       "Bash(sed -n '/01 · Le problème/,/Bridge/p' src/app/v2/page.tsx)",
       "WebFetch(domain:www.anthropic.com)",
-      "WebFetch(domain:www.vccimpact.fr)"
+      "WebFetch(domain:www.vccimpact.fr)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "ClaudeInChromeDomain(localhost:3001)"
     ]
   }
 }
