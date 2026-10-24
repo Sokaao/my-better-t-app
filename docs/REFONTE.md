@@ -25,7 +25,8 @@ Ce document fait foi : toute décision qui le contredit doit d'abord y être rep
 ## 3. Style
 
 - **Ne pas reprendre l'ancienne charte** (crème / orange).
-- Mécanique inspirée de la construction de slayte.io : fond très sombre, titres en deux temps, chaque argument prouvé par une fausse interface produit remplie de données crédibles, personnages récurrents qui traversent la page, une mascotte, un seul CTA répété.
+- **Mise à jour du 24/10 (§ 11)** : le « fond très sombre » est abandonné. slayte.io est sur fond blanc ; on reprend son style visuel, pas seulement sa mécanique.
+- Mécanique inspirée de la construction de slayte.io : titres en deux temps, chaque argument prouvé par une fausse interface produit remplie de données crédibles, personnages récurrents qui traversent la page, une mascotte, un seul CTA répété.
 - On reprend **la mécanique, pas leurs visuels, leurs textes ni leurs personnages**. Aucun prénom repris de leur site (Karim, Inès, Yanis, Léa, Hugo, Nora, Thomas, Jade, Félix, Dana, Maya, Noah, Camille, Emma, Julie, Sami…).
 
 ### Mascotte
@@ -135,3 +136,27 @@ Changements par rapport à la première proposition : l'ancienne section 2 (« O
 - Ordre retenu : le site, puis le script, puis la vidéo.
 - Un premier essai de boucle animée existe hors du repo (`Desktop/Projets/site_web_synapsis_[10.26]/videos/synapsis-hero-loop`), construit sur l'ancienne charte. Il est mis de côté.
 - Sur ce PC, les outils qui pilotent un Chrome sans fenêtre (HyperFrames snapshot/render, Playwright) se sont bloqués : à éviter ou à lancer un par un, sous surveillance.
+
+## 11. Direction visuelle validée le 24/10/2026 (via la session Pilotage)
+
+Le premier aperçu (fond sombre, hero en deux colonnes) a été rejeté : il ne reprenait que la mécanique de contenu de slayte.io, pas son style. Leur CSS et leur HTML ont ensuite été relevés (sans navigateur) ; les choix de Fred :
+
+- **a) Fonds** : blanc, sections alternées `#F7F8FC`, et **une seule** section sombre `#0E0E10`, celle de la mascotte (comme leur section « Félix »).
+- **b) Polices** : proches d'Outfit (titres) et de Plus Jakarta Sans (texte), **mais pas les mêmes**. Deux paires proposées, choix en attente.
+- **c) Texte** : `#0E0E10` (19:1 sur blanc).
+- **d) Boutons** : l'orange `#E8500F` pour le bouton principal « Faire mon diagnostic » (pilule de l'en-tête et appels dans la page), texte `#0E0E10` dessus (5,1:1 ; le blanc ne passe pas, 3,8:1). Boutons secondaires quasi-noirs, rayon 12 px, 48 px de haut. L'orange n'est **jamais** utilisé comme couleur de texte sur blanc (3,8:1) ; pour du texte orange, `#C23F08` (5,2:1).
+- **e) Hero** : centré, texte seul. La scène de Claire et de ses cinq outils descend en section 2.
+- **f) Sections** : sur-titre, titre en deux temps, paragraphe, puis grande fausse interface en HTML.
+- **g) Ordre** : celui du § 5, avec la scène des cinq outils insérée en section 2.
+
+### Animations (grammaire de slayte.io)
+
+Fausses interfaces vivantes qui se remplissent en entrant à l'écran ; titres révélés mot par mot (~0,3 s) ; passage du flou au net ; soulignement qui se trace ; entrées qui glissent de 16 px ; dévoilements en clip-path ; jauges, barres et cercles de progression qui se remplissent ; coches qui apparaissent ; bandeau qui défile en continu (pause au survol) ; effets liés au défilement. Sobres et rapides. Tout est coupé sous `prefers-reduced-motion`.
+
+### Cible et ton
+
+TPE/PME de 5 à 20 salariés. Douleurs : tout tourne sur Excel ; le dirigeant et ses salariés perdent du temps ; les relances sont oubliées ; des clients oubliés ou mal suivis se plaignent ; rien n'est centralisé ; une organisation bancale qui empêche de grandir. Vouvoiement, concret, on appuie sur la douleur avant de montrer la solution.
+
+### Méthode
+
+Plan des sections et paires de polices validés par Fred avant tout code ; aperçu en artefact, puis Vercel ; rien n'est poussé avant validation. Les tokens sombres et le premier hero (commit local `0d1afb2` et fichiers non commités) sont à remplacer.
