@@ -122,7 +122,15 @@ Changements par rapport à la première proposition : l'ancienne section 2 (« O
 4. Nouveau diagnostic (bloquant pour la mise en production).
 5. `/rendez-vous`, rebranchement de `/merci-signature`, suppressions et redirections.
 
-## 9. Vidéo du hero
+## 9. Décisions du 24/10/2026 (relayées depuis le téléphone)
+
+- **Couleur d'accent** : on garde l'orange actuel de Synapsis, `#E8500F`, pour le moment. Sur fond sombre, le texte d'un bouton orange est sombre (le blanc sur cet orange ne passe pas le contraste AA en taille normale).
+- **Nom de la mascotte** : pas prioritaire, laissé de côté. Le titre de la section 5 garde le marqueur `[Mascotte]`.
+- **Faille /admin** : traitée une fois le nouveau site terminé. Consigne : couper l'accès seulement si la gravité le justifie. Évaluation du 24/10 : le cookie `admin_session` contient le mot de passe lui-même (httpOnly, secure, 30 jours) et le formulaire ne limite pas les essais. Risque réel modéré : il faut voler un cookie httpOnly ou deviner le mot de passe, et la solidité de `ADMIN_PASSWORD` est le seul vrai rempart. **Accès non coupé** : le couper casserait la gestion des clients et l'onboarding sans menace avérée. À vérifier par Fred : `ADMIN_PASSWORD` long et aléatoire (20 caractères ou plus).
+- **DECOUVERTE.md** : ne pas le commiter tant que le dépôt GitHub est public.
+- **Page 404 personnalisée** : oui, dans le nouveau style.
+
+## 10. Vidéo du hero
 
 - Ordre retenu : le site, puis le script, puis la vidéo.
 - Un premier essai de boucle animée existe hors du repo (`Desktop/Projets/site_web_synapsis_[10.26]/videos/synapsis-hero-loop`), construit sur l'ancienne charte. Il est mis de côté.

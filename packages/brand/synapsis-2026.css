@@ -1,0 +1,105 @@
+/*
+  Synapsis 2026 : tokens de la refonte de mysynapsis.fr (branche refonte).
+  Fond très sombre, accent orange Synapsis (#E8500F, gardé pour le moment).
+
+  Ce fichier ne contient QUE des custom properties : aucune règle sur des
+  éléments, aucune classe. L'ancien synapsis.css reste en place pour apps/setter.
+
+  Polices : les variables --s26-font-* pointent vers celles que next/font
+  expose dans apps/web (--font-display, --font-body, --font-mono), avec des
+  repli système si elles ne sont pas chargées.
+*/
+
+:root {
+	color-scheme: dark;
+
+	/* Fonds, du plus profond au plus proche */
+	--s26-bg: #0f0e0d;
+	--s26-bg-raised: #161412;
+	--s26-surface: #1d1b18;
+	--s26-surface-2: #26231f;
+	--s26-surface-3: #302c27;
+
+	/* Filets */
+	--s26-line: #2f2b27;
+	--s26-line-strong: #46413a;
+
+	/* Texte (contraste mesuré sur --s26-bg) */
+	--s26-text: #f3efe9; /* ~17:1 */
+	--s26-text-muted: #a8a197; /* ~7:1 */
+	--s26-text-faint: #8a8379; /* ~5:1 sur bg, ~4.2:1 sur surface-2 : jamais sur surface-2 ou surface-3 pour du texte courant */
+
+	/* Accent : l'orange Synapsis */
+	--s26-accent: #e8500f;
+	--s26-accent-hover: #ff6a2b;
+	--s26-accent-pressed: #c23f08;
+	--s26-accent-ink: #140a04; /* texte posé sur l'orange : ~5:1. Le blanc ne passe pas AA. */
+	--s26-accent-text: #ff7a3d; /* orange utilisé comme couleur de texte sur fond sombre : ~7:1 */
+	--s26-accent-soft: rgb(232 80 15 / 0.14);
+	--s26-accent-line: rgb(232 80 15 / 0.38);
+	--s26-focus: #ff8a52;
+
+	/* États dans les fausses interfaces (distincts de l'accent) */
+	--s26-ok: #4cc38a;
+	--s26-ok-soft: rgb(76 195 138 / 0.14);
+	--s26-warn: #e9b949;
+	--s26-warn-soft: rgb(233 185 73 / 0.14);
+	--s26-alert: #f2646a;
+	--s26-alert-soft: rgb(242 100 106 / 0.14);
+	--s26-info: #7fb2f0;
+	--s26-info-soft: rgb(127 178 240 / 0.14);
+
+	/* Polices */
+	--s26-font-display: var(--font-display, "Schibsted Grotesk"), "Arial Narrow", system-ui, sans-serif;
+	--s26-font-body: var(--font-body, "Geist"), system-ui, -apple-system, "Segoe UI", sans-serif;
+	--s26-font-mono: var(--font-mono, "Geist Mono"), ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+	/* Échelle typographique (fluide entre 390 px et 1440 px de large) */
+	--s26-text-2xs: 0.75rem; /* 12 : étiquettes des fausses interfaces */
+	--s26-text-xs: 0.8125rem; /* 13 */
+	--s26-text-sm: 0.9375rem; /* 15 */
+	--s26-text-md: 1.0625rem; /* 17 : texte courant */
+	--s26-text-lg: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem); /* 19 → 22 */
+	--s26-text-xl: clamp(1.5rem, 1.3rem + 0.9vw, 2rem); /* 24 → 32 */
+	--s26-text-2xl: clamp(2rem, 1.55rem + 2vw, 3.25rem); /* 32 → 52 : titres de section */
+	--s26-text-3xl: clamp(2.5rem, 1.8rem + 3.2vw, 4.5rem); /* 40 → 72 : hero */
+
+	--s26-leading-tight: 1.05;
+	--s26-leading-snug: 1.25;
+	--s26-leading-body: 1.6;
+	--s26-tracking-display: -0.025em;
+	--s26-tracking-label: 0.08em;
+
+	/* Espacements (base 4 px) */
+	--s26-space-1: 0.25rem;
+	--s26-space-2: 0.5rem;
+	--s26-space-3: 0.75rem;
+	--s26-space-4: 1rem;
+	--s26-space-5: 1.5rem;
+	--s26-space-6: 2rem;
+	--s26-space-7: 3rem;
+	--s26-space-8: 4rem;
+	--s26-space-9: 6rem;
+	--s26-space-section: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+
+	/* Mise en page */
+	--s26-container: 72rem; /* 1152 */
+	--s26-measure: 38rem; /* ~65 caractères */
+	--s26-gutter: max(1rem, env(safe-area-inset-left, 0px));
+
+	/* Rayons */
+	--s26-radius-sm: 6px;
+	--s26-radius-md: 10px;
+	--s26-radius-lg: 16px;
+	--s26-radius-pill: 999px;
+
+	/* Ombres (sur fond sombre : profondeur, pas de halo gris) */
+	--s26-shadow-ui: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -24px rgb(0 0 0 / 0.7);
+	--s26-shadow-pop: 0 12px 32px -12px rgb(0 0 0 / 0.75);
+
+	/* Mouvement */
+	--s26-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--s26-dur-fast: 140ms;
+	--s26-dur: 240ms;
+	--s26-dur-slow: 480ms;
+}

@@ -4,9 +4,11 @@
 	"private": true,
 	"description": "Design system Synapsis (theme creme / orange) partage entre les apps du monorepo.",
 	"exports": {
-		"./synapsis.css": "./synapsis.css"
+		"./synapsis.css": "./synapsis.css",
+		"./synapsis-2026.css": "./synapsis-2026.css"
 	},
 	"files": [
-		"synapsis.css"
+		"synapsis.css",
+		"synapsis-2026.css"
 	]
 }
