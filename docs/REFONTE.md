@@ -142,7 +142,7 @@ Changements par rapport à la première proposition : l'ancienne section 2 (« O
 Le premier aperçu (fond sombre, hero en deux colonnes) a été rejeté : il ne reprenait que la mécanique de contenu de slayte.io, pas son style. Leur CSS et leur HTML ont ensuite été relevés (sans navigateur) ; les choix de Fred :
 
 - **a) Fonds** : blanc, sections alternées `#F7F8FC`, et **une seule** section sombre `#0E0E10`, celle de la mascotte (comme leur section « Félix »).
-- **b) Polices** : proches d'Outfit (titres) et de Plus Jakarta Sans (texte), **mais pas les mêmes**. Deux paires proposées, choix en attente.
+- **b) Polices** : proches d'Outfit et de Plus Jakarta Sans, mais pas les mêmes. **Choix définitif de Fred : Urbanist pour les titres, Figtree pour le texte** (Google Fonts). Elles vivent dans les tokens pour pouvoir en changer en une ligne.
 - **c) Texte** : `#0E0E10` (19:1 sur blanc).
 - **d) Boutons** : l'orange `#E8500F` pour le bouton principal « Faire mon diagnostic » (pilule de l'en-tête et appels dans la page), texte `#0E0E10` dessus (5,1:1 ; le blanc ne passe pas, 3,8:1). Boutons secondaires quasi-noirs, rayon 12 px, 48 px de haut. L'orange n'est **jamais** utilisé comme couleur de texte sur blanc (3,8:1) ; pour du texte orange, `#C23F08` (5,2:1).
 - **e) Hero** : centré, texte seul. La scène de Claire et de ses cinq outils descend en section 2.
@@ -160,3 +160,11 @@ TPE/PME de 5 à 20 salariés. Douleurs : tout tourne sur Excel ; le dirigeant et
 ### Méthode
 
 Plan des sections et paires de polices validés par Fred avant tout code ; aperçu en artefact, puis Vercel ; rien n'est poussé avant validation. Les tokens sombres et le premier hero (commit local `0d1afb2` et fichiers non commités) sont à remplacer.
+
+### Corrections du plan (24/10, via Pilotage)
+
+- Aucun vocabulaire propre à la formation (convention, convocation, session) : parcours client générique, devis → bon pour accord → démarrage → livraison ou intervention → facture → paiement. Le nom « Morel Formation » n'apparaît pas dans les interfaces.
+- Section 5 : formulée en bénéfice (les relances et l'accueil partent au bon moment, vous validez d'un clic).
+- Excel est nommé dans un titre visible (section 2).
+- Hero : texte seul, titre révélé mot par mot, emplacement réservé à la vidéo sous le bouton. Le haut des fenêtres de la section 2 doit être visible sans défiler, sur mobile comme sur ordinateur.
+- Animations : bibliothèque Motion (ex-Framer Motion) en version allégée (LazyMotion + m), coupée sous `prefers-reduced-motion`.
