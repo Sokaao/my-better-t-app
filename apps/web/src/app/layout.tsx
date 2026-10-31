@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
+import "@synapsis/brand/synapsis-2026.css";
 import Providers from "@/components/providers";
 
 const archivo = Archivo({
@@ -23,8 +24,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://www.mysynapsis.fr";
-const defaultTitle = "Synapsis · Automatisation pour cabinets d'expertise comptable";
-const defaultDescription = "J'installe dans les cabinets d'expertise comptable des systèmes qui reprennent tout ce qui entoure la comptabilité : collecte des pièces, relances clients, classement, rappels d'échéance. Sans toucher à votre outil de production.";
+const defaultTitle = "Synapsis · Tous vos clients au même endroit, le suivi se fait tout seul";
+const defaultDescription = "J'aide les dirigeants de PME à savoir où en est chaque client, sans fouiller dans cinq outils. Fiches clients unifiées, puis accueil et relances qui tournent seuls. Audit gratuit de 45 minutes.";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -67,7 +68,6 @@ const professionalServiceLd = {
 		addressCountry: "FR",
 	},
 	areaServed: "FR",
-	priceRange: "600 EUR a 4500 EUR",
 	founder: {
 		"@type": "Person",
 		name: "Frédéric Mallet",
