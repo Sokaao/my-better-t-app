@@ -102,6 +102,12 @@ html:has(.d26) { overflow-x: clip; scroll-behavior: smooth; }
 .d26 .gets li { display: flex; gap: 12px; align-items: flex-start; font-weight: 600; font-size: 15.5px; }
 .d26 .gets svg { width: 22px; height: 22px; flex: none; margin-top: 1px; }
 .d26 .note { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 13.5px; color: var(--ink-3); max-width: 30em; }
+/* Réservation directe, sous « Commencer le diagnostic » (demande de Fred, 05/11) */
+.d26 .direct { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 18px; }
+.d26 .direct p { font-size: 15px; color: var(--ink-3); }
+.d26 .direct a { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 1.5px solid var(--line-strong); border-radius: var(--r-lg); background: #fff; color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; transition: border-color .2s, color .2s; }
+.d26 .direct a:hover { border-color: var(--orange); color: var(--orange-text); }
+.d26 .direct a svg { width: 16px; height: 16px; }
 .d26 .note img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex: none; }
 .d26 .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 28px; }
 .d26 .foot .kbd { font-size: 12.5px; color: var(--ink-3); margin-right: auto; margin-left: 4px; }

@@ -51,7 +51,7 @@ export default function OpengraphImage() {
 				</div>
 
 				<div style={{ display: "flex", marginTop: 34, fontSize: 28, color: "#4B4E58", maxWidth: 940, lineHeight: 1.4 }}>
-					Pour les PME de 10 à 49 salariés. Vos outils reliés autour d'un point central : c'est vous qui validez.
+					Vos outils reliés dans votre propre espace, et c'est vous qui validez.
 				</div>
 
 				<div style={{ display: "flex", marginTop: 40 }}>

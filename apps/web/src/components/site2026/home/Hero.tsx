@@ -8,7 +8,6 @@ export default function Hero() {
 	return (
 		<section className="hero">
 			<div className="wrap">
-				<span className="pill-eyebrow rv"><i aria-hidden="true" />Pour les PME de 10 à 49 salariés</span>
 				<h1 className="h1" data-words=""><span className="t2">Arrêtez de faire le <span className="mark">facteur<svg className="mark-u" viewBox="0 0 300 22" aria-hidden="true"><path d="M5 15 C 70 6, 160 4, 295 11" pathLength="1" /></svg></span></span><span className="t2">entre vos outils.</span></h1>
 				<p className="sub rv" style={{ "--d": ".45s" } as CSSProperties}>Je centralise vos mails, votre fichier clients, votre agenda et vos factures. Tout se retrouve au même endroit, les relances partent au bon moment, et c'est vous qui validez.</p>
 				<div className="frame-wrap rv" style={{ "--d": ".6s" } as CSSProperties} id="frameWrap">
