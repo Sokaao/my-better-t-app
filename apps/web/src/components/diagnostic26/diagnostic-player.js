@@ -1164,7 +1164,7 @@ export function initDiagnostic(envoyer) {
     let msg = "";
     if (!f.prenom.value.trim()) { msg = "Indiquez votre prénom."; f.prenom.setAttribute("aria-invalid", "true"); f.prenom.focus(); }
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) { msg = "Cette adresse e-mail ne semble pas valide."; f.email.setAttribute("aria-invalid", "true"); f.email.focus(); }
-    else if (f.tel.value.trim() && f.tel.value.replace(/\D/g, "").length < 8) { msg = "Ce numéro de téléphone ne semble pas valide (ou laissez le champ vide)."; f.tel.setAttribute("aria-invalid", "true"); f.tel.focus(); }
+    else if (f.tel.value.replace(/\D/g, "").length < 8) { msg = "Indiquez un numéro de téléphone valide, pour que je puisse vous joindre."; f.tel.setAttribute("aria-invalid", "true"); f.tel.focus(); }
     else if (!f.ok.checked) { msg = "Cochez la case pour que je puisse vous envoyer le rapport."; f.ok.focus(); }
     err.textContent = msg;
     if (msg) return;
@@ -1309,7 +1309,7 @@ ${r.length ? `<h2 ${H2.replace("26px", "22px")}>Vos ${r.length > 1 ? r.length + 
       prenom: L.prenom.slice(0, 100),
       email: L.email,
       entreprise: L.ent ? L.ent.slice(0, 200) : null,
-      telephone: L.tel ? L.tel.slice(0, 30) : null,
+      telephone: L.tel.slice(0, 30),
       consentement: { accepte: true, texte: CONSENT_TXT, le: S.consentAt },
       metier: { id: S.metier || "autre", libelle: m.n, precisionLibre: S.metier === "autre" ? (S.metierTxt || "").slice(0, 300) : "" },
       equipe: opt(Q[0], S.ans.q1 ?? 0),
