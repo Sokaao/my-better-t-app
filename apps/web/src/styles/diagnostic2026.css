@@ -241,6 +241,12 @@ html:has(.d26) { overflow-x: clip; scroll-behavior: smooth; }
 .d26 .map.pv-on .cnt { display: none; }
 .d26 .pv-t { color: var(--orange-text); }
 .d26 .pv-t:empty { display: none; }
+/* Une seule ligne pour la légende de la carte ; sur téléphone, le nom du métier (déjà en surbrillance dessous) est retiré */
+.d26 .map-cap b { white-space: nowrap; }
+.d26 .pv-t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 899px) {
+  .d26 .pv-t .pv-m { display: none; }
+}
 .d26 .legend { transition: opacity .25s; }
 .d26 .map.pv-on .legend { opacity: 0; }
 @media (max-width: 899px) {

@@ -811,7 +811,7 @@ export function initDiagnostic(envoyer) {
     const v = MV[id] || MV.autre, D = RM ? 0 : 900;
     map.classList.add("pv-on");
     $("#mapEmpty").style.opacity = 0;
-    $("#pvT").textContent = "Parcours type · " + MET[id].n;
+    $("#pvT").innerHTML = `Parcours type<span class="pv-m"> · ${esc(MET[id].n)}</span>`;
     pvL.innerHTML = `<path class="pv-tr"/><path class="pv-o" id="pvO" pathLength="100" stroke-dasharray="100 100"/>` +
       (RM ? "" : `<circle class="pv-dot" r="3.6" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" begin="indefinite"><mpath href="#pvO"/></animateMotion></circle>`);
     pvBox.innerHTML = v.flow.map((s, i) => `<span class="pv-s"><i>${i + 1}</i>${esc(s)}</span>`).join("");
