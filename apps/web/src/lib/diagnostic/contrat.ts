@@ -10,6 +10,7 @@ export const LIMITES = {
 	prenom: 100,
 	email: 254,
 	entreprise: 200,
+	telephone: 30,
 	consentementTexte: 1000,
 	metierId: 60,
 	metierLibelle: 120,
@@ -41,6 +42,7 @@ export type DiagnosticV2 = {
 	prenom: string;
 	email: string;
 	entreprise?: string | null;
+	telephone?: string | null;
 	consentement: { accepte: true; texte: string; le: string };
 	metier: { id: string; libelle?: string; precisionLibre?: string };
 	equipe?: string;
@@ -87,6 +89,7 @@ export function verifierDiagnostic(d: unknown): string[] {
 	if (!texteNonVide(d.prenom, LIMITES.prenom)) e.push(`prenom : de 1 à ${LIMITES.prenom} caractères`);
 	if (typeof d.email !== "string" || d.email.length > LIMITES.email || !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(d.email)) e.push("email invalide");
 	facultatif(e, "entreprise", d.entreprise, LIMITES.entreprise);
+	facultatif(e, "telephone", d.telephone, LIMITES.telephone);
 
 	if (!estObjet(d.consentement)) e.push("consentement manquant");
 	else {
