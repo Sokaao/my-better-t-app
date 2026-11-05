@@ -427,6 +427,9 @@ html:has(.d26) { overflow-x: clip; scroll-behavior: smooth; }
   .d26 *, .d26 *::before, .d26 *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   html:has(.d26) { scroll-behavior: auto; }
 }
+/* Lien discret vers la réservation directe, en haut à droite (demande de Fred, 05/11) */
+.d26 .top-rdv { text-decoration: none; transition: border-color .2s, background-color .2s; }
+.d26 .top-rdv:hover { border-color: var(--orange); background: #fff; }
 /* Bloc au-dessus du vrai calendrier : photo, puis « 30 min · Google Meet · heure de Paris » (réglages validés le 02/11) */
 .d26 .cal-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; padding: 16px 18px; background: #fff; border: 1px solid var(--line); border-radius: 18px; }
 .d26 .cal-head img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; }

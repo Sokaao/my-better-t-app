@@ -9,6 +9,7 @@ export default function DiagnosticMarkup() {
 						<span className="prog-l" id="progL">Diagnostic gratuit</span>
 						<div className="prog-b"><i id="progB" /></div>
 					</div>
+					<a className="sim-tag top-rdv" href="/rendez-vous"><span className="l">Déjà décidé ? </span>Réserver l'audit</a>
 				</div>
 			</header>
 			<main>
