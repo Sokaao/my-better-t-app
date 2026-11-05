@@ -104,7 +104,7 @@ export default function DiagnosticMarkup() {
 								<p>Vos 3 blocages détaillés, le calcul de votre estimation, et le premier branchement que je ferais chez vous. Ensuite, vous pourrez réserver vos 30 minutes d'audit si vous le souhaitez.</p>
 								<div className="fld">
 									<div className="two"> <label>Prénom<input type="text" name="prenom" autoComplete="given-name" required /></label> <label>E-mail professionnel<input type="email" name="email" autoComplete="email" inputMode="email" required /></label> </div>
-									<label><span>Entreprise <span className="o">(facultatif)</span></span><input type="text" name="ent" autoComplete="organization" /></label>
+									<div className="two"> <label><span>Entreprise <span className="o">(facultatif)</span></span><input type="text" name="ent" autoComplete="organization" /></label> <label><span>Téléphone <span className="o">(facultatif)</span></span><input type="tel" name="tel" autoComplete="tel" inputMode="tel" maxLength={30} /></label> </div>
 									<label className="consent"><input type="checkbox" name="ok" required /><span>J'accepte que Synapsis utilise ces informations pour m'envoyer mon rapport et revenir vers moi au sujet de ce diagnostic. Je peux demander leur suppression à tout moment. <a href="/politique-confidentialite">Confidentialité</a></span></label>
 									<p className="err" id="gateErr" role="alert" />
 									<button className="cta big" type="submit" id="gateBtn">Débloquer mon rapport</button>
