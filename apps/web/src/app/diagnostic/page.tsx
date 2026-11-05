@@ -1,29 +1,28 @@
 import type { Metadata } from "next";
-import SiteFooterMinimal from "@/components/site-footer-minimal";
-import DiagnosticForm from "@/components/diagnostic/diagnostic-form";
+import DiagnosticClient from "@/components/diagnostic26/DiagnosticClient";
+import DiagnosticMarkup from "@/components/diagnostic26/DiagnosticMarkup";
+import { fontVariables } from "@/components/site2026/fonts";
+import "@/styles/diagnostic2026.css";
 
 export const metadata: Metadata = {
-	title: "Diagnostic · Ce que votre cabinet perd à ne pas automatiser",
+	title: "Diagnostic gratuit · Où se perd l'information entre vos outils ?",
 	description:
-		"Six questions, deux minutes : combien d'heures votre cabinet d'expertise comptable récupère, ce que ça vaut en chiffre d'affaires, et par quelle automatisation commencer. Résultat immédiat, sans email.",
+		"Choisissez votre métier et vos outils, répondez à 8 questions : votre indice de connexion sur 100, la carte de vos outils et votre premier blocage, tout de suite et sans e-mail.",
 	alternates: { canonical: "/diagnostic" },
 	openGraph: {
-		title: "Diagnostic automatisation pour cabinets d'expertise comptable | Synapsis",
-		description:
-			"Six questions, deux minutes. Vos heures récupérées, votre chiffre d'affaires potentiel, et par quoi commencer. Sans email pour voir le résultat.",
+		title: "Diagnostic gratuit · Où se perd l'information entre vos outils ? | Synapsis",
+		description: "8 questions pensées pour votre métier. Votre indice de connexion, la carte de vos outils et votre premier blocage, tout de suite.",
 		url: "/diagnostic",
 	},
 };
 
+// Diagnostic par métier, porté depuis la maquette validée le 05/11/2026 (docs/REFONTE.md, § 12).
+// Pas de navigation : le logo ramène à l'accueil, la barre de progression tient lieu d'en-tête.
 export default function DiagnosticPage() {
 	return (
-		<div className="dg-page">
-			{/* Pas de navigation ici : la page reçoit du trafic payant, chaque lien
-			    sortant est une fuite. Le logo vit dans la barre de progression. */}
-			<main>
-				<DiagnosticForm />
-			</main>
-			<SiteFooterMinimal />
+		<div className={`d26 ${fontVariables}`}>
+			<DiagnosticMarkup />
+			<DiagnosticClient />
 		</div>
 	);
 }

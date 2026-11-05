@@ -1,0 +1,86 @@
+/* Page /rendez-vous (refonte 2026) : intro à gauche, calendrier Cal.com à droite ; empilés sur téléphone. */
+.page {
+	max-width: 1240px;
+	margin-inline: auto;
+	padding: calc(var(--top, 64px) + 56px) var(--gut, 24px) 72px;
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+	gap: clamp(28px, 4vw, 64px);
+	align-items: start;
+}
+.intro {
+	position: sticky;
+	top: calc(var(--top, 64px) + 32px);
+}
+.kick {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--orange-text);
+	margin-bottom: 12px;
+}
+.title {
+	font-family: var(--font-display);
+	font-size: clamp(32px, 4.2vw, 48px);
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+	margin-bottom: 18px;
+}
+.lead {
+	font-size: 17px;
+	line-height: 1.6;
+	color: var(--ink-2);
+	margin-bottom: 14px;
+}
+.who {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-top: 24px;
+	padding: 16px 18px;
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: 18px;
+}
+.who img {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	object-fit: cover;
+	flex: none;
+}
+.name {
+	font-weight: 700;
+	font-size: 16px;
+}
+.meta {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--ink-3);
+}
+.diag {
+	margin-top: 18px;
+	font-size: 15px;
+	color: var(--ink-3);
+}
+.diag a {
+	color: var(--orange-text);
+	font-weight: 600;
+}
+.cal {
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: 24px;
+	padding: 8px;
+	min-height: 560px;
+}
+@media (max-width: 899px) {
+	.page {
+		grid-template-columns: minmax(0, 1fr);
+		padding-top: calc(var(--top, 56px) + 32px);
+	}
+	.intro {
+		position: static;
+	}
+}

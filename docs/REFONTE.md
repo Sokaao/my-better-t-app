@@ -168,3 +168,22 @@ Plan des sections et paires de polices validés par Fred avant tout code ; aper�
 - Excel est nommé dans un titre visible (section 2).
 - Hero : texte seul, titre révélé mot par mot, emplacement réservé à la vidéo sous le bouton. Le haut des fenêtres de la section 2 doit être visible sans défiler, sur mobile comme sur ordinateur.
 - Animations : bibliothèque Motion (ex-Framer Motion) en version allégée (LazyMotion + m), coupée sous `prefers-reduced-motion`.
+
+## 12. Décisions du 02/11/2026 (maquettes validées en artefact)
+
+Ces décisions remplacent les points contraires des sections précédentes.
+
+- **Cible** : PME de **10 à 49 salariés** (remplace « 5 à 20 » du § 11 et « TPE/PME » du § 1).
+- **Offre** : des systèmes de centralisation d'outils. On relie les outils existants autour d'un point central, la fiche client et le pilotage ; le client garde ses outils. Revoir l'organisation est possible, mais ce n'est pas le but premier. Mise en place en un mois environ. L'assistant IA prépare, l'humain valide.
+- **Hero** (remplace le titre et le sous-titre du § 2) : « Arrêtez de faire le facteur / entre vos outils. » Sous-titre : « Je centralise vos mails, votre fichier clients, votre agenda et vos factures. Tout se retrouve au même endroit, les relances partent au bon moment, et c'est vous qui validez. »
+- **Audit gratuit : 30 min** (remplace 45 min aux § 2 et § 5). Promesse : un plan complet (points forts, points faibles, ce qu'on relie en premier), sans engagement. Réservation par **Cal.com** (`cal.com/synapsis/30min`), qui remplace Calendly sur `/rendez-vous`. Couleurs de marque dans Cal.com : `#E8500F` (clair), `#FF8A52` (sombre).
+- **Page d'accueil** (remplace le tableau du § 5) : celle de la maquette validée. Haut de page (titre, vidéo, CTA, bandeau d'outils), « Vous vous reconnaissez ? », le fil (piste horizontale au défilement), la fiche client, le pilotage (3 onglets et récap du matin), l'assistant IA (seule section sombre du milieu), un seul interlocuteur, comment ça se passe (7 étapes en 3 temps), questions, appel final.
+- **Vidéo du hero** : « Qui fait le lien entre tous vos outils ? », animée avec **GSAP** (remplace Motion du § 11). Musique et bruitages générés dans le navigateur ; voix dans `public/audio/voix-kenzy-v2.mp3`, téléchargée seulement au clic sur « Activer le son ». La phrase « Moi, c'est Frédéric » est dite par une voix de synthèse : à remplacer par la voix de Fred ou à reformuler.
+- **Mascotte** : en attente.
+- **Diagnostic** (remplace la cible du § 7) : choix des outils, puis 8 questions ; l'indice de connexion sur 100 et la carte des outils s'affichent sans e-mail. L'e-mail, avec consentement, débloque le rapport complet (3 blocages, estimation des heures présentée comme celle du visiteur avec son calcul, premier branchement conseillé) et la réservation Cal.com intégrée, avec le diagnostic pré-rempli dans les notes du rendez-vous.
+- **Logo Synapsis** : la version épaissie de la maquette devient le logo officiel (mêmes courbes que `synapsis-mark.tsx`, traits et points plus gros, `#E8500F`, sans le carré de fond). Les fichiers SVG sont à livrer à Fred.
+- **Cible, précision** : on ne met pas en avant l'exclusion « hors BTP et artisanat » du § 1. Ces entreprises sont bienvenues si elles viennent.
+- **Admin** : Fred n'a plus besoin de `/admin` (il a son espace pilotage). Sa suppression est à décider dans plan2.md.
+- **Logos des outils** : les vrais logos partout (bandeau de l'accueil, vidéo, diagnostic), pris dans les kits presse officiels et sans laisser croire à un partenariat. Dans le diagnostic, quand le visiteur tape lui-même un outil connu, son logo s'affiche ; sinon, pastille avec l'initiale.
+- **Icône d'onglet et image de partage** (`app/icon.png`, `app/opengraph-image.tsx`) : encore à l'ancienne charte (« cabinets d'expertise comptable », crème), à refaire dans le nouveau style avant la mise en ligne.
+- **Technique du portage** : la maquette est portée telle quelle. Une section par composant serveur dans `components/site2026/home`, styles dans `styles/site2026.css` (tout sous `.s26`, remise à zéro de Tailwind annulée sous `.s26`), jetons dans `packages/brand/synapsis-2026.css`, animations de la page et vidéo dans deux modules (`home-effects.js`, `story-player.js`) lancés par `HomeClient` et arrêtés quand on quitte la page.

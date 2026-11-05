@@ -23,8 +23,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://www.mysynapsis.fr";
-const defaultTitle = "Synapsis · Automatisation pour cabinets d'expertise comptable";
-const defaultDescription = "J'installe dans les cabinets d'expertise comptable des systèmes qui reprennent tout ce qui entoure la comptabilité : collecte des pièces, relances clients, classement, rappels d'échéance. Sans toucher à votre outil de production.";
+const defaultTitle = "Synapsis · Arrêtez de faire le facteur entre vos outils";
+const defaultDescription = "Je centralise les outils des PME de 10 à 49 salariés autour d'un point central : la fiche client et le pilotage. Les relances partent au bon moment, et c'est vous qui validez.";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -67,7 +67,6 @@ const professionalServiceLd = {
 		addressCountry: "FR",
 	},
 	areaServed: "FR",
-	priceRange: "600 EUR a 4500 EUR",
 	founder: {
 		"@type": "Person",
 		name: "Frédéric Mallet",

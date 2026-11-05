@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Synapsis · Automatisation pour cabinets d'expertise comptable";
+export const alt = "Synapsis · Arrêtez de faire le facteur entre vos outils";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// Image de partage du nouveau site (refonte 2026) : fond blanc, accent orange, logo officiel (logos/synapsis, 05/11/2026).
 export default function OpengraphImage() {
 	return new ImageResponse(
 		(
@@ -16,53 +17,47 @@ export default function OpengraphImage() {
 					flexDirection: "column",
 					justifyContent: "center",
 					padding: "80px 90px",
-					background: "#faf6ef",
-					backgroundImage:
-						"linear-gradient(rgba(35,29,22,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(35,29,22,.06) 1px, transparent 1px)",
-					backgroundSize: "44px 44px",
+					background: "#ffffff",
+					backgroundImage: "radial-gradient(circle at 1px 1px, rgba(15,23,42,.08) 1px, transparent 0)",
+					backgroundSize: "22px 22px",
 				}}
 			>
-				<div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-					<svg width="40" height="46" viewBox="0 0 54 62">
-						<path d="M 11 11 C 27 11 43 19 43 31" stroke="#EA580C" strokeWidth="5" fill="none" strokeLinecap="round" />
-						<path d="M 43 31 C 43 43 27 51 11 51" stroke="#EA580C" strokeWidth="5" fill="none" strokeLinecap="round" />
-						<circle cx="11" cy="11" r="10" fill="#EA580C" />
-						<circle cx="11" cy="51" r="10" fill="#EA580C" />
-						<circle cx="43" cy="31" r="15" fill="#faf6ef" />
-						<circle cx="43" cy="31" r="10" fill="#EA580C" />
-						<circle cx="43" cy="31" r="4.5" fill="#FDBA74" />
+				<div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+					<svg width="45" height="53" viewBox="4.5 4.5 45 53">
+						<path d="M11 11C27 11 43 19 43 31" stroke="#E8500F" strokeWidth="4.5" fill="none" strokeLinecap="round" />
+						<path d="M43 31C43 43 27 51 11 51" stroke="#E8500F" strokeWidth="4.5" fill="none" strokeLinecap="round" />
+						<circle cx="43" cy="31" r="9.5" fill="#ffffff" />
+						<circle cx="11" cy="11" r="6.5" fill="#E8500F" />
+						<circle cx="11" cy="51" r="6.5" fill="#E8500F" />
+						<circle cx="43" cy="31" r="6.5" fill="#E8500F" />
 					</svg>
-					<span style={{ fontSize: 30, fontWeight: 800, letterSpacing: 4, color: "#231d16" }}>
-						SYNAPSIS
-					</span>
+					<span style={{ fontSize: 40, fontWeight: 800, letterSpacing: -1, color: "#0E0E10" }}>Synapsis</span>
 				</div>
 
 				<div
 					style={{
 						display: "flex",
-						fontSize: 62,
+						flexWrap: "wrap",
+						fontSize: 70,
 						fontWeight: 800,
-						color: "#231d16",
-						lineHeight: 1.12,
-						letterSpacing: -1.5,
-						marginTop: 46,
-						maxWidth: 920,
+						color: "#0E0E10",
+						lineHeight: 1.08,
+						letterSpacing: -2,
+						marginTop: 48,
+						maxWidth: 980,
 					}}
 				>
-					Synapsis · Automatisation pour cabinets d&apos;expertise comptable
+					Arrêtez de faire le facteur entre vos outils.
 				</div>
 
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: 14,
-						marginTop: 44,
-						fontSize: 22,
-						color: "#5c5347",
-					}}
-				>
-					<span>Vos dossiers complets au 10 du mois</span>
+				<div style={{ display: "flex", marginTop: 34, fontSize: 28, color: "#4B4E58", maxWidth: 940, lineHeight: 1.4 }}>
+					Pour les PME de 10 à 49 salariés. Vos outils reliés autour d'un point central : c'est vous qui validez.
+				</div>
+
+				<div style={{ display: "flex", marginTop: 40 }}>
+					<span style={{ display: "flex", background: "#E8500F", color: "#0E0E10", fontSize: 26, fontWeight: 700, padding: "14px 26px", borderRadius: 14 }}>
+						Diagnostic gratuit · 3 minutes
+					</span>
 				</div>
 			</div>
 		),

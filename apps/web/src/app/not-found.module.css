@@ -1,0 +1,35 @@
+/* Page 404 : les classes .wrap, .eyebrow, .h2, .lead et .cta viennent de styles/site2026.css.
+   Les sélecteurs passent par .page pour primer sur les règles générales de .s26. */
+.page {
+	min-height: 78vh;
+	display: flex;
+	align-items: center;
+	padding: 140px 0 96px;
+}
+
+.page .follow {
+	color: var(--ink-3);
+}
+
+.page .text {
+	margin-top: 18px;
+}
+
+.page .actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 24px;
+	margin-top: 30px;
+}
+
+.page .home {
+	color: var(--ink);
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.page .home:hover {
+	color: var(--orange-text);
+}

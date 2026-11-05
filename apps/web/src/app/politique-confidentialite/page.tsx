@@ -42,6 +42,7 @@ export default function PolitiqueConfidentialite() {
 								<li>Numéro de téléphone (si fourni)</li>
 								<li>Nom de l&apos;entreprise (si applicable)</li>
 								<li>Informations fournies lors de la prise de rendez-vous</li>
+								<li>Réponses au diagnostic en ligne : métier, outils utilisés, réponses aux questions, indice obtenu et estimation du temps passé</li>
 								<li>Données de navigation (adresse IP, type de navigateur, pages visitées)</li>
 							</ul>
 						</div>
@@ -51,6 +52,7 @@ export default function PolitiqueConfidentialite() {
 							<p>Vos données personnelles sont collectées et traitées pour les finalités suivantes :</p>
 							<ul style={{ listStyle: "disc", marginLeft: 20, display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
 								<li>Gestion des demandes de contact et de rendez-vous</li>
+								<li>Établissement et envoi par e-mail de votre rapport de diagnostic, puis prise de contact à son sujet (avec votre consentement)</li>
 								<li>Fourniture de nos services d&apos;automatisation</li>
 								<li>Communication commerciale et marketing (avec votre consentement)</li>
 								<li>Amélioration de nos services</li>
@@ -79,8 +81,8 @@ export default function PolitiqueConfidentialite() {
 							<p>Vos données personnelles peuvent être transmises aux destinataires suivants :</p>
 							<ul style={{ listStyle: "disc", marginLeft: 20, display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
 								<li>Personnel autorisé de Synapsis</li>
-								<li>Prestataires techniques (hébergement, outils de gestion)</li>
-								<li>Calendly (pour la gestion des rendez-vous)</li>
+								<li>Prestataires techniques : Vercel (hébergement du site), Supabase (base de données de suivi des contacts), Hostinger (hébergement de nos outils internes et envoi des e-mails)</li>
+								<li>Cal.com (pour la prise de rendez-vous)</li>
 								<li>Autorités compétentes sur demande légale</li>
 							</ul>
 							<p style={{ marginTop: 14 }}>Nous nous assurons que ces destinataires offrent des garanties suffisantes en matière de protection des données.</p>
@@ -88,7 +90,7 @@ export default function PolitiqueConfidentialite() {
 
 						<div>
 							<h2 style={{ marginBottom: 14 }}>8. Transferts de données hors UE</h2>
-							<p>Certains de nos prestataires peuvent être situés hors de l&apos;Union Européenne. Dans ce cas, nous nous assurons que des garanties appropriées sont mises en place (clauses contractuelles types, Privacy Shield, etc.) pour protéger vos données.</p>
+							<p>Certains de nos prestataires peuvent être situés hors de l&apos;Union Européenne. Dans ce cas, nous nous assurons que des garanties appropriées sont mises en place (clauses contractuelles types de la Commission européenne, ou certification au Data Privacy Framework UE–États-Unis) pour protéger vos données.</p>
 						</div>
 
 						<div>

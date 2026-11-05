@@ -1,45 +1,39 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import SiteNav from "@/components/site-nav";
-import SiteFooter from "@/components/site-footer";
+import { CTA_HREF, CTA_LABEL } from "@/components/site2026/cta";
+import Shell from "@/components/site2026/Shell";
+import s from "./not-found.module.css";
 
+export const metadata: Metadata = {
+	title: "Page introuvable",
+	robots: { index: false },
+};
+
+// Page 404 dans le style du nouveau site (docs/REFONTE.md, § 9). Pas d'animation d'apparition :
+// le script de l'accueil ne tourne pas ici, le contenu doit être visible d'emblée.
 export default function NotFound() {
 	return (
-		<>
-			<div className="s-bg-grid" />
-			<SiteNav />
-
-			<main>
-			<section className="s-blk" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
-				<div className="s-wrap" style={{ textAlign: "center" }}>
-					<span className="s-eyebrow" style={{ justifyContent: "center" }}>Erreur 404</span>
-					<h1
-						style={{
-							fontFamily: "var(--font-archivo)",
-							fontWeight: 800,
-							fontSize: "clamp(32px, 5vw, 54px)",
-							letterSpacing: "-0.025em",
-							color: "var(--ink)",
-							margin: "20px 0 18px",
-						}}
-					>
-						Cette page a été automatisée hors de l&apos;existence.
+		<Shell>
+			<section className={s.page}>
+				<div className="wrap">
+					<span className="eyebrow">Erreur 404</span>
+					<h1 className="h2">
+						<span className="t2">Cette page n&apos;existe pas.</span>
+						<span className={`t2 ${s.follow}`}>Le site a changé, l&apos;adresse a pu suivre.</span>
 					</h1>
-					<p style={{ fontSize: 17, color: "var(--ink-soft)", maxWidth: "40em", margin: "0 auto 32px" }}>
-						Ou elle n&apos;a jamais existé. Dans les deux cas, elle n&apos;est plus là.
+					<p className={`lead ${s.text}`}>
+						Si vous cherchez qui fait le lien entre vos outils, le diagnostic est le bon point de départ.
 					</p>
-					<div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-						<Link href="/" className="s-btn s-btn-primary">
-							Retour à l&apos;accueil <span className="arr">→</span>
+					<div className={s.actions}>
+						<Link href={CTA_HREF} className="cta big">
+							{CTA_LABEL}
 						</Link>
-						<Link href="/offres" className="s-btn s-btn-ghost">
-							Voir les offres
+						<Link href="/" className={s.home}>
+							Revenir à l&apos;accueil
 						</Link>
 					</div>
 				</div>
 			</section>
-			</main>
-
-			<SiteFooter />
-		</>
+		</Shell>
 	);
 }

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 const DESCRIPTION =
-	"Trente minutes pour regarder vos outils, votre portefeuille et ce que vous avez déjà tenté. Je vous dis franchement si l'automatisation est la bonne réponse pour votre cabinet.";
+	"Trente minutes ensemble, en visio. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier.";
 
 export const metadata: Metadata = {
-	title: "Rendez-vous · Trente minutes",
+	title: "Audit de vos outils · 30 minutes",
 	description: DESCRIPTION,
 	alternates: {
 		canonical: "/rendez-vous",
 	},
 	openGraph: {
-		title: "Rendez-vous · Trente minutes | Synapsis",
+		title: "Audit de vos outils · 30 minutes | Synapsis",
 		description: DESCRIPTION,
 		url: "/rendez-vous",
 	},
