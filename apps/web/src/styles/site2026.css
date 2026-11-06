@@ -826,6 +826,32 @@ html:not(.pin) .s26 .steps { display: none; }
   .s26 .v-tcard .av { width: 8cqw; height: 8cqw; }
   .s26 .v-tc .vt-m { font-size: 5cqw; text-align: left; }
 }
+/* 12. Votre espace (05/11) : outils reliés, automatisations à interrupteur, puis ce qui bloque */
+.s26 .v-space { width: min(56cqw, 100%); text-align: left; }
+.s26 .v-sec { margin: 0; padding: .9cqw 1.3cqw .3cqw; font: 700 .9cqw/1.2 Figtree, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #8a8f99; }
+.s26 .v-tools { display: flex; flex-wrap: wrap; gap: .6cqw; padding: .3cqw 1.3cqw .8cqw; }
+.s26 .v-tool { display: inline-flex; align-items: center; gap: .5cqw; padding: .4cqw .8cqw .4cqw .45cqw; border: 1px solid #ece6dc; border-radius: 99px; background: #fff; font-weight: 600; white-space: nowrap; }
+.s26 .v-tool > svg, .s26 .v-tool > .lgw { width: 1.6cqw; height: 1.6cqw; flex: none; }
+.s26 .v-tool > .lgw { font-size: .85cqw; border-radius: .45cqw; }
+.s26 .v-tool em { font-style: normal; }
+.s26 .v-ok { width: .7cqw; height: .7cqw; flex: none; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 .2cqw #dcfce7; }
+.s26 .v-auto { display: grid; grid-template-columns: auto auto auto 1fr; align-items: center; gap: .6cqw; padding: .55cqw 1.3cqw; border-top: 1px solid #f3eee7; white-space: nowrap; }
+.s26 .v-auto em { font-style: normal; font-weight: 700; color: var(--or); }
+.s26 .v-auto span:nth-of-type(2) { font-weight: 600; }
+.s26 .v-sw { --on: 0; justify-self: end; position: relative; width: 2.4cqw; height: 1.3cqw; border-radius: 99px; background: color-mix(in srgb, var(--or) calc(var(--on) * 100%), #d8d2c8); }
+.s26 .v-sw::after { content: ""; position: absolute; top: .15cqw; left: .15cqw; width: 1cqw; height: 1cqw; border-radius: 50%; background: #fff; box-shadow: 0 .1cqw .3cqw rgb(0 0 0 / .2); transform: translateX(calc(var(--on) * 1.1cqw)); }
+@media (max-width: 767px) {
+  .s26 .v-space { width: 92cqw; }
+  .s26 .v-sec { padding: 2cqw 3cqw .6cqw; font-size: 2.2cqw; }
+  .s26 .v-tools { gap: 1.4cqw; padding: .6cqw 3cqw 1.8cqw; }
+  .s26 .v-tool { gap: 1.1cqw; padding: .9cqw 1.8cqw .9cqw 1cqw; font-size: 2.8cqw; }
+  .s26 .v-tool > svg, .s26 .v-tool > .lgw { width: 3.6cqw; height: 3.6cqw; }
+  .s26 .v-tool > .lgw { font-size: 1.9cqw; border-radius: 1cqw; }
+  .s26 .v-ok { width: 1.6cqw; height: 1.6cqw; box-shadow: 0 0 0 .45cqw #dcfce7; }
+  .s26 .v-auto { gap: 1.4cqw; padding: 1.4cqw 3cqw; font-size: 2.8cqw; }
+  .s26 .v-sw { width: 5.4cqw; height: 3cqw; }
+  .s26 .v-sw::after { top: .3cqw; left: .3cqw; width: 2.4cqw; height: 2.4cqw; transform: translateX(calc(var(--on) * 2.4cqw)); }
+}
 
 /* Lien d'évitement : invisible tant qu'il n'a pas le focus clavier */
 .s26 .skip { position: absolute; left: 12px; top: -64px; z-index: 100; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; }
