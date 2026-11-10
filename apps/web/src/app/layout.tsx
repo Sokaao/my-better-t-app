@@ -35,10 +35,16 @@ export const metadata: Metadata = {
 	},
 };
 
+// Données structurées lues par Google et les moteurs d'IA. Zone desservie alignée sur la fiche
+// Google Business Profile (11/11/2026) : Sud de la France en priorité, le reste de la France à distance.
+// L'adresse reste celle du siège (mentions légales) ; elle est masquée sur la fiche Google.
 const professionalServiceLd = {
 	"@context": "https://schema.org",
 	"@type": "ProfessionalService",
+	"@id": `${siteUrl}/#entreprise`,
 	name: "Synapsis",
+	description:
+		"Automatisation pour PME : je relie vos mails, votre fichier clients, votre agenda et vos factures autour d'une seule fiche client. Les relances partent au bon moment, et c'est vous qui validez.",
 	url: siteUrl,
 	image: `${siteUrl}/opengraph-image`,
 	telephone: "+33759951051",
@@ -50,7 +56,16 @@ const professionalServiceLd = {
 		addressLocality: "Neuvéglise-sur-Truyère",
 		addressCountry: "FR",
 	},
-	areaServed: "FR",
+	areaServed: [
+		{ "@type": "AdministrativeArea", name: "Occitanie" },
+		{ "@type": "AdministrativeArea", name: "Provence-Alpes-Côte d'Azur" },
+		{ "@type": "City", name: "Nîmes" },
+		{ "@type": "City", name: "Montpellier" },
+		{ "@type": "City", name: "Avignon" },
+		{ "@type": "City", name: "Marseille" },
+		{ "@type": "Country", name: "France" },
+	],
+	knowsAbout: ["Automatisation pour PME", "Relances clients automatiques", "Connexion d'outils métier", "n8n", "Assistant IA"],
 	founder: {
 		"@type": "Person",
 		name: "Frédéric Mallet",
@@ -59,6 +74,16 @@ const professionalServiceLd = {
 		"https://www.linkedin.com/in/frédéric-mallet-526426397/",
 		"https://www.instagram.com/synaps_is/",
 	],
+};
+
+// Nom du site affiché par Google au-dessus du titre dans les résultats
+const websiteLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: "Synapsis",
+	alternateName: "mysynapsis",
+	url: `${siteUrl}/`,
+	publisher: { "@id": `${siteUrl}/#entreprise` },
 };
 
 export default function RootLayout({
@@ -74,6 +99,10 @@ export default function RootLayout({
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceLd) }}
+				/>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
 				/>
 				<Providers>
 					{children}
