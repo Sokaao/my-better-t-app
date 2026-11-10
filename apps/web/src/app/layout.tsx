@@ -1,26 +1,10 @@
 import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
+import "@/styles/fonts.css";
 import Providers from "@/components/providers";
 
-const archivo = Archivo({
-	variable: "--font-archivo",
-	weight: ["500", "600", "700", "800"],
-	subsets: ["latin"],
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-	variable: "--font-ibm-plex-mono",
-	weight: ["400", "500", "600"],
-	subsets: ["latin"],
-});
-
-const inter = Inter({
-	variable: "--font-inter",
-	weight: ["400", "500", "600"],
-	subsets: ["latin"],
-});
+// Polices : embarquées dans le site (src/styles/fonts.css), plus téléchargées à la construction.
 
 const siteUrl = "https://www.mysynapsis.fr";
 const defaultTitle = "Synapsis · Arrêtez de faire le facteur entre vos outils";
@@ -85,7 +69,7 @@ export default function RootLayout({
 	return (
 		<html lang="fr" suppressHydrationWarning className="scroll-smooth">
 			<body
-				className={`${archivo.variable} ${ibmPlexMono.variable} ${inter.variable} antialiased`}
+				className="antialiased"
 			>
 				<script
 					type="application/ld+json"
