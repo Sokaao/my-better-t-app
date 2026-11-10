@@ -12,9 +12,11 @@ import Pilotage from "@/components/site2026/home/Pilotage";
 import Process from "@/components/site2026/home/Process";
 
 export const metadata: Metadata = {
-	title: { absolute: "Synapsis · Arrêtez de faire le facteur entre vos outils" },
+	// Titre et description pour Google (choisis par Fred le 10/11/2026) : l'expression recherchée en tête,
+	// reprise du grand titre de la page (Google réécrit moins un titre proche du H1), marque à la fin, moins de 60 caractères.
+	title: { absolute: "Automatisation PME : arrêtez de faire le facteur | Synapsis" },
 	description:
-		"Je centralise vos mails, votre fichier clients, votre agenda et vos factures. Tout se retrouve au même endroit, les relances partent au bon moment, et c'est vous qui validez.",
+		"Automatisez les relances et reliez vos outils (mails, fichier clients, agenda, factures). Pour les PME : tout au même endroit, et c'est vous qui validez.",
 	alternates: { canonical: "/" },
 };
 
