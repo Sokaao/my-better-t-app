@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const DESCRIPTION =
-	"Trente minutes ensemble, en visio. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier.";
+	"30 minutes en visio, à partir de vos outils actuels. Vous repartez avec un plan complet : vos points forts, vos points faibles et ce qu'on relie en premier.";
 
 export const metadata: Metadata = {
 	title: "Audit de vos outils · 30 minutes",

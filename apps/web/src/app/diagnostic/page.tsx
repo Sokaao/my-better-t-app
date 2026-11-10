@@ -7,7 +7,7 @@ import "@/styles/diagnostic2026.css";
 export const metadata: Metadata = {
 	title: "Diagnostic gratuit · Où se perd l'information entre vos outils ?",
 	description:
-		"Choisissez votre métier et vos outils, répondez à 8 questions : votre indice de connexion sur 100, la carte de vos outils et votre premier blocage, tout de suite et sans e-mail.",
+		"Choisissez votre métier et vos outils, répondez à 8 questions : votre indice de connexion, la carte de vos outils et votre premier blocage, sans e-mail.",
 	alternates: { canonical: "/diagnostic" },
 	openGraph: {
 		title: "Diagnostic gratuit · Où se perd l'information entre vos outils ? | Synapsis",
