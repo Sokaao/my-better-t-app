@@ -80,18 +80,30 @@ export function initHome() {
   cks.forEach(function (c) { ckIO.observe(c); });
 
   // Courbe lisse passant par chaque point (Catmull-Rom centripète : pas de débordement)
-  function smooth(P) {
-    var d = "M" + P[0][0].toFixed(1) + " " + P[0][1].toFixed(1);
+  // at (facultatif) reçoit la longueur de courbe parcourue à chaque point de P, calculée ici :
+  // la demander au navigateur point par point bloquait la page plusieurs secondes sur mobile.
+  function smooth(P, at) {
+    var d = "M" + P[0][0].toFixed(1) + " " + P[0][1].toFixed(1), run = 0;
     function dist(a, b) { return Math.pow(Math.hypot(b[0] - a[0], b[1] - a[1]), 0.5); }
+    if (at) at[0] = 0;
     for (var i = 0; i < P.length - 1; i++) {
       var p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2;
       var d1 = dist(p0, p1), d2 = dist(p1, p2), d3 = dist(p2, p3), b1, b2;
+      if (at) at[i + 1] = run;
       if (d2 < 1e-6) continue;
       if (d1 < 1e-6) b1 = [p1[0] + (p2[0] - p1[0]) / 3, p1[1] + (p2[1] - p1[1]) / 3];
       else { var A = 2 * d1 * d1 + 3 * d1 * d2 + d2 * d2, B = 3 * d1 * (d1 + d2); b1 = [(d1 * d1 * p2[0] - d2 * d2 * p0[0] + A * p1[0]) / B, (d1 * d1 * p2[1] - d2 * d2 * p0[1] + A * p1[1]) / B]; }
       if (d3 < 1e-6) b2 = [p2[0] - (p2[0] - p1[0]) / 3, p2[1] - (p2[1] - p1[1]) / 3];
       else { var C = 2 * d3 * d3 + 3 * d3 * d2 + d2 * d2, D = 3 * d3 * (d3 + d2); b2 = [(d3 * d3 * p1[0] - d2 * d2 * p3[0] + C * p2[0]) / D, (d3 * d3 * p1[1] - d2 * d2 * p3[1] + C * p2[1]) / D]; }
       d += "C" + b1[0].toFixed(1) + " " + b1[1].toFixed(1) + " " + b2[0].toFixed(1) + " " + b2[1].toFixed(1) + " " + p2[0].toFixed(1) + " " + p2[1].toFixed(1);
+      if (at) {
+        for (var k = 1, qx = p1[0], qy = p1[1]; k <= 64; k++) {
+          var t = k / 64, u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, e = t * t * t;
+          var x = a * p1[0] + b * b1[0] + c * b2[0] + e * p2[0], y = a * p1[1] + b * b1[1] + c * b2[1] + e * p2[1];
+          run += Math.hypot(x - qx, y - qy); qx = x; qy = y;
+        }
+        at[i + 1] = run;
+      }
     }
     return d;
   }
@@ -105,7 +117,6 @@ export function initHome() {
 
   // ===== Le fil : la piste défile vers la droite pendant qu'on descend =====
   var F = { sec: $("#fil"), vp: $("#trackVp"), track: $("#track"), svg: $("#curveSvg"), base: $("#cBase"), draw: $("#cDraw"), dot: $("#cDot"), evs: $$("#track .ev"), L: 0, nodeL: [], TW: 0, VW: 0, x0: 0 };
-  function nearestL(samples, p) { var best = 0, bd = Infinity; samples.forEach(function (sm) { var dd = (sm[1] - p[0]) * (sm[1] - p[0]) + (sm[2] - p[1]) * (sm[2] - p[1]); if (dd < bd) { bd = dd; best = sm[0]; } }); return best; }
   function buildFil() {
     if (!F.track) return;
     var px = root.classList.contains("pinx"), n = F.evs.length, pts = [], nodes = [], W, H;
@@ -129,10 +140,11 @@ export function initHome() {
       pts = [[nodes[0][0], 0]].concat(nodes, [[nodes[n - 1][0], H]]);
     }
     F.svg.setAttribute("width", W); F.svg.setAttribute("height", H); F.svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-    var d = smooth(pts); F.base.setAttribute("d", d); F.draw.setAttribute("d", d);
+    var at = [], d = smooth(pts, at); F.base.setAttribute("d", d); F.draw.setAttribute("d", d);
     F.L = F.draw.getTotalLength(); F.draw.style.strokeDasharray = F.L + " " + (F.L + 40);
-    var samples = []; for (var s2 = 0; s2 <= F.L; s2 += 3) { var q = F.draw.getPointAtLength(s2); samples.push([s2, q.x, q.y]); }
-    F.nodeL = nodes.map(function (p) { return nearestL(samples, p); });
+    // Longueur de fil à chaque étape : la courbe passe par les étapes, qui suivent le ou les points d'entrée
+    var first = pts.indexOf(nodes[0]), k = F.L / (at[at.length - 1] || 1);
+    F.nodeL = nodes.map(function (p, i) { return at[first + i] * k; });
     updFil();
   }
   function ease(t) { t = clamp((t - 0.16) / 0.68, 0, 1); return t * t * (3 - 2 * t); }   // le point marque une pause à chaque étape
@@ -189,8 +201,9 @@ export function initHome() {
   function rebuild() { setPin(); buildFil(); updFiche(); updPar(); }
   window.addEventListener("resize", function () { clearTimeout(rz); rz = later(rebuild, 150); }, { signal: SIG });
   if (pinMQ.addEventListener) pinMQ.addEventListener("change", rebuild, { signal: SIG });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!dead) rebuild(); });
-  window.addEventListener("load", rebuild, { signal: SIG });
+  // On ne recalcule à l'arrivée des polices ou à la fin du chargement que si la page les attend encore
+  if (document.fonts && document.fonts.ready && document.fonts.status !== "loaded") document.fonts.ready.then(function () { if (!dead) rebuild(); });
+  if (document.readyState !== "complete") window.addEventListener("load", rebuild, { signal: SIG });
   rebuild();
 
   // ===== Le pilotage : onglets (souris, clavier, défilement automatique quand on regarde) =====

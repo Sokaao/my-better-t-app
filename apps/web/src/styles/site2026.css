@@ -94,6 +94,14 @@ html:has(.s26) { overflow-x: clip; scroll-behavior: smooth; }
 .s26 .mark-u path { fill: none; stroke: var(--orange); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s var(--e-out) .75s; }
 .s26 .in .mark-u path, html:not(.js) .s26 .mark-u path { stroke-dashoffset: 0; }
 .s26 .hero .sub { max-width: 36rem; margin: 26px auto 0; font-size: clamp(17px, 1rem + .3vw, 20px); color: var(--ink-2); text-wrap: balance; }
+/* Le titre et le texte d'accroche apparaissent dès le premier affichage, sans attendre JavaScript :
+   sur un téléphone lent, ils restaient invisibles plusieurs secondes (mesure LCP de Google). */
+@keyframes s26-w { from { opacity: 0; filter: blur(8px); transform: translateY(.22em); } }
+@keyframes s26-rv { from { opacity: 0; transform: translateY(16px); } }
+@keyframes s26-draw { from { stroke-dashoffset: 1; } }
+.js .s26 .hero .h1 .w { opacity: 1; filter: none; transform: none; transition: none; animation: s26-w .55s var(--e-out) calc(var(--i) * 45ms) backwards; }
+.js .s26 .hero .sub { opacity: 1; transform: none; transition: none; animation: s26-rv .7s var(--e-out) var(--d, 0s) backwards; }
+.js .s26 .hero .mark-u path { stroke-dashoffset: 0; transition: none; animation: s26-draw .9s var(--e-out) .75s backwards; }
 .s26 .frame-wrap { position: relative; margin: clamp(44px, 2rem + 3vw, 72px) auto 0; max-width: var(--container); --hs: 1; }
 .s26 .frame-wrap::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -6%; height: 40%; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, rgb(232 80 15 / .28), rgb(232 80 15 / 0)); filter: blur(28px); }
 .s26 .frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r-card); background: var(--dark); box-shadow: 0 60px 120px -50px rgb(15 23 42 / .5); overflow: hidden; transform: scale(var(--hs)); transform-origin: 50% 0; isolation: isolate; text-align: left; }
@@ -450,6 +458,7 @@ html:not(.pin) .s26 .steps { display: none; }
   html:has(.s26) { scroll-behavior: auto; }
   .js .s26 [data-words] .w, .js .s26 .rv { opacity: 1; filter: none; transform: none; transition: none; }
   .s26 .mark-u path { transition: none; stroke-dashoffset: 0; }
+  .js .s26 .hero .h1 .w, .js .s26 .hero .sub, .js .s26 .hero .mark-u path { animation: none; }
   .s26 .chart-r, .s26 .ph-line { clip-path: none; transition: none; }
 }
 

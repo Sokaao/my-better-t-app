@@ -294,9 +294,13 @@ export function initStory() {
     var M = W < 600, X = Math.round(W * 0.12);
     var CLR = "transform,opacity,visibility,filter,clipPath,strokeDashoffset,display";
     // On ne remet pas à zéro les transformations des éléments SVG intérieurs (GSAP y fige l'origine) : seulement leur tracé
-    var RESET = $$(".vstage *").filter(function (e) { return !e.ownerSVGElement; }).concat($$(".vbg"), [$("#vRed"), $("#vBlack")]);
+    var CAND = $$(".vstage *").filter(function (e) { return !e.ownerSVGElement; }).concat($$(".vbg"), [$("#vRed"), $("#vBlack")]);
     var DRAWN = $$("#spokes line, #olines line, .v-tlines path, #sig10, #ring14, #arr14");
-    gsap.set(RESET, { clearProps: CLR }); gsap.set(DRAWN, { strokeDashoffset: 1 });
+    // Seuls les éléments animés par la construction précédente portent des styles à effacer (aucun au premier passage).
+    // Effacer les 900 éléments de la scène un par un bloquait la page plusieurs secondes sur mobile.
+    var RESET = story.__anim || [];
+    if (RESET.length) gsap.set(RESET, { clearProps: CLR });
+    gsap.set(DRAWN, { strokeDashoffset: 1 });
     fitSvg($("#spokes")); fitSvg($("#olines")); fitSvg($(".v-tlines")); fitTeam();
     last = {};
     function rr(el) { var s = story.getBoundingClientRect(), r = el.getBoundingClientRect(), k = s.width / W; return { x: (r.left - s.left) / k, y: (r.top - s.top) / k, w: r.width / k, h: r.height / k }; }
@@ -304,8 +308,10 @@ export function initStory() {
     var aiR = rr($("#ai9")), okR = rr($("#aiOk")), cw = rr($("#cur9")).w;
     var ckx = okR.x - aiR.x + okR.w * 0.55 - cw * 5 / 32, cky = okR.y - aiR.y + okR.h * 0.62 - cw * 3 / 32;
 
-    tl = gsap.timeline({ repeat: -1, onUpdate: render });
-    tl.set(RESET, { clearProps: CLR }, 0).set(DRAWN, { strokeDashoffset: 1 }, 0)
+    // Les scènes sont montées dans une timeline intérieure ; la boucle (plus bas) la rejoue
+    // après avoir remis à zéro les seuls éléments qu'elle anime.
+    tl = gsap.timeline();
+    tl.set(DRAWN, { strokeDashoffset: 1 }, 0)
       .set([TY.p1, TY.ai], { n: 0 }, 0).set(CN.cal, { v: 15 }, 0).set(CN.pay, { v: 0 }, 0).set(ST, { tag8: 0 }, 0)
       .set("#prompt1", { xPercent: -50, yPercent: -50 }, 0)
       .set($$(".v-dr"), { "--hl": 0 }, 0);
@@ -554,6 +560,14 @@ export function initStory() {
     tl.set({}, {}, END);
     tl.set(HIDE, { autoAlpha: 0 }, 0);
 
+    // La boucle : remise à zéro des éléments animés (et d'eux seuls), puis les scènes
+    var scenes = tl, used = new Set();
+    scenes.getChildren(true, true, false).forEach(function (tw) { tw.targets().forEach(function (e) { used.add(e); }); });
+    var ANIM = CAND.filter(function (e) { return used.has(e); });
+    story.__anim = ANIM;
+    tl = gsap.timeline({ repeat: -1, onUpdate: render });
+    tl.set(ANIM, { clearProps: CLR }, 0).add(scenes, 0);
+
     // ---------- Partition : voix, musique et bruitages ----------
     AUD = [];
     function E(t, f) { AUD.push({ t: t, f: f }); }
@@ -639,8 +653,10 @@ export function initStory() {
     if (reduce) tl.pause(FROZEN + 1);
   }
 
+  // Une seule construction quand les polices sont déjà là ; sinon on reconstruit à leur arrivée
+  var fontsPending = document.fonts && document.fonts.ready && document.fonts.status !== "loaded";
   build();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!dead) build(); });
+  if (fontsPending) document.fonts.ready.then(function () { if (!dead) build(); });
   var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = later(function () { if (story.offsetWidth !== W) build(); }, 250); }, { signal: SIG });
   if ("IntersectionObserver" in window) IO(function (en) {
     if (!tl || reduce) return;

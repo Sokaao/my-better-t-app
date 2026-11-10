@@ -28,7 +28,7 @@ export default function DiagnosticMarkup() {
 								<p>Vous savez déjà ce dont vous avez besoin ?</p>
 								<a href="/rendez-vous">Réserver directement un rendez-vous <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></a>
 							</div>
-							<p className="note"><img src="/images/frederic-mallet.jpg" alt="" width="30" height="30" />Conçu par Frédéric Mallet. Rien n'est envoyé tant que vous ne le demandez pas.</p>
+							<p className="note"><img src="/images/frederic-mallet-120.webp" alt="" width="30" height="30" />Conçu par Frédéric Mallet. Rien n'est envoyé tant que vous ne le demandez pas.</p>
 						</div>
 						<div className="step" data-step="metier" hidden>
 							<p className="kick">Votre métier</p>

@@ -8,7 +8,8 @@ export default function Hero() {
 	return (
 		<section className="hero">
 			<div className="wrap">
-				<h1 className="h1" data-words=""><span className="t2">Arrêtez de faire le <span className="mark">facteur<svg className="mark-u" viewBox="0 0 300 22" aria-hidden="true"><path d="M5 15 C 70 6, 160 4, 295 11" pathLength="1" /></svg></span></span><span className="t2">entre vos outils.</span></h1>
+				{/* Mots déjà découpés (comme le fait home-effects.js pour les autres titres) : l'apparition démarre au premier affichage. */}
+				<h1 className="h1" data-words=""><span className="t2"><span className="w" style={{ "--i": 0 } as CSSProperties}>Arrêtez</span> <span className="w" style={{ "--i": 1 } as CSSProperties}>de</span> <span className="w" style={{ "--i": 2 } as CSSProperties}>faire</span> <span className="w" style={{ "--i": 3 } as CSSProperties}>le</span> <span className="mark w" style={{ "--i": 4 } as CSSProperties}>facteur<svg className="mark-u" viewBox="0 0 300 22" aria-hidden="true"><path d="M5 15 C 70 6, 160 4, 295 11" pathLength="1" /></svg></span></span><span className="t2"><span className="w" style={{ "--i": 5 } as CSSProperties}>entre</span> <span className="w" style={{ "--i": 6 } as CSSProperties}>vos</span> <span className="w" style={{ "--i": 7 } as CSSProperties}>outils.</span></span></h1>
 				<p className="sub rv" style={{ "--d": ".45s" } as CSSProperties}>Je centralise vos mails, votre fichier clients, votre agenda et vos factures. Tout se retrouve au même endroit, les relances partent au bon moment, et c'est vous qui validez.</p>
 				<div className="frame-wrap rv" style={{ "--d": ".6s" } as CSSProperties} id="frameWrap">
 					<Story />
@@ -16,7 +17,7 @@ export default function Hero() {
 				</div>
 				<div className="hero-cta rv">
 					<Link href={CTA_HREF} className="cta big">Faire mon diagnostic</Link>
-					<p className="hero-note"><img alt="" width="30" height="30" src="/images/frederic-mallet.jpg" />Gratuit, en quelques minutes. Puis 30 min d'audit avec moi : vous repartez avec un plan complet, sans engagement.</p>
+					<p className="hero-note"><img alt="" width="30" height="30" src="/images/frederic-mallet-120.webp" />Gratuit, en quelques minutes. Puis 30 min d'audit avec moi : vous repartez avec un plan complet, sans engagement.</p>
 				</div>
 				<div className="tools rv">
 					<p>Je relie les outils que vous utilisez déjà</p>

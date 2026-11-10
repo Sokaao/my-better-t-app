@@ -18,7 +18,7 @@ export default function RendezVousPage() {
 					<p className={s.lead}>Vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier. Que vous travailliez avec moi ou non.</p>
 					<div className={s.who}>
 						{/* eslint-disable-next-line @next/next/no-img-element -- photo locale, déjà optimisée */}
-						<img src="/images/frederic-mallet.jpg" alt="Frédéric Mallet" width={56} height={56} />
+						<img src="/images/frederic-mallet-120.webp" alt="Frédéric Mallet" width={56} height={56} />
 						<div>
 							<p className={s.name}>Frédéric Mallet</p>
 							<p className={s.meta}>30 min · Google Meet · Heure de Paris</p>

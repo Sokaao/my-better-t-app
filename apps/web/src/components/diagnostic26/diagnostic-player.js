@@ -1245,7 +1245,7 @@ export function initDiagnostic(envoyer) {
 
 
   function calHead() {
-    return `<div class="cal-head"><img src="/images/frederic-mallet.jpg" alt="" width="48" height="48"><div><p class="nm">Frédéric Mallet</p><p class="ev">Audit de vos outils</p>
+    return `<div class="cal-head"><img src="/images/frederic-mallet-120.webp" alt="" width="48" height="48"><div><p class="nm">Frédéric Mallet</p><p class="ev">Audit de vos outils</p>
       <ul><li>${IC.clock}30 min</li><li>${IC.video}Google Meet</li><li>${IC.globe}Heure de Paris</li></ul></div></div>`;
   }
 

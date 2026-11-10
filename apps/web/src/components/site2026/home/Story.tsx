@@ -324,7 +324,7 @@ export default function Story() {
 				{/* 14. Frédéric */}
 				<div className="vs orange" id="s14">
 					<div className="v-me">
-						<div className="v-ph"><img id="fPh" src="/images/frederic-mallet.jpg" alt="Frédéric Mallet" /><svg viewBox="0 0 120 120"><circle id="ring14" cx="60" cy="60" r="57" pathLength="1" /></svg></div>
+						<div className="v-ph"><img id="fPh" src="/images/frederic-mallet.webp" alt="Frédéric Mallet" /><svg viewBox="0 0 120 120"><circle id="ring14" cx="60" cy="60" r="57" pathLength="1" /></svg></div>
 						<div className="v-mt">
 							<p className="vt-xl" data-w="" id="c14a">Moi, c'est Frédéric.</p>
 							<p className="v-ctaw" id="cta14"><span className="v-cta">Faites le diagnostic</span></p>

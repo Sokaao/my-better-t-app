@@ -3,7 +3,7 @@ export default function Moi() {
 	return (
 		<section className="sec" id="moi">
 			<div className="wrap me-grid">
-				<div className="me-ph rv"><img alt="Frédéric Mallet" width="340" height="340" src="/images/frederic-mallet.jpg" /></div>
+				<div className="me-ph rv"><img alt="Frédéric Mallet" width="340" height="340" src="/images/frederic-mallet.webp" /></div>
 				<div>
 					<span className="eyebrow">Qui je suis</span>
 					<h2 className="h2" data-words=""><span className="t2">Un seul interlocuteur.</span><span className="t2 acc">Celui qui fait le travail.</span></h2>
