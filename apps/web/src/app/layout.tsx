@@ -4,27 +4,22 @@ import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
 import Providers from "@/components/providers";
 
-// Polices des pages de l'ancien habillage (pages légales, rendez-vous) : chargées à la demande,
-// sans préchargement, pour ne pas ralentir le nouveau site qui ne s'en sert pas (Urbanist et Figtree).
 const archivo = Archivo({
 	variable: "--font-archivo",
 	weight: ["500", "600", "700", "800"],
 	subsets: ["latin"],
-	preload: false,
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
 	variable: "--font-ibm-plex-mono",
 	weight: ["400", "500", "600"],
 	subsets: ["latin"],
-	preload: false,
 });
 
 const inter = Inter({
 	variable: "--font-inter",
 	weight: ["400", "500", "600"],
 	subsets: ["latin"],
-	preload: false,
 });
 
 const siteUrl = "https://www.mysynapsis.fr";
