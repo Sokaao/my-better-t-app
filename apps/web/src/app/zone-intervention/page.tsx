@@ -80,7 +80,7 @@ export default function ZoneInterventionPage() {
 			<section className="sec">
 				<div className="wrap">
 					<h2 className="h2">Commencez par le diagnostic</h2>
-					<p className="lead">Quelques minutes pour voir où ça coince chez vous. Puis 30 minutes ensemble, en visio.</p>
+					<p className={`lead ${s.closingLead}`}>Quelques minutes pour voir où ça coince chez vous. Puis 30 minutes ensemble, en visio.</p>
 					<div className={s.actions}>
 						<Link href="/diagnostic" className="cta">Faire mon diagnostic</Link>
 						<Link href="/rendez-vous" className={s.textlink}>Réserver directement un rendez-vous</Link>

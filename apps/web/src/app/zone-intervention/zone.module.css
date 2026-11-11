@@ -68,3 +68,9 @@
 		grid-template-columns: minmax(0, 1fr);
 	}
 }
+
+/* Espace entre le titre et le paragraphe de la section finale */
+.closingLead {
+	margin-top: 16px;
+	max-width: 36rem;
+}
