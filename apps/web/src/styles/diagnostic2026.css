@@ -291,7 +291,8 @@ html:has(.d26) { overflow-x: clip; scroll-behavior: smooth; }
   .d26 .nd .tl { width: 32px; height: 32px; border-radius: 10px; font-size: 13px; }
   .d26 .nd-l { max-width: 66px; font-size: 10px; padding: 0 3px; }
 }
-.d26 .hub { position: absolute; width: 0; height: 0; z-index: 3; }
+/* Centre posé en CSS (mêmes valeurs que geo() dans diagnostic-player.js) : le cercle est à sa place dès le premier affichage. */
+.d26 .hub { position: absolute; left: 50%; top: calc(50% - 3px); width: 0; height: 0; z-index: 3; }
 .d26 .hub-in { position: absolute; left: 0; top: 0; width: 88px; height: 88px; transform: translate(-50%, -50%); border-radius: 50%; background: #fff; display: grid; place-content: center; justify-items: center; gap: 2px; box-shadow: 0 0 0 7px var(--halo), 0 14px 34px -14px rgb(232 80 15 / .55); }
 .d26 .hub-in svg { width: 30px; height: 30px; }
 .d26 .hub-in b { font: 800 11px/1.1 var(--font-display); text-align: center; }
@@ -300,6 +301,7 @@ html:has(.d26) { overflow-x: clip; scroll-behavior: smooth; }
 .d26 .hub-p.man { opacity: 1; color: var(--alert); border-color: var(--alert); }
 .d26 .hub-p.mid { opacity: 1; color: var(--orange-text); border-color: var(--orange); border-style: dashed; }
 @media (max-width: 899px) {
+  .d26 .hub { top: calc(50% + 8px); }
   .d26 .hub-in { width: 56px; height: 56px; gap: 0; box-shadow: 0 0 0 5px var(--halo), 0 10px 24px -12px rgb(232 80 15 / .55); }
   .d26 .hub-in svg { width: 20px; height: 20px; }
   .d26 .hub-in b { font-size: 8.5px; }
