@@ -346,7 +346,8 @@ export function initStory() {
     function push(el, t0, t1, s) { tl.fromTo(el, { scale: 1 }, { scale: s || 1.04, duration: Math.max(0.2, t1 - t0), ease: "sine.inOut", immediateRender: false }, t0); }
 
     // ===== 1. La question tapée, puis les outils éparpillés (fond clair) =====
-    tl.to("#vBlack", { opacity: 0, duration: 0.45, ease: "power2.out" }, 0);
+    // Fondu depuis le noir : seulement quand la vidéo reboucle (onRepeat plus bas). Au premier affichage,
+    // le cadre est clair d'emblée (sinon un carré noir précède la vidéo sur les téléphones lents).
     show("#s1", 0.05);
     pop("#prompt1", 0.15, { s: 0.92, e: "expo.out", d: 0.6 });
     hid("#caret1"); show("#caret1", T(0.05) - 0.05); hide("#caret1", T(1.85) + 0.35);
@@ -563,9 +564,9 @@ export function initStory() {
     // La boucle : remise à zéro des éléments animés (et d'eux seuls), puis les scènes
     var scenes = tl, used = new Set();
     scenes.getChildren(true, true, false).forEach(function (tw) { tw.targets().forEach(function (e) { used.add(e); }); });
-    var ANIM = CAND.filter(function (e) { return used.has(e); });
+    var ANIM = CAND.filter(function (e) { return used.has(e) && e.id !== "vBlack"; });
     story.__anim = ANIM;
-    tl = gsap.timeline({ repeat: -1, onUpdate: render });
+    tl = gsap.timeline({ repeat: -1, onUpdate: render, onRepeat: function () { gsap.fromTo("#vBlack", { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "power2.out" }); } });
     tl.set(ANIM, { clearProps: CLR }, 0).add(scenes, 0);
 
     // ---------- Partition : voix, musique et bruitages ----------
