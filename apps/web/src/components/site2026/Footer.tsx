@@ -7,6 +7,7 @@ export default function Footer() {
 			<div className="wrap">
 				<div className="col"><b>Synapsis</b><span>Frédéric Mallet, indépendant</span><span>contact@mysynapsis.fr</span></div>
 				<ul>
+					<li><Link href="/zone-intervention">Zone d'intervention</Link></li>
 					<li><Link href="/mentions-legales">Mentions légales</Link></li>
 					<li><Link href="/politique-confidentialite">Politique de confidentialité</Link></li>
 				</ul>

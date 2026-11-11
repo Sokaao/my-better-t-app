@@ -4,12 +4,12 @@ const siteUrl = "https://www.mysynapsis.fr";
 
 // Pages du nouveau site (refonte 2026). Les anciennes pages (/offres, /methode, /deroulement) redirigent vers l'accueil.
 export default function sitemap(): MetadataRoute.Sitemap {
-	const routes = ["", "/diagnostic", "/rendez-vous", "/mentions-legales", "/politique-confidentialite"];
+	const routes = ["", "/diagnostic", "/rendez-vous", "/zone-intervention", "/mentions-legales", "/politique-confidentialite"];
 
 	return routes.map((route) => ({
 		url: `${siteUrl}${route}`,
 		lastModified: new Date(),
 		changeFrequency: route === "" ? "weekly" : "monthly",
-		priority: route === "" ? 1 : route === "/diagnostic" || route === "/rendez-vous" ? 0.9 : 0.3,
+		priority: route === "" ? 1 : route === "/diagnostic" || route === "/rendez-vous" ? 0.9 : route === "/zone-intervention" ? 0.6 : 0.3,
 	}));
 }

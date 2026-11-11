@@ -1,0 +1,70 @@
+/* Page /zone-intervention : cartes, liste et questions. */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+}
+.card {
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: 18px;
+	padding: 24px;
+}
+.card h3 {
+	font-size: 20px;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	font-weight: 700;
+	margin-bottom: 12px;
+}
+.card p {
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--ink-2);
+}
+.card ul {
+	margin-top: 14px;
+	padding-left: 20px;
+	list-style: disc;
+	color: var(--ink-2);
+	line-height: 1.7;
+}
+.faq {
+	display: grid;
+	gap: 12px;
+	max-width: 52rem;
+}
+.faq details {
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	padding: 16px 20px;
+}
+.faq summary {
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 17px;
+	color: var(--ink);
+}
+.faq details p {
+	margin-top: 10px;
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--ink-2);
+}
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px 24px;
+	margin-top: 24px;
+}
+.textlink {
+	color: var(--orange-text);
+	font-weight: 600;
+}
+@media (max-width: 899px) {
+	.grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
