@@ -47,7 +47,7 @@ const professionalServiceLd = {
 		"Automatisation pour PME : je relie vos mails, votre fichier clients, votre agenda et vos factures autour d'une seule fiche client. Les relances partent au bon moment, et c'est vous qui validez.",
 	url: siteUrl,
 	image: `${siteUrl}/opengraph-image`,
-	telephone: "+33754083258",
+	telephone: "+33759951051",
 	email: "contact@mysynapsis.fr",
 	address: {
 		"@type": "PostalAddress",
