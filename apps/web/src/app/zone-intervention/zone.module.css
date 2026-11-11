@@ -74,3 +74,41 @@
 	margin-top: 16px;
 	max-width: 36rem;
 }
+
+/* Illustrations : carte (ordinateur / téléphone) et icônes des cartes */
+.map {
+	margin: 48px auto 0;
+	max-width: 960px;
+}
+.mapDesk {
+	display: block;
+}
+.mapMob {
+	display: none;
+}
+@media (max-width: 767px) {
+	.mapDesk {
+		display: none;
+	}
+	.mapMob {
+		display: block;
+	}
+	.map {
+		margin-top: 36px;
+	}
+}
+.map svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.icon {
+	width: 56px;
+	height: 56px;
+	margin-bottom: 16px;
+}
+.icon svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}

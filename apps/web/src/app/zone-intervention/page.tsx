@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Shell from "@/components/site2026/Shell";
 import s from "./zone.module.css";
+import { ZONE_MAP, ZONE_MAP_MOBILE, ICON_ROUTE, ICON_TRAIN, ICON_VISIO } from "./illustrations";
 
 // Page Zone d'intervention (SEO local), contenu validé par Fred le 11/11/2026 : déplacements à 2 h de route autour de Nîmes, grandes villes en train, visio partout.
 const title = "Automatisation PME Nîmes, Montpellier, Provence | Synapsis";
@@ -28,6 +29,7 @@ export default function ZoneInterventionPage() {
 					<div className="hero-cta">
 						<Link href="/diagnostic" className="cta big">Faire mon diagnostic</Link>
 					</div>
+					<div className={s.map}><div className={s.mapDesk} dangerouslySetInnerHTML={{ __html: ZONE_MAP }} /><div className={s.mapMob} dangerouslySetInnerHTML={{ __html: ZONE_MAP_MOBILE }} /></div>
 				</div>
 			</section>
 
@@ -38,6 +40,7 @@ export default function ZoneInterventionPage() {
 					</div>
 					<div className={s.grid}>
 						<div className={s.card}>
+							<div className={s.icon} dangerouslySetInnerHTML={{ __html: ICON_ROUTE }} />
 							<h3>Sur place, jusqu'à 2 h de route</h3>
 							<p>Je viens voir comment votre équipe travaille vraiment : qui recopie quoi, où l'information se perd, ce qui se relance encore à la main.</p>
 							<ul>
@@ -48,10 +51,12 @@ export default function ZoneInterventionPage() {
 							</ul>
 						</div>
 						<div className={s.card}>
+							<div className={s.icon} dangerouslySetInnerHTML={{ __html: ICON_TRAIN }} />
 							<h3>En train, dans les grandes villes</h3>
 							<p>Hors de cette zone, je me déplace en train dans les grandes villes pour les étapes où être sur place compte : le lancement, la formation de votre équipe.</p>
 						</div>
 						<div className={s.card}>
+							<div className={s.icon} dangerouslySetInnerHTML={{ __html: ICON_VISIO }} />
 							<h3>En visio, partout en France</h3>
 							<p>L'audit de 30 minutes se fait en visio, sur Google Meet. Pour la suite, on choisit ensemble : à distance, sur place, ou les deux.</p>
 						</div>
