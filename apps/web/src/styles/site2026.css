@@ -100,7 +100,7 @@ html:has(.s26) { overflow-x: clip; scroll-behavior: smooth; }
 @keyframes s26-rv { from { opacity: 0; transform: translateY(16px); } }
 @keyframes s26-draw { from { stroke-dashoffset: 1; } }
 .js .s26 .hero .h1 .w { opacity: 1; filter: none; transform: none; transition: none; animation: s26-w .55s var(--e-out) calc(var(--i) * 45ms) backwards; }
-.js .s26 .hero .sub { opacity: 1; transform: none; transition: none; animation: s26-rv .7s var(--e-out) var(--d, 0s) backwards; }
+.js .s26 .hero .rv { opacity: 1; transform: none; transition: none; animation: s26-rv .7s var(--e-out) var(--d, 0s) backwards; }
 .js .s26 .hero .mark-u path { stroke-dashoffset: 0; transition: none; animation: s26-draw .9s var(--e-out) .75s backwards; }
 .s26 .frame-wrap { position: relative; margin: clamp(44px, 2rem + 3vw, 72px) auto 0; max-width: var(--container); --hs: 1; }
 .s26 .frame-wrap::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -6%; height: 40%; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, rgb(232 80 15 / .28), rgb(232 80 15 / 0)); filter: blur(28px); }
@@ -458,7 +458,7 @@ html:not(.pin) .s26 .steps { display: none; }
   html:has(.s26) { scroll-behavior: auto; }
   .js .s26 [data-words] .w, .js .s26 .rv { opacity: 1; filter: none; transform: none; transition: none; }
   .s26 .mark-u path { transition: none; stroke-dashoffset: 0; }
-  .js .s26 .hero .h1 .w, .js .s26 .hero .sub, .js .s26 .hero .mark-u path { animation: none; }
+  .js .s26 .hero .h1 .w, .js .s26 .hero .rv, .js .s26 .hero .mark-u path { animation: none; }
   .s26 .chart-r, .s26 .ph-line { clip-path: none; transition: none; }
 }
 
