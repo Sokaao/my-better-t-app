@@ -69,9 +69,11 @@ const professionalServiceLd = {
 	founder: {
 		"@type": "Person",
 		name: "Frédéric Mallet",
+		sameAs: ["https://www.linkedin.com/in/frédéric-mallet-526426397/"],
 	},
+	// Profils officiels de l'entreprise (page LinkedIn complétée le 11/11/2026)
 	sameAs: [
-		"https://www.linkedin.com/in/frédéric-mallet-526426397/",
+		"https://www.linkedin.com/company/mysynapsis/",
 		"https://www.instagram.com/synaps_is/",
 	],
 };
