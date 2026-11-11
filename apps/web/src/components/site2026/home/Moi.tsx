@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // Section « 7. Un seul interlocuteur » de la page d'accueil (portée depuis la maquette validée).
 export default function Moi() {
 	return (
@@ -12,6 +14,7 @@ export default function Moi() {
 						<li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fdeee6" /><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="#c23f08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>Je relie les outils que vous avez déjà, autour d'un point central.</li>
 						<li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fdeee6" /><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="#c23f08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>Si votre organisation mérite d'être revue, je vous le dis.</li>
 						<li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fdeee6" /><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="#c23f08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>Vous validez chaque étape.</li>
+						<li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fdeee6" /><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="#c23f08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>Basé près de Nîmes, je me déplace <Link href="/zone-intervention" style={{ color: "var(--orange-text)", fontWeight: 600 }}>dans tout le Sud</Link>, et je travaille en visio partout en France.</li>
 					</ul>
 				</div>
 			</div>
