@@ -106,7 +106,7 @@ export default function ZoneInterventionPage() {
 					<div className={s.grid}>
 						<div className={s.card}>
 							<div className={s.icon} dangerouslySetInnerHTML={{ __html: ICON_ROUTE }} />
-							<h3>Sur place, jusqu'à 2 h de route de Nîmes</h3>
+							<h3>Sur place, jusqu'à 2 h de route de Nîmes</h3>
 							<p>Je viens voir comment votre équipe travaille vraiment : qui recopie quoi, où l'information se perd, ce qui se relance encore à la main.</p>
 							<ul>
 								<li>Nîmes, Alès et le Gard</li>
