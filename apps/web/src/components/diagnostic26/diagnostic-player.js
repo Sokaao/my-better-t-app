@@ -1086,8 +1086,10 @@ export function initDiagnostic(envoyer) {
       f.innerHTML = `<span class="tg">Aucun blocage majeur</span><h3>Vos flux principaux sont reliés</h3><p>Le rapport complet vous dit où regarder pour garder ce niveau quand l'équipe grandit.</p>`;
     }
     const fit = $("#fit"), t = S.ans.q1;
-    fit.hidden = !(t === 0 || t === 4);
-    fit.textContent = t === 0 ? "Mon offre est pensée pour les équipes de 10 à 49 personnes. Pour une équipe plus petite, on regarde ensemble pendant l'audit si elle vous convient vraiment." : "Mon offre est pensée pour les équipes de 10 à 49 personnes. Au-delà, on regarde ensemble si je suis la bonne personne pour vous.";
+    // Cible : PME de 5 à 49 personnes (décision de Fred du 11/11/2026). « Moins de 10 » est dans la cible :
+    // seul « 50 et plus » reçoit un message.
+    fit.hidden = t !== 4;
+    fit.textContent = "Mon offre est pensée pour les équipes de 5 à 49 personnes. Au-delà, on regarde ensemble si je suis la bonne personne pour vous.";
     buildReport(s, r);
   }
   function revealResult() {

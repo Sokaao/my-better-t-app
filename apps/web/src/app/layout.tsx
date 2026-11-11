@@ -8,7 +8,7 @@ import Providers from "@/components/providers";
 
 const siteUrl = "https://www.mysynapsis.fr";
 const defaultTitle = "Synapsis · Arrêtez de faire le facteur entre vos outils";
-const defaultDescription = "Je centralise les outils des PME de 10 à 49 salariés autour d'un point central : la fiche client et le pilotage. Les relances partent au bon moment, et c'est vous qui validez.";
+const defaultDescription = "Je centralise les outils des PME de 5 à 49 salariés autour d'un point central : la fiche client et le pilotage. Les relances partent au bon moment, et c'est vous qui validez.";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
