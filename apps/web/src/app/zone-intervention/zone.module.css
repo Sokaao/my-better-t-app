@@ -75,33 +75,7 @@
 	max-width: 36rem;
 }
 
-/* Illustrations : carte (ordinateur / téléphone) et icônes des cartes */
-.map {
-	margin: 48px auto 0;
-	max-width: 960px;
-}
-.mapDesk {
-	display: block;
-}
-.mapMob {
-	display: none;
-}
-@media (max-width: 767px) {
-	.mapDesk {
-		display: none;
-	}
-	.mapMob {
-		display: block;
-	}
-	.map {
-		margin-top: 36px;
-	}
-}
-.map svg {
-	display: block;
-	width: 100%;
-	height: auto;
-}
+/* Illustrations : icônes des cartes */
 .icon {
 	width: 56px;
 	height: 56px;
@@ -111,4 +85,103 @@
 	display: block;
 	width: 100%;
 	height: 100%;
+}
+
+/* Carrousel de villes (défilement continu, boucle sans saut grâce à la liste en double) */
+.villes {
+	margin: 56px calc(50% - 50vw) 0;
+	overflow: hidden;
+	-webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+	mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.rail {
+	display: flex;
+	width: max-content;
+	animation: defile 60s linear infinite;
+}
+.villes:hover .rail {
+	animation-play-state: paused;
+}
+.rail ul {
+	display: flex;
+	gap: 20px;
+	padding: 8px 10px 8px;
+	margin: 0;
+	list-style: none;
+}
+@keyframes defile {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+.ville figure {
+	margin: 0;
+	width: 280px;
+}
+.ville img {
+	display: block;
+	width: 280px;
+	height: 187px;
+	object-fit: cover;
+	border-radius: 20px;
+	box-shadow: 0 18px 40px -26px rgb(15 23 42 / 0.45);
+}
+.ville figcaption {
+	margin-top: 12px;
+	text-align: left;
+	padding-left: 4px;
+}
+.ville figcaption b {
+	display: block;
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 17px;
+	color: var(--ink);
+}
+.ville figcaption span {
+	font-size: 13.5px;
+	color: var(--ink-3);
+}
+@media (max-width: 767px) {
+	.ville figure {
+		width: 220px;
+	}
+	.ville img {
+		width: 220px;
+		height: 147px;
+	}
+}
+.credits {
+	margin-top: 18px;
+	font-size: 12.5px;
+	color: var(--ink-3);
+	text-align: center;
+}
+.credits summary {
+	cursor: pointer;
+}
+.credits ul {
+	max-width: 640px;
+	margin: 10px auto 0;
+	padding: 0;
+	list-style: none;
+	text-align: left;
+}
+.credits li {
+	line-height: 1.7;
+}
+.credits a {
+	color: inherit;
+	text-decoration: underline;
+}
+@media (prefers-reduced-motion: reduce) {
+	.rail {
+		animation: none;
+	}
+	.villes {
+		overflow-x: auto;
+	}
 }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Shell from "@/components/site2026/Shell";
 import s from "./zone.module.css";
-import { ZONE_MAP, ZONE_MAP_MOBILE, ICON_ROUTE, ICON_TRAIN, ICON_VISIO } from "./illustrations";
+import { VILLES } from "./villes";
+import { ICON_ROUTE, ICON_TRAIN, ICON_VISIO } from "./illustrations";
 
 // Page Zone d'intervention (SEO local), contenu validé par Fred le 11/11/2026 : déplacements à 2 h de route autour de Nîmes, grandes villes en train, visio partout.
 const title = "Automatisation PME Nîmes, Montpellier, Provence | Synapsis";
@@ -29,7 +30,40 @@ export default function ZoneInterventionPage() {
 					<div className="hero-cta">
 						<Link href="/diagnostic" className="cta big">Faire mon diagnostic</Link>
 					</div>
-					<div className={s.map}><div className={s.mapDesk} dangerouslySetInnerHTML={{ __html: ZONE_MAP }} /><div className={s.mapMob} dangerouslySetInnerHTML={{ __html: ZONE_MAP_MOBILE }} /></div>
+					<div className={s.villes} aria-label="Villes où j'interviens sur place" role="region">
+						<div className={s.rail}>
+							<ul>
+								{VILLES.map((v) => (
+									<li key={v.slug} className={s.ville}>
+										<figure>
+											<img src={`/images/villes/${v.slug}.webp`} alt={v.ville} width={560} height={374} loading="lazy" decoding="async" />
+											<figcaption><b>{v.ville}</b><span>{v.dep}</span></figcaption>
+										</figure>
+									</li>
+								))}
+							</ul>
+							<ul aria-hidden="true">
+								{VILLES.map((v) => (
+									<li key={v.slug} className={s.ville}>
+										<figure>
+											<img src={`/images/villes/${v.slug}.webp`} alt="" width={560} height={374} loading="lazy" decoding="async" />
+											<figcaption><b>{v.ville}</b><span>{v.dep}</span></figcaption>
+										</figure>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+					<details className={s.credits}>
+						<summary>Crédits photos</summary>
+						<ul>
+							{VILLES.map((v) => (
+								<li key={v.slug}>
+									{v.ville} : {v.auteur}, {v.licence}, <a href={v.page} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+								</li>
+							))}
+						</ul>
+					</details>
 				</div>
 			</section>
 
