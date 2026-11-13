@@ -51,6 +51,7 @@ const globalLd = graph(
 		name: "Synapsis",
 		alternateName: "mysynapsis.fr",
 		url: SITE_URL,
+		image: `${SITE_URL}/opengraph-image`,
 		logo: {
 			"@type": "ImageObject",
 			url: `${SITE_URL}/logo-synapsis-512.png`,
@@ -78,6 +79,7 @@ const globalLd = graph(
 		name: "Synapsis",
 		parentOrganization: { "@id": orgId },
 		url: SITE_URL,
+		image: `${SITE_URL}/opengraph-image`,
 		telephone: CONTACT.phoneE164,
 		email: CONTACT.email,
 		description: "Je centralise vos mails, votre fichier clients, votre agenda et vos factures.",

@@ -91,6 +91,10 @@ export default function ZoneInterventionPage() {
 						<li>Les relances partent seules, au bon moment, et vous voyez ce qui coince avant votre client.</li>
 						<li>Vos outils restent les vôtres : Outlook ou Gmail, HubSpot, Pennylane, Qonto, Excel, WhatsApp.</li>
 					</ul>
+					<p className={s.closingLead}>
+						Vous dirigez un organisme de formation ?{" "}
+						<Link href="/organismes-de-formation" className={s.textlink}>Voir comment je centralise le suivi des stagiaires</Link>
+					</p>
 				</div>
 			</section>
 

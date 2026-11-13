@@ -4,7 +4,7 @@ import { breadcrumbLd, graph } from "@/components/seo/schemas";
 
 export const metadata: Metadata = {
 	title: "Politique de Confidentialité",
-	description: "Comment Synapsis collecte, utilise et protège vos données personnelles, conformément au RGPD.",
+	description: "Comment Synapsis collecte, utilise et protège vos données personnelles (diagnostic, rendez-vous, contact), et comment exercer vos droits RGPD.",
 	alternates: {
 		canonical: "/politique-confidentialite",
 	},
