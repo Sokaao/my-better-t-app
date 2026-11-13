@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
 import "@/styles/fonts.css";
 import Providers from "@/components/providers";
+import Provenance from "@/components/Provenance";
 import JsonLd from "@/components/seo/JsonLd";
 import { graph } from "@/components/seo/schemas";
 import { CONTACT, SITE_URL } from "@/lib/contact";
@@ -118,6 +119,7 @@ export default function RootLayout({
 					{children}
 				</Providers>
 				<Analytics />
+				<Provenance />
 			</body>
 		</html>
 	);
