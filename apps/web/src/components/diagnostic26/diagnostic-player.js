@@ -1255,6 +1255,22 @@ export function initDiagnostic(envoyer) {
   const CONSENT_TXT = "J'accepte que Synapsis utilise ces informations pour m'envoyer mon rapport et revenir vers moi au sujet de ce diagnostic. Je peux demander leur suppression à tout moment.";
   const UTM = {};
   try { const sp = new URLSearchParams(location.search); ["source", "medium", "campaign", "content", "term"].forEach(k => { const v = sp.get("utm_" + k); if (v) UTM[k] = v.slice(0, 200); }); } catch (e) { /* adresse illisible : pas d'UTM */ }
+  /* Sans UTM, la provenance vient du site précédent (document.referrer, qui reste celui de l'arrivée
+     pendant la navigation interne de Next). Même convention que Google Analytics : google / organic.
+     Le rapport SEO du lundi compte ainsi les diagnostics venus de Google. Rien n'est stocké côté navigateur. */
+  try {
+    if (!UTM.source && document.referrer) {
+      const hote = new URL(document.referrer).hostname.replace(/^www\./, "").toLowerCase();
+      if (hote && !hote.endsWith("mysynapsis.fr")) {
+        const MOTEURS = { google: /(^|\.)google\./, bing: /(^|\.)bing\.com$/, duckduckgo: /(^|\.)duckduckgo\.com$/, qwant: /(^|\.)qwant\.com$/, ecosia: /(^|\.)ecosia\.org$/, yahoo: /(^|\.)yahoo\./ };
+        const RESEAUX = { linkedin: /(^|\.)(linkedin\.com|lnkd\.in)$/, facebook: /(^|\.)(facebook\.com|fb\.com)$/, instagram: /(^|\.)instagram\.com$/, x: /(^|\.)(t\.co|x\.com|twitter\.com)$/, youtube: /(^|\.)youtube\.com$/ };
+        const trouve = (liste) => Object.keys(liste).find(k => liste[k].test(hote));
+        const moteur = trouve(MOTEURS), reseau = moteur ? null : trouve(RESEAUX);
+        UTM.source = (moteur || reseau || hote).slice(0, 200);
+        UTM.medium = moteur ? "organic" : reseau ? "social" : "referral";
+      }
+    }
+  } catch (e) { /* provenance illisible : le diagnostic part sans */ }
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)));
   const premier = () => { const r = ranked(), pr = Q[7].pr[S.ans.q8 ?? 0]; return deficit(pr) > 0 ? pr : (r[0] || pr); };
 
