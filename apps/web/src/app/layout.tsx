@@ -3,10 +3,13 @@ import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
 import "@/styles/fonts.css";
 import Providers from "@/components/providers";
+import JsonLd from "@/components/seo/JsonLd";
+import { graph } from "@/components/seo/schemas";
+import { CONTACT, SITE_URL } from "@/lib/contact";
 
 // Polices : embarquées dans le site (src/styles/fonts.css), plus téléchargées à la construction.
 
-const siteUrl = "https://www.mysynapsis.fr";
+const siteUrl = SITE_URL;
 const defaultTitle = "Synapsis · Arrêtez de faire le facteur entre vos outils";
 const defaultDescription = "Je centralise les outils des PME de 5 à 49 salariés autour d'un point central : la fiche client et le pilotage. Les relances partent au bon moment, et c'est vous qui validez.";
 
@@ -35,58 +38,68 @@ export const metadata: Metadata = {
 	},
 };
 
-// Données structurées lues par Google et les moteurs d'IA. Zone desservie alignée sur la fiche
-// Google Business Profile (11/11/2026) : Sud de la France en priorité, le reste de la France à distance.
-// L'adresse reste celle du siège (mentions légales) ; elle est masquée sur la fiche Google.
-const professionalServiceLd = {
-	"@context": "https://schema.org",
-	"@type": "ProfessionalService",
-	"@id": `${siteUrl}/#entreprise`,
-	name: "Synapsis",
-	description:
-		"Automatisation pour PME : je relie vos mails, votre fichier clients, votre agenda et vos factures autour d'une seule fiche client. Les relances partent au bon moment, et c'est vous qui validez.",
-	url: siteUrl,
-	image: `${siteUrl}/opengraph-image`,
-	telephone: "+33759951051",
-	email: "contact@mysynapsis.fr",
-	address: {
-		"@type": "PostalAddress",
-		streetAddress: "1 Impasse des frênes",
-		postalCode: "15260",
-		addressLocality: "Neuvéglise-sur-Truyère",
-		addressCountry: "FR",
-	},
-	areaServed: [
-		{ "@type": "AdministrativeArea", name: "Occitanie" },
-		{ "@type": "AdministrativeArea", name: "Provence-Alpes-Côte d'Azur" },
-		{ "@type": "City", name: "Nîmes" },
-		{ "@type": "City", name: "Montpellier" },
-		{ "@type": "City", name: "Avignon" },
-		{ "@type": "City", name: "Marseille" },
-		{ "@type": "Country", name: "France" },
-	],
-	knowsAbout: ["Automatisation pour PME", "Relances clients automatiques", "Connexion d'outils métier", "n8n", "Assistant IA"],
-	founder: {
-		"@type": "Person",
-		name: "Frédéric Mallet",
-		sameAs: ["https://www.linkedin.com/in/mysynapsis/", "https://www.malt.fr/profile/fredericmallet"],
-	},
-	// Profils officiels de l'entreprise (page LinkedIn complétée le 11/11/2026)
-	sameAs: [
-		"https://www.linkedin.com/company/mysynapsis/",
-		"https://www.instagram.com/synaps_is/",
-	],
-};
+// Données structurées globales (un seul @graph), lues par Google et les moteurs d'IA.
+// Toutes les URL sont sous www : mysynapsis.fr redirige en 308 vers www.mysynapsis.fr.
+// Volontairement absents : adresse postale (masquée sur la fiche Google), priceRange, avis et notes
+// (aucun avis affiché sur le site).
+const orgId = `${SITE_URL}/#organization`;
 
-// Nom du site affiché par Google au-dessus du titre dans les résultats
-const websiteLd = {
-	"@context": "https://schema.org",
-	"@type": "WebSite",
-	name: "Synapsis",
-	alternateName: "mysynapsis",
-	url: `${siteUrl}/`,
-	publisher: { "@id": `${siteUrl}/#entreprise` },
-};
+const globalLd = graph(
+	{
+		"@type": "Organization",
+		"@id": orgId,
+		name: "Synapsis",
+		alternateName: "mysynapsis.fr",
+		url: SITE_URL,
+		logo: {
+			"@type": "ImageObject",
+			url: `${SITE_URL}/logo-synapsis-512.png`,
+			width: 512,
+			height: 512,
+		},
+		founder: {
+			"@type": "Person",
+			name: "Frédéric Mallet",
+			sameAs: ["https://www.linkedin.com/in/mysynapsis"],
+		},
+		email: CONTACT.email,
+		telephone: CONTACT.phoneE164,
+		sameAs: [
+			"https://g.page/r/CbHQBwt64zZHEBM",
+			"https://www.pagesjaunes.fr/pros/65627804",
+			"https://www.malt.fr/profile/fredericmallet",
+			"https://www.linkedin.com/company/116059554/",
+		],
+	},
+	{
+		// Zone desservie alignée sur la fiche Google Business Profile.
+		"@type": "ProfessionalService",
+		"@id": `${SITE_URL}/#service`,
+		name: "Synapsis",
+		parentOrganization: { "@id": orgId },
+		url: SITE_URL,
+		telephone: CONTACT.phoneE164,
+		email: CONTACT.email,
+		description: "Je centralise vos mails, votre fichier clients, votre agenda et vos factures.",
+		areaServed: [
+			{ "@type": "City", name: "Nîmes" },
+			{ "@type": "City", name: "Montpellier" },
+			{ "@type": "AdministrativeArea", name: "Gard" },
+			{ "@type": "AdministrativeArea", name: "Hérault" },
+			{ "@type": "AdministrativeArea", name: "Occitanie" },
+			{ "@type": "Country", name: "France" },
+		],
+	},
+	{
+		// Nom du site affiché par Google au-dessus du titre dans les résultats.
+		"@type": "WebSite",
+		"@id": `${SITE_URL}/#website`,
+		url: `${SITE_URL}/`,
+		name: "Synapsis",
+		inLanguage: "fr-FR",
+		publisher: { "@id": orgId },
+	},
+);
 
 export default function RootLayout({
 	children,
@@ -98,14 +111,7 @@ export default function RootLayout({
 			<body
 				className="antialiased"
 			>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceLd) }}
-				/>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
-				/>
+				<JsonLd data={globalLd} />
 				<Providers>
 					{children}
 				</Providers>

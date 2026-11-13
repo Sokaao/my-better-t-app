@@ -10,6 +10,9 @@ import HomeClient from "@/components/site2026/home/HomeClient";
 import Moi from "@/components/site2026/home/Moi";
 import Pilotage from "@/components/site2026/home/Pilotage";
 import Process from "@/components/site2026/home/Process";
+import { HOME_FAQ } from "@/components/site2026/home/faq-data";
+import JsonLd from "@/components/seo/JsonLd";
+import { faqPageLd, graph } from "@/components/seo/schemas";
 
 export const metadata: Metadata = {
 	// Titre et description pour Google (choisis par Fred le 10/11/2026) : l'expression recherchée en tête,
@@ -24,6 +27,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
 	return (
 		<>
+			<JsonLd data={graph(faqPageLd("/", HOME_FAQ))} />
 			<Hero />
 			<Douleurs />
 			<Fil />

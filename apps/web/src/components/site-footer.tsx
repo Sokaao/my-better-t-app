@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SynapsisMark from "@/components/synapsis-mark";
+import { CONTACT } from "@/lib/contact";
 
 export default function SiteFooter() {
 	return (
@@ -17,8 +18,8 @@ export default function SiteFooter() {
 					</div>
 					<div className="s-foot-col">
 						<span className="h">Contact</span>
-						<a href="mailto:contact@mysynapsis.fr">contact@mysynapsis.fr</a>
-						<a href="tel:+33759951051">07 59 95 10 51</a>
+						<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+						<a href={CONTACT.phoneHref}>{CONTACT.phoneDisplay}</a>
 					</div>
 					<div className="s-foot-col">
 						<span className="h">Réseaux</span>

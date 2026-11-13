@@ -4,6 +4,7 @@ import Link from "next/link";
 import SiteNavV2 from "@/components/site/SiteNavV2";
 import SiteFooter from "@/components/site/SiteFooter";
 import s from "@/styles/site.module.css";
+import { CONTACT } from "@/lib/contact";
 
 // Page d'arrivée après la signature d'un devis sur Documenso. Elle est la même pour
 // tous les clients : aucun nom ni montant ne transite par l'URL. Hors index, hors
@@ -222,8 +223,8 @@ export default function MerciSignature() {
 								</p>
 
 								<div className={s.heroCta}>
-									<a href="tel:+33754083258" className={`${s.btn} ${s.btnPrimary}`}>
-										Appeler le 07 54 08 32 58
+									<a href={CONTACT.phoneHref} className={`${s.btn} ${s.btnPrimary}`}>
+										Appeler le {CONTACT.phoneDisplay}
 									</a>
 									<a href="mailto:contact@mysynapsis.fr" className={`${s.btn} ${s.btnGhost}`}>
 										Écrire à contact@mysynapsis.fr

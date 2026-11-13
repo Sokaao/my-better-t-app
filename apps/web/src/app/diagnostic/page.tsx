@@ -4,6 +4,8 @@ import DiagnosticMarkup from "@/components/diagnostic26/DiagnosticMarkup";
 import { preload } from "react-dom";
 import { PRELOAD_FONTS } from "@/components/site2026/fonts";
 import "@/styles/diagnostic2026.css";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbLd, graph } from "@/components/seo/schemas";
 
 export const metadata: Metadata = {
 	// Moins de 60 caractères pour ne pas être coupé par Google (choisi par Fred le 11/11/2026).
@@ -23,9 +25,12 @@ export const metadata: Metadata = {
 export default function DiagnosticPage() {
 	for (const href of PRELOAD_FONTS) preload(href, { as: "font", type: "font/woff2", crossOrigin: "" });
 	return (
-		<div className="d26">
-			<DiagnosticMarkup />
-			<DiagnosticClient />
-		</div>
+		<>
+			<JsonLd data={graph(breadcrumbLd("Diagnostic gratuit", "/diagnostic"))} />
+			<div className="d26">
+				<DiagnosticMarkup />
+				<DiagnosticClient />
+			</div>
+		</>
 	);
 }

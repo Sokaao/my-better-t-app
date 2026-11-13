@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import SiteNav from "@/components/site-nav";
 import SiteFooter from "@/components/site-footer";
+import { CONTACT } from "@/lib/contact";
 
 export default function MentionsLegales() {
 	return (
@@ -29,7 +30,7 @@ export default function MentionsLegales() {
 							<p><strong>Siège social :</strong> 1 Impasse des frênes <br />15260 Neuvéglise-Sur-Truyère<br />France</p>
 							<p><strong>SIRET :</strong> 994 245 355 00015</p>
 							<p><strong>Email :</strong> <a href="mailto:contact@mysynapsis.fr">contact@mysynapsis.fr</a></p>
-							<p><strong>Téléphone :</strong> 07 59 95 10 51</p>
+							<p><strong>Téléphone :</strong> <a href={CONTACT.phoneHref}>{CONTACT.phoneDisplay}</a></p>
 						</div>
 
 						<div>

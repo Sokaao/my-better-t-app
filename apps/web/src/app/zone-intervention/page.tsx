@@ -4,6 +4,8 @@ import Shell from "@/components/site2026/Shell";
 import s from "./zone.module.css";
 import { VILLES } from "./villes";
 import { ICON_ROUTE, ICON_TRAIN, ICON_VISIO } from "./illustrations";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbLd, faqPageLd, graph } from "@/components/seo/schemas";
 
 // Page Zone d'intervention (SEO local), contenu validé par Fred le 11/11/2026 : déplacements à 2 h de route autour de Nîmes, grandes villes en train, visio partout.
 const title = "Automatisation PME Nîmes, Montpellier, Provence | Synapsis";
@@ -19,23 +21,17 @@ export const metadata: Metadata = {
 
 // Questions de la page (texte affiché et données structurées FAQPage : mêmes chaînes).
 const FAQ = [
-	{ q: "Faut-il être dans le Sud pour travailler avec vous ?", r: "Non. Une grande partie du travail se fait à distance : vos outils sont en ligne, et on avance en visio. Le déplacement sert quand voir votre équipe au travail change le résultat." },
-	{ q: "Comment se passe le premier rendez-vous ?", r: "Toujours en visio, 30 minutes. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier." },
-	{ q: "Vous déplacez-vous à Montpellier, Avignon ou Marseille ?", r: "Oui. Ces villes sont à moins de 2 heures de route de Nîmes, comme Alès, Béziers, Arles ou Aix-en-Provence. Je peux venir dans vos locaux, en particulier pour comprendre comment l'information circule dans votre équipe." },
-	{ q: "Quels outils reliez-vous ?", r: "Ceux que vous utilisez déjà : votre messagerie (Outlook, Gmail), votre fichier clients (HubSpot, Excel), votre facturation (Pennylane), votre banque (Qonto), WhatsApp… Vous ne changez pas d'outils : ils travaillent enfin ensemble." },
-	{ q: "Combien de temps faut-il pour que tout fonctionne ?", r: "Comptez environ un mois entre l'audit et un système qui tourne, sans changer d'outils. Le calendrier exact est fixé avec vous pendant l'audit." },
+	{ q: "Faut-il être dans le Sud pour travailler avec vous ?", a: "Non. Une grande partie du travail se fait à distance : vos outils sont en ligne, et on avance en visio. Le déplacement sert quand voir votre équipe au travail change le résultat." },
+	{ q: "Comment se passe le premier rendez-vous ?", a: "Toujours en visio, 30 minutes. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier." },
+	{ q: "Vous déplacez-vous à Montpellier, Avignon ou Marseille ?", a: "Oui. Ces villes sont à moins de 2 heures de route de Nîmes, comme Alès, Béziers, Arles ou Aix-en-Provence. Je peux venir dans vos locaux, en particulier pour comprendre comment l'information circule dans votre équipe." },
+	{ q: "Quels outils reliez-vous ?", a: "Ceux que vous utilisez déjà : votre messagerie (Outlook, Gmail), votre fichier clients (HubSpot, Excel), votre facturation (Pennylane), votre banque (Qonto), WhatsApp… Vous ne changez pas d'outils : ils travaillent enfin ensemble." },
+	{ q: "Combien de temps faut-il pour que tout fonctionne ?", a: "Comptez environ un mois entre l'audit et un système qui tourne, sans changer d'outils. Le calendrier exact est fixé avec vous pendant l'audit." },
 ];
-
-const faqLd = {
-	"@context": "https://schema.org",
-	"@type": "FAQPage",
-	mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.r } })),
-};
 
 export default function ZoneInterventionPage() {
 	return (
 		<Shell>
-			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+			<JsonLd data={graph(breadcrumbLd("Zone d'intervention", "/zone-intervention"), faqPageLd("/zone-intervention", FAQ))} />
 			<section className="hero">
 				<div className="wrap">
 					<p className="eyebrow">Zone d'intervention</p>
@@ -135,18 +131,10 @@ export default function ZoneInterventionPage() {
 						<h2 className="h2">Les questions qu'on me pose</h2>
 					</div>
 					<div className={s.faq}>
-						<details>
-							<summary>Faut-il être dans le Sud pour travailler avec vous ?</summary>
-							<p>Non. Une grande partie du travail se fait à distance : vos outils sont en ligne, et on avance en visio. Le déplacement sert quand voir votre équipe au travail change le résultat.</p>
-						</details>
-						<details>
-							<summary>Comment se passe le premier rendez-vous ?</summary>
-							<p>Toujours en visio, 30 minutes. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier.</p>
-						</details>
-						{FAQ.slice(2).map((q) => (
+						{FAQ.map((q) => (
 							<details key={q.q}>
 								<summary>{q.q}</summary>
-								<p>{q.r}</p>
+								<p>{q.a}</p>
 							</details>
 						))}
 					</div>
