@@ -7,10 +7,10 @@ import { ICON_ROUTE, ICON_TRAIN, ICON_VISIO } from "./illustrations";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbLd, faqPageLd, graph } from "@/components/seo/schemas";
 
-// Page Zone d'intervention (SEO local), contenu validé par Fred le 11/11/2026 : déplacements à 2 h de route autour de Nîmes, grandes villes en train, visio partout.
-const title = "Automatisation PME Nîmes, Montpellier, Provence | Synapsis";
+// Page Zone d'intervention (SEO local). Contenu validé par Fred le 11/11/2026 ; repositionnée sur « agence IA Nîmes » le 17/11/2026 avec l'accord de Fred (mot « agence » autorisé ici, en précisant qu'il y a un seul interlocuteur).
+const title = "Agence IA Nîmes : automatisation pour PME | Synapsis";
 const description =
-	"Sur place jusqu'à 2 h de route autour de Nîmes, en train dans les grandes villes, en visio partout en France. Automatisation pour PME de 5 à 49 salariés.";
+	"Agence IA et automatisation près de Nîmes, un seul interlocuteur. Sur place jusqu'à 2 h de route, en visio partout en France. Pour les PME de 5 à 49 salariés.";
 
 export const metadata: Metadata = {
 	title: { absolute: title },
@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 // Questions de la page (texte affiché et données structurées FAQPage : mêmes chaînes).
 const FAQ = [
+	{ q: "Synapsis est-elle une agence IA ?", a: "Oui, une agence IA à taille humaine, basée près de Nîmes. Vous avez un seul interlocuteur, moi, Frédéric Mallet, de l'audit à la mise en service : personne entre vous et celui qui construit votre système." },
 	{ q: "Faut-il être dans le Sud pour travailler avec vous ?", a: "Non. Une grande partie du travail se fait à distance : vos outils sont en ligne, et on avance en visio. Le déplacement sert quand voir votre équipe au travail change le résultat." },
 	{ q: "Comment se passe le premier rendez-vous ?", a: "Toujours en visio, 30 minutes. On part de vos outils actuels, et vous repartez avec un plan complet : vos points forts, vos points faibles, et ce qu'on relie en premier." },
 	{ q: "Vous déplacez-vous à Montpellier, Avignon ou Marseille ?", a: "Oui. Ces villes sont à moins de 2 heures de route de Nîmes, comme Alès, Béziers, Arles ou Aix-en-Provence. Je peux venir dans vos locaux, en particulier pour comprendre comment l'information circule dans votre équipe." },
@@ -34,10 +35,10 @@ export default function ZoneInterventionPage() {
 			<JsonLd data={graph(breadcrumbLd("Zone d'intervention", "/zone-intervention"), faqPageLd("/zone-intervention", FAQ))} />
 			<section className="hero">
 				<div className="wrap">
-					<p className="eyebrow">Zone d'intervention</p>
-					<h1 className="h1">Automatisation pour PME à Nîmes, Montpellier et dans tout le Sud.</h1>
+					<p className="eyebrow">Nîmes, le Gard et tout le Sud</p>
+					<h1 className="h1">Agence IA et automatisation pour PME à Nîmes et dans tout le Sud.</h1>
 					<p className="sub">
-						Vos outils ne se parlent pas, et votre équipe recopie les mêmes informations d'un logiciel à l'autre ? Je les relie, sans vous en faire changer. Basé près de Nîmes, je viens dans vos locaux jusqu'à 2 heures de route, et je travaille en visio avec les PME de toute la France.
+						Vos outils ne se parlent pas, et votre équipe recopie les mêmes informations d'un logiciel à l'autre ? Je les relie, sans vous en faire changer, et un assistant IA prépare le travail à votre place. Basé près de Nîmes, je viens dans vos locaux jusqu'à 2 heures de route, et je travaille en visio avec les PME de toute la France.
 					</p>
 					<div className="hero-cta">
 						<Link href="/diagnostic" className="cta big">Faire mon diagnostic</Link>
@@ -95,6 +96,21 @@ export default function ZoneInterventionPage() {
 						Vous dirigez un organisme de formation ?{" "}
 						<Link href="/organismes-de-formation" className={s.textlink}>Voir comment je centralise le suivi des stagiaires</Link>
 					</p>
+				</div>
+			</section>
+
+			<section className="sec">
+				<div className="wrap">
+					<div className="sec-head">
+						<p className="eyebrow">L'IA dans votre PME</p>
+						<h2 className="h2">Ce que l'IA change, concrètement.</h2>
+					</div>
+					<p className={`lead ${s.closingLead}`}>L'IA ne remplace ni vos outils ni votre équipe. Branchée sur vos outils, elle fait le travail de préparation qui vous prend des heures chaque semaine.</p>
+					<ul className={s.points}>
+						<li>Elle trie les demandes qui arrivent, par mail, formulaire ou WhatsApp, et signale les urgentes.</li>
+						<li>Elle rédige les relances et prépare les réponses avec les informations de votre fichier clients.</li>
+						<li>Elle n'envoie rien sans votre clic : c'est un assistant, pas un pilote automatique.</li>
+					</ul>
 				</div>
 			</section>
 
