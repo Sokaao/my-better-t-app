@@ -4,8 +4,12 @@
 	"description": "Quand relancer un devis, combien de fois, quoi écrire : une méthode simple, 3 modèles prêts à copier et de quoi ne plus jamais oublier une relance.",
 	"h1": "Relance de devis sans réponse : la méthode pour ne plus en laisser filer",
 	"intro": [
-		"Un devis sans réponse se relance trois fois au maximum : un premier contact deux ou trois jours ouvrés après l'envoi, un deuxième une semaine plus tard, puis une dernière relance qui ferme poliment la porte. Chaque message est court et se termine par une question à laquelle le client peut répondre en une ligne. Pour ne plus en oublier, notez la date de la première relance le jour même où le devis part, puis confiez ce rappel à vos outils.",
 		"Le plus dur n'est pas d'écrire la relance, c'est d'y penser chaque semaine. Voici la méthode que je conseille aux dirigeants de PME, applicable dès lundi, avec ou sans logiciel."
+	],
+	"summary": [
+		"**Trois relances au maximum** : deux ou trois jours ouvrés après l'envoi, une semaine plus tard, puis une dernière qui ferme poliment la porte.",
+		"**Des messages courts**, qui se terminent par une question à laquelle le client peut répondre en une ligne.",
+		"**Notez la date de la première relance** le jour même où le devis part, puis confiez ce rappel à vos outils."
 	],
 	"published": "2026-11-18",
 	"updated": "2026-11-18",
@@ -31,6 +35,10 @@
 				"**Un point le gêne et il n'ose pas le dire.** Le prix, le délai, une ligne qu'il ne comprend pas.",
 				"**Le mail s'est perdu.** Courrier indésirable, mauvaise adresse, pièce jointe bloquée."
 			]
+		},
+		{
+			"type": "exergue",
+			"text": "Un silence n'est pas un refus."
 		},
 		{
 			"type": "p",
@@ -159,6 +167,10 @@
 			"text": "C'est là que la plupart des affaires se perdent. Pas par manque de savoir-faire, mais parce que personne n'a pensé au devis du 3 du mois."
 		},
 		{
+			"type": "exergue",
+			"text": "Le plus dur n'est pas d'écrire la relance, c'est d'y penser chaque semaine."
+		},
+		{
 			"type": "h3",
 			"text": "Commencez par un tableau"
 		},
@@ -225,6 +237,10 @@
 			"type": "h2",
 			"text": "Ce que l'IA peut faire, et ce qu'elle ne doit pas faire seule",
 			"id": "ce-que-l-ia-peut-faire-et-ce-qu-elle-ne-doit-pas-faire-seule"
+		},
+		{
+			"type": "exergue",
+			"text": "L'assistant prépare, vous validez d'un clic."
 		},
 		{
 			"type": "p",

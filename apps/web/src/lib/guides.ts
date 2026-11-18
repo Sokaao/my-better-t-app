@@ -39,7 +39,8 @@ export type Block =
 	| { type: "message"; label: string; subject?: string; lines: string[] } // modèle de mail à copier
 	| { type: "note"; text: Inline }
 	| { type: "illus"; name: IllusName } // illustration de la bibliothèque
-	| ({ type: "photo" } & Photo);
+	| ({ type: "photo" } & Photo)
+	| { type: "exergue"; text: string }; // phrase en grand, reprise mot pour mot du texte (vérifié au build)
 
 export type Guide = {
 	slug: string;
@@ -47,6 +48,7 @@ export type Guide = {
 	description: string;
 	h1: string;
 	intro: string[];
+	summary?: Inline[]; // encadré « En résumé » de l'en-tête (3 points conseillés)
 	published: string; // YYYY-MM-DD
 	updated: string; // YYYY-MM-DD
 	author: "Frédéric Mallet";
@@ -151,6 +153,8 @@ function parseBlock(file: string, raw: unknown, i: number): Block {
 			return { type: "illus", name: parseIllusName(file, raw.name, `${f}.name`) };
 		case "photo":
 			return { type: "photo", ...parsePhoto(file, raw, f) };
+		case "exergue":
+			return { type: "exergue", text: str(file, raw.text, `${f}.text`) };
 		default:
 			return fail(file, `« ${f}.type » inconnu : ${String(raw.type)}.`);
 	}
@@ -176,6 +180,25 @@ function parseGuide(file: string, raw: unknown): Guide {
 	const ctaHref = str(file, cta.href, "cta.href");
 	if (!ctaHref.startsWith("/")) fail(file, "« cta.href » doit commencer par « / ».");
 	const blocks = raw.blocks.map((b: unknown, i: number) => parseBlock(file, b, i));
+	const intro = strList(file, raw.intro, "intro");
+	// Une exergue répète une phrase de l'article, elle n'en ajoute pas : sinon, le build échoue.
+	const plain = (t: string) =>
+		t
+			.replace(/\*\*(.+?)\*\*/g, "$1")
+			.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+			.replace(/[\s  ]+/g, " ")
+			.toLowerCase();
+	const corpus = plain(
+		[
+			...intro,
+			...blocks.flatMap((b) => (b.type === "p" || b.type === "note" ? [b.text] : b.type === "ul" || b.type === "ol" ? b.items : [])),
+		].join(" "),
+	);
+	for (const b of blocks) {
+		if (b.type === "exergue" && !corpus.includes(plain(b.text))) {
+			fail(file, `exergue absente du texte de l'article (elle doit le citer mot pour mot) : « ${b.text} ».`);
+		}
+	}
 	const ids = blocks.flatMap((b) => (b.type === "h2" ? [b.id] : []));
 	for (const id of ids) {
 		if (!ID_RE.test(id)) fail(file, `id de h2 invalide (kebab-case attendu) : ${id}.`);
@@ -187,7 +210,8 @@ function parseGuide(file: string, raw: unknown): Guide {
 		title: str(file, raw.title, "title"),
 		description: str(file, raw.description, "description"),
 		h1: str(file, raw.h1, "h1"),
-		intro: strList(file, raw.intro, "intro"),
+		intro,
+		...(raw.summary === undefined ? {} : { summary: strList(file, raw.summary, "summary") }),
 		published,
 		updated,
 		author: "Frédéric Mallet",

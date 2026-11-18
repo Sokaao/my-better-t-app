@@ -105,6 +105,13 @@ function BlockView({ block }: { block: Block }) {
 					</figcaption>
 				</figure>
 			);
+		case "exergue":
+			// répète une phrase du texte : masquée aux lecteurs d'écran pour ne pas la lire deux fois
+			return (
+				<p className={s.exergue} aria-hidden="true">
+					{block.text}
+				</p>
+			);
 	}
 }
 
@@ -162,6 +169,18 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 									</p>
 								))}
 							</div>
+							{guide.summary && (
+								<div className={s.resume}>
+									<p className={s.resumeTitle}>En résumé</p>
+									<ul className={s.ul}>
+										{guide.summary.map((item) => (
+											<li key={item}>
+												<Inline text={item} />
+											</li>
+										))}
+									</ul>
+								</div>
+							)}
 							<p className={s.meta}>
 								Par {guide.author} · mis à jour le {formatDateFr(guide.updated)} · {guide.readingMinutes} min de lecture
 							</p>
