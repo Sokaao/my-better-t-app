@@ -9,6 +9,7 @@ export default function Footer() {
 				<ul>
 					<li><Link href="/organismes-de-formation">Organismes de formation</Link></li>
 					<li><Link href="/zone-intervention">Zone d'intervention</Link></li>
+					<li><Link href="/guides">Guides</Link></li>
 					<li><Link href="/mentions-legales">Mentions légales</Link></li>
 					<li><Link href="/politique-confidentialite">Politique de confidentialité</Link></li>
 				</ul>

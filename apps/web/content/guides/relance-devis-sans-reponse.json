@@ -1,0 +1,281 @@
+{
+	"slug": "relance-devis-sans-reponse",
+	"title": "Relance devis sans réponse : méthode et modèles | Synapsis",
+	"description": "Quand relancer un devis, combien de fois, quoi écrire : une méthode simple, 3 modèles prêts à copier et de quoi ne plus jamais oublier une relance.",
+	"h1": "Relance de devis sans réponse : la méthode pour ne plus en laisser filer",
+	"intro": [
+		"Un devis sans réponse se relance trois fois au maximum : un premier contact deux ou trois jours ouvrés après l'envoi, un deuxième une semaine plus tard, puis une dernière relance qui ferme poliment la porte. Chaque message est court et se termine par une question à laquelle le client peut répondre en une ligne. Pour ne plus en oublier, notez la date de la première relance le jour même où le devis part, puis confiez ce rappel à vos outils.",
+		"Le plus dur n'est pas d'écrire la relance, c'est d'y penser chaque semaine. Voici la méthode que je conseille aux dirigeants de PME, applicable dès lundi, avec ou sans logiciel."
+	],
+	"published": "2026-11-18",
+	"updated": "2026-11-18",
+	"author": "Frédéric Mallet",
+	"readingMinutes": 9,
+	"blocks": [
+		{
+			"type": "h2",
+			"text": "Pourquoi vos devis restent sans réponse",
+			"id": "pourquoi-vos-devis-restent-sans-reponse"
+		},
+		{
+			"type": "p",
+			"text": "Un silence n'est pas un refus. Dans la plupart des cas, votre devis attend dans une boîte mail, derrière des sujets plus urgents. Les raisons les plus courantes :"
+		},
+		{
+			"type": "ul",
+			"items": [
+				"**Votre client n'a pas le temps.** Votre devis est important pour vous, pas forcément pour lui cette semaine.",
+				"**Il attend l'avis de quelqu'un d'autre.** Un associé, un comptable, sa banque, un budget à valider.",
+				"**Il compare.** Il a demandé trois devis et attend le dernier.",
+				"**Un point le gêne et il n'ose pas le dire.** Le prix, le délai, une ligne qu'il ne comprend pas.",
+				"**Le mail s'est perdu.** Courrier indésirable, mauvaise adresse, pièce jointe bloquée."
+			]
+		},
+		{
+			"type": "p",
+			"text": "Aucune de ces raisons ne veut dire « non ». Une relance au bon moment suffit souvent à les lever, ou au moins à savoir où vous en êtes."
+		},
+		{
+			"type": "h2",
+			"text": "Quand relancer un devis, et combien de fois ?",
+			"id": "quand-relancer-un-devis-et-combien-de-fois"
+		},
+		{
+			"type": "p",
+			"text": "Il n'existe pas de délai officiel. Voici le rythme que je recommande, à adapter à la taille de l'achat : plus le montant est élevé, plus la décision prend du temps."
+		},
+		{
+			"type": "ol",
+			"items": [
+				"**Le jour de l'envoi : annoncez la suite.** Terminez votre mail par une date : « Je vous appelle jeudi pour en parler. » Votre client sait qu'il aura des nouvelles, et vous avez un rendez-vous noté.",
+				"**Relance 1, deux ou trois jours ouvrés après l'envoi.** Vérifiez que le devis est bien arrivé et proposez de répondre aux questions.",
+				"**Relance 2, environ une semaine plus tard.** Cherchez ce qui bloque.",
+				"**Dernière relance, une à deux semaines après.** Proposez de classer le dossier. Si votre devis a une date de validité, c'est le bon moment pour la rappeler."
+			]
+		},
+		{
+			"type": "p",
+			"text": "Au-delà, vous insistez. Et dès que le client répond, même par « pas maintenant », les relances s'arrêtent : vous notez sa réponse et la date à laquelle revenir vers lui."
+		},
+		{
+			"type": "h2",
+			"text": "Quoi écrire : trois modèles prêts à copier",
+			"id": "quoi-ecrire-trois-modeles-prets-a-copier"
+		},
+		{
+			"type": "p",
+			"text": "Trois règles pour tous vos messages : un objet qui rappelle le devis, cinq lignes au maximum, une seule question à la fin."
+		},
+		{
+			"type": "message",
+			"label": "Relance 1 : vérifier que le devis est arrivé",
+			"subject": "Votre devis n° [numéro] du [date]",
+			"lines": [
+				"Bonjour [Madame / Monsieur] [Nom],",
+				"",
+				"Je vous ai envoyé le [date] notre proposition pour [objet du devis]. L'avez-vous bien reçue ?",
+				"",
+				"Si une ligne n'est pas claire, je peux vous l'expliquer en dix minutes par téléphone. Quel moment vous arrange cette semaine ?",
+				"",
+				"Bien cordialement,",
+				"[Prénom Nom]"
+			]
+		},
+		{
+			"type": "message",
+			"label": "Relance 2 : trouver ce qui bloque",
+			"subject": "[Objet du devis] : où en est votre réflexion ?",
+			"lines": [
+				"Bonjour [Madame / Monsieur] [Nom],",
+				"",
+				"Je reviens vers vous au sujet de [objet du devis]. Si un point vous retient, le délai, le budget ou une option, dites-le-moi : je peux adapter la proposition.",
+				"",
+				"Le projet est-il toujours d'actualité pour [période prévue] ?",
+				"",
+				"Bien cordialement,",
+				"[Prénom Nom]"
+			]
+		},
+		{
+			"type": "message",
+			"label": "Dernière relance : fermer la porte poliment",
+			"subject": "Je classe votre dossier ?",
+			"lines": [
+				"Bonjour [Madame / Monsieur] [Nom],",
+				"",
+				"Sans nouvelles de votre part, je suppose que le projet [objet du devis] n'est plus prioritaire. Je classerai le dossier le [date], [à la fin de validité du devis, le cas échéant].",
+				"",
+				"Si c'est seulement une question de calendrier, un simple « plus tard » me suffit : je reviendrai vers vous au moment qui vous convient.",
+				"",
+				"Bien cordialement,",
+				"[Prénom Nom]"
+			]
+		},
+		{
+			"type": "p",
+			"text": "Un « non, merci » vaut mieux qu'un silence : vous savez où vous en êtes, et vous pouvez demander ce qui a fait pencher la balance."
+		},
+		{
+			"type": "h2",
+			"text": "Téléphone ou e-mail ?",
+			"id": "telephone-ou-e-mail"
+		},
+		{
+			"type": "p",
+			"text": "Les deux, chacun à sa place."
+		},
+		{
+			"type": "ul",
+			"items": [
+				"**Le téléphone** pour la première relance d'un devis important. En deux minutes, vous entendez ce qui bloque, ce qu'un mail ne vous dira jamais.",
+				"**L'e-mail** pour garder une trace et laisser au client le temps de répondre. C'est aussi le bon canal quand il est difficile à joindre.",
+				"**Le SMS ou WhatsApp**, seulement si votre client échange déjà avec vous par ce biais. Sinon, c'est intrusif."
+			]
+		},
+		{
+			"type": "p",
+			"text": "Une règle simple : si vous appelez et tombez sur la messagerie, envoyez le mail dans la foulée en le mentionnant. Votre client a les deux, il choisit."
+		},
+		{
+			"type": "h2",
+			"text": "Comment ne plus oublier une relance",
+			"id": "comment-ne-plus-oublier-une-relance"
+		},
+		{
+			"type": "p",
+			"text": "C'est là que la plupart des affaires se perdent. Pas par manque de savoir-faire, mais parce que personne n'a pensé au devis du 3 du mois."
+		},
+		{
+			"type": "h3",
+			"text": "Commencez par un tableau"
+		},
+		{
+			"type": "p",
+			"text": "Un tableur suffit pour démarrer : une ligne par devis, avec le client, le montant, la date d'envoi, la date de la prochaine relance et le statut (en attente, relancé, signé, perdu). Chaque lundi matin, triez par date de relance et traitez ce qui est échu. Quinze minutes par semaine, et plus aucun devis n'est oublié."
+		},
+		{
+			"type": "p",
+			"text": "La limite arrive vite : il faut remplir le tableau à chaque devis, et il ne sait pas quand le client a répondu."
+		},
+		{
+			"type": "h3",
+			"text": "Utilisez les rappels de votre messagerie"
+		},
+		{
+			"type": "p",
+			"text": "Votre messagerie sait déjà vous rappeler un mail à une date donnée :"
+		},
+		{
+			"type": "ul",
+			"items": [
+				"**Gmail** propose « Mettre en attente » : le message disparaît de votre boîte et réapparaît en haut à la date choisie.",
+				"**Outlook** permet d'ajouter un rappel sur un message, avec la commande Suivi, puis « Ajouter un rappel »."
+			]
+		},
+		{
+			"type": "p",
+			"text": "Évitez en revanche de programmer vos relances à l'avance. Un mail programmé part à l'heure prévue, même si votre client vous a répondu entre-temps. Rien de pire qu'une relance automatique envoyée à quelqu'un qui vient de signer."
+		},
+		{
+			"type": "h3",
+			"text": "Regardez ce que fait déjà votre logiciel de devis"
+		},
+		{
+			"type": "p",
+			"text": "Certains logiciels de devis et de facturation relancent seuls, d'autres non, et c'est souvent réservé aux factures. Exemples relevés sur leur documentation en novembre 2026 : Axonaut annonce une relance automatique des devis. Pennylane relance automatiquement les factures, mais son aide précise que les devis n'en font pas l'objet. HubSpot, dans ses abonnements Sales Hub ou Service Hub Pro et Entreprise, propose des « séquences » de mails qui s'arrêtent quand le contact répond. Vérifiez dans votre outil, c'est souvent plus simple que vous ne le pensez."
+		},
+		{
+			"type": "h3",
+			"text": "Reliez vos outils pour que la relance se prépare seule"
+		},
+		{
+			"type": "p",
+			"text": "Le vrai problème apparaît quand l'information est éparpillée : le devis dans le logiciel de facturation, les échanges dans la messagerie, le client dans un fichier Excel. Personne n'a la vue complète, donc personne ne relance au bon moment."
+		},
+		{
+			"type": "p",
+			"text": "Prenons une entreprise de quinze salariés qui envoie ses devis depuis son logiciel de facturation et suit ses clients dans un tableur. Une fois les outils reliés, voici ce qui se passe : le devis part, une ligne se crée dans le fichier clients avec la date de relance. Le jour venu, si le devis n'est ni signé ni discuté, un brouillon de relance vous attend, avec le bon nom, le bon montant et le bon objet. Vous relisez, vous envoyez. Si le client répond ou signe, tout s'arrête, et le statut se met à jour. Le lundi, vous voyez d'un coup d'œil les devis en attente."
+		},
+		{
+			"type": "p",
+			"text": "Rien n'est remplacé : c'est ce que je fais au quotidien, [relier vos outils sans en changer](/). Chacun garde son rôle, ils partagent simplement la même information."
+		},
+		{
+			"type": "h2",
+			"text": "Ce que l'IA peut faire, et ce qu'elle ne doit pas faire seule",
+			"id": "ce-que-l-ia-peut-faire-et-ce-qu-elle-ne-doit-pas-faire-seule"
+		},
+		{
+			"type": "p",
+			"text": "Un assistant IA branché sur vos outils fait bien le travail de préparation :"
+		},
+		{
+			"type": "ul",
+			"items": [
+				"rédiger une relance qui tient compte du devis et des échanges précédents, au lieu d'un modèle générique ;",
+				"lire les réponses et les trier : accord, question, « pas maintenant », refus ;",
+				"vous signaler les devis qui dorment depuis trop longtemps."
+			]
+		},
+		{
+			"type": "p",
+			"text": "Ce qu'elle ne doit jamais faire sans vous :"
+		},
+		{
+			"type": "ul",
+			"items": [
+				"**envoyer** un message à un client ;",
+				"**promettre** une remise, un délai ou une condition ;",
+				"**répondre à une négociation** ou à un client mécontent ;",
+				"**relancer** quelqu'un qui a déjà dit non."
+			]
+		},
+		{
+			"type": "p",
+			"text": "C'est la règle que j'applique dans tout ce que je mets en place : l'assistant prépare, vous validez d'un clic. Il vous fait gagner le temps de la rédaction, pas le contrôle de la relation."
+		},
+		{
+			"type": "h2",
+			"text": "Les erreurs qui font perdre l'affaire",
+			"id": "les-erreurs-qui-font-perdre-l-affaire"
+		},
+		{
+			"type": "ul",
+			"items": [
+				"**Envoyer le devis sans annoncer de suite.** Sans date de rappel, la relance dépend de votre mémoire.",
+				"**Relancer sans question.** « Je me permets de revenir vers vous » n'appelle aucune réponse. « Le projet tient-il toujours pour mars ? » en appelle une.",
+				"**Baisser le prix de vous-même.** Une remise non demandée dit à votre client que le premier prix était gonflé. Cherchez d'abord ce qui bloque.",
+				"**Oublier les « pas maintenant ».** Un client qui dit « en septembre » est une affaire. Notez la date, et rappelez en septembre.",
+				"**Automatiser sans lien avec les réponses.** Une relance qui ignore la réponse du client fait plus de dégâts que pas de relance du tout."
+			]
+		}
+	],
+	"faq": [
+		{
+			"q": "Comment relancer un devis sans paraître insistant ?",
+			"a": "Espacez vos messages d'au moins quelques jours, gardez-les courts et apportez à chaque fois quelque chose : une explication, une adaptation possible, une date. Et proposez toujours une porte de sortie, comme le « plus tard » de la dernière relance."
+		},
+		{
+			"q": "Faut-il relancer un devis refusé ?",
+			"a": "Pas pour le faire changer d'avis. Remerciez, et demandez en une ligne ce qui a fait la différence : le prix, le délai, un concurrent mieux placé. Cette réponse vaut de l'or pour vos prochains devis."
+		},
+		{
+			"q": "Peut-on automatiser complètement la relance des devis ?",
+			"a": "Le rappel et la rédaction, oui. L'envoi, je le déconseille sans relecture, sauf si votre outil arrête les relances dès que le client répond. Dans tous les cas, gardez la main sur les devis importants."
+		},
+		{
+			"q": "Faut-il un logiciel spécial pour automatiser ses relances ?",
+			"a": "Pas forcément. Votre messagerie, votre logiciel de devis et un tableur suffisent souvent, à condition qu'ils partagent la même information."
+		},
+		{
+			"q": "Que faire quand le client répond « pas maintenant » ?",
+			"a": "Arrêtez les relances, notez la date qu'il vous donne et demandez s'il souhaite que le devis soit mis à jour à ce moment-là. Le jour venu, revenez vers lui avec une proposition à jour."
+		}
+	],
+	"cta": {
+		"h2": "Où se perdent vos devis ?",
+		"text": "Si vos devis dorment dans trois outils différents et que vos relances dépendent de votre mémoire, le problème vient rarement du message, mais de la façon dont l'information circule entre vos outils. Le [diagnostic gratuit](/diagnostic) prend trois minutes : vous décrivez vos outils et votre façon de travailler, puis on en parle trente minutes en visio. Vous repartez avec un plan clair pour que vos relances partent au bon moment, que vous travailliez avec moi ou non.",
+		"label": "Faire mon diagnostic",
+		"href": "/diagnostic"
+	}
+}

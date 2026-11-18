@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { getAllGuides } from "@/lib/guides";
 
 const siteUrl = "https://www.mysynapsis.fr";
 
 // Pages du nouveau site (refonte 2026). Les anciennes pages (/offres, /methode, /deroulement) redirigent vers l'accueil.
 export default function sitemap(): MetadataRoute.Sitemap {
-	const routes = ["", "/diagnostic", "/rendez-vous", "/zone-intervention", "/organismes-de-formation", "/mentions-legales", "/politique-confidentialite"];
+	const routes = ["", "/diagnostic", "/rendez-vous", "/zone-intervention", "/organismes-de-formation", "/guides", "/mentions-legales", "/politique-confidentialite"];
 
 	const priorities: Record<string, number> = {
 		"": 1,
@@ -14,10 +15,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		"/zone-intervention": 0.6,
 	};
 
-	return routes.map((route) => ({
+	const pages: MetadataRoute.Sitemap = routes.map((route) => ({
 		url: `${siteUrl}${route}`,
 		lastModified: new Date(),
 		changeFrequency: route === "" ? "weekly" : "monthly",
 		priority: priorities[route] ?? 0.3,
 	}));
+
+	// Un guide par fichier JSON de content/guides.
+	const guides: MetadataRoute.Sitemap = getAllGuides().map((g) => ({
+		url: `${siteUrl}/guides/${g.slug}`,
+		lastModified: new Date(`${g.updated}T00:00:00Z`),
+		changeFrequency: "monthly",
+		priority: 0.6,
+	}));
+
+	return [...pages, ...guides];
 }

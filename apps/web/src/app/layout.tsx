@@ -61,6 +61,7 @@ const globalLd = graph(
 		},
 		founder: {
 			"@type": "Person",
+			"@id": `${SITE_URL}/#person`,
 			name: "Frédéric Mallet",
 			sameAs: ["https://www.linkedin.com/in/mysynapsis"],
 		},
