@@ -75,3 +75,61 @@
 /* Espace avant le premier titre du corps */
 :global(.s26) .body > :first-child { margin-top: 0; }
 .bodySec { padding-top: clamp(24px, 1rem + 2vw, 48px); }
+
+/* Bloc photo dans le corps (marges verticales : règle .body > figure plus haut) */
+.photo { margin-inline: 0; }
+.photo img { display: block; width: 100%; height: auto; border-radius: var(--r-lg); }
+:global(.s26) .photo figcaption { margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--ink-3); }
+.photo figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Photo d'en-tête : sous la méta, pleine largeur, sur mobile et tablette */
+.heroPhoto { margin: 28px 0 0; }
+.heroPhoto img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 20px; }
+:global(.s26) .heroPhoto figcaption { margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--ink-3); }
+.heroPhoto figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Illustration d'en-tête : sous la méta sur mobile et tablette, à droite du titre sur ordinateur */
+.heroIllus { margin-top: 32px; }
+
+/* Éléments réservés à l'ordinateur : masqués par défaut pour garder le rendu < 1100 px identique */
+.aside { display: none; }
+/* hauteur réservée à la carte diagnostic (~250 px) sous le sommaire, sinon elle sort de l'écran */
+.tocAside { max-height: max(160px, calc(100vh - 96px - 290px)); overflow: auto; }
+.tocAsideTitle { font-weight: 600; color: var(--ink); font-size: 15px; }
+.tocAside ol { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 10px; font-size: 14px; line-height: 1.35; }
+.tocAside a { display: block; padding-left: 12px; border-left: 2px solid transparent; color: var(--ink-3); text-decoration: none; }
+.tocAside a:hover { color: var(--orange-text); }
+.tocAside a.tocActive { border-left-color: var(--orange); color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+	.tocAside a { transition: color .2s, border-color .2s; }
+}
+.asideCard { margin-top: 28px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px; }
+:global(.s26) .asideCardTitle { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--ink); }
+:global(.s26) .asideCard p + p { margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.asideCard :global(.cta) { margin-top: 16px; }
+
+/* Ordinateur : on exploite la largeur sans allonger les lignes de texte */
+@media (min-width: 1100px) {
+	/* conteneur large (les sections restent en .wrap.narrow en dessous) ; doublé pour passer devant .wrap.narrow */
+	:global(.s26) :global(.wrap).wide.wide { --container: 1120px; }
+
+	.heroGrid { display: grid; grid-template-columns: minmax(0, 40rem) minmax(0, 460px); justify-content: space-between; align-items: center; gap: 48px; }
+	.heroText { max-width: 40rem; }
+	.heroPhoto, .heroIllus { margin: 0; }
+	.heroPhoto img { aspect-ratio: auto; max-height: 575px; border-radius: var(--r-card, 20px); }
+
+	/* le sommaire latéral prend le relais */
+	.toc { display: none; }
+
+	.bodyGrid { display: grid; grid-template-columns: minmax(0, 44rem) 280px; justify-content: space-between; gap: clamp(48px, 6vw, 96px); }
+	.bodyGrid .body { max-width: none; }
+	.aside { display: block; position: sticky; top: 96px; align-self: start; }
+
+	.faqGrid { display: grid; grid-template-columns: minmax(0, 22rem) minmax(0, 44rem); justify-content: space-between; }
+	.faqHead { position: sticky; top: 96px; align-self: start; margin-bottom: 0; }
+	.faq { max-width: none; }
+
+	.closingGrid { display: grid; grid-template-columns: minmax(0, 40rem) auto; justify-content: space-between; align-items: end; gap: 24px 48px; }
+	.closingText { max-width: 40rem; }
+	.closingGrid .actions { margin-top: 0; }
+}

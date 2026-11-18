@@ -8,8 +8,27 @@ import { cache } from "react";
 export type Inline = string; // supporte **gras** et [texte](url) uniquement
 
 // Illustrations disponibles (components/site2026/guides/illus/Illus.tsx). Un nom inconnu fait échouer le build.
-export const ILLUS_NAMES = ["frise-relances"] as const;
+export const ILLUS_NAMES = [
+	"frise-relances",
+	"boite-envoi",
+	"tableau-suivi",
+	"outils-relies",
+	"canaux-relance",
+	"ia-prepare",
+	"hero-devis",
+] as const;
 export type IllusName = (typeof ILLUS_NAMES)[number];
+
+// Photo sous licence libre (Unsplash, Pexels) ou fournie par Fred, rangée dans public/images/guides/.
+// Le crédit est toujours affiché sous la photo.
+export type Photo = {
+	src: string; // /images/guides/xxx.jpg|webp|png
+	alt: string;
+	width: number;
+	height: number;
+	credit: string; // ex. « Photo : Nom / Pexels »
+	creditUrl?: string; // page de la photo chez la source
+};
 
 export type Block =
 	| { type: "h2"; text: string; id: string }
@@ -19,7 +38,8 @@ export type Block =
 	| { type: "ol"; items: Inline[] }
 	| { type: "message"; label: string; subject?: string; lines: string[] } // modèle de mail à copier
 	| { type: "note"; text: Inline }
-	| { type: "illus"; name: IllusName }; // illustration de la bibliothèque
+	| { type: "illus"; name: IllusName } // illustration de la bibliothèque
+	| ({ type: "photo" } & Photo);
 
 export type Guide = {
 	slug: string;
@@ -31,6 +51,8 @@ export type Guide = {
 	updated: string; // YYYY-MM-DD
 	author: "Frédéric Mallet";
 	readingMinutes: number;
+	hero?: Photo; // photo d'en-tête, à droite du titre sur ordinateur
+	heroIllus?: IllusName; // ou une illustration d'en-tête (ignorée si une photo est donnée)
 	blocks: Block[];
 	faq: { q: string; a: string }[];
 	cta: { h2: string; text: Inline; label: string; href: string };
@@ -71,6 +93,38 @@ function strList(file: string, v: unknown, field: string, allowEmptyItems = fals
 	});
 }
 
+function parseIllusName(file: string, raw: unknown, f: string): IllusName {
+	const name = str(file, raw, f);
+	if (!(ILLUS_NAMES as readonly string[]).includes(name)) {
+		fail(file, `« ${f} » inconnu : ${name}. Illustrations disponibles : ${ILLUS_NAMES.join(", ")}.`);
+	}
+	return name as IllusName;
+}
+
+const PHOTO_SRC_RE = /^\/images\/guides\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpe?g|webp|png)$/;
+
+function parsePhoto(file: string, raw: unknown, f: string): Photo {
+	if (!isObject(raw)) fail(file, `« ${f} » doit être un objet.`);
+	const src = str(file, raw.src, `${f}.src`);
+	if (!PHOTO_SRC_RE.test(src)) fail(file, `« ${f}.src » doit être un fichier de /images/guides/ (kebab-case, jpg/webp/png) : ${src}.`);
+	const candidates = [path.join(process.cwd(), "public", src), path.join(process.cwd(), "apps/web/public", src)];
+	if (!candidates.some((p) => fs.existsSync(p))) fail(file, `« ${f}.src » introuvable dans public/ : ${src}.`);
+	for (const k of ["width", "height"] as const) {
+		const v = raw[k];
+		if (typeof v !== "number" || !Number.isInteger(v) || v < 1) fail(file, `« ${f}.${k} » doit être un entier positif.`);
+	}
+	const creditUrl = raw.creditUrl === undefined ? undefined : str(file, raw.creditUrl, `${f}.creditUrl`);
+	if (creditUrl && !creditUrl.startsWith("https://")) fail(file, `« ${f}.creditUrl » doit commencer par https://.`);
+	return {
+		src,
+		alt: str(file, raw.alt, `${f}.alt`),
+		width: raw.width as number,
+		height: raw.height as number,
+		credit: str(file, raw.credit, `${f}.credit`),
+		...(creditUrl ? { creditUrl } : {}),
+	};
+}
+
 function parseBlock(file: string, raw: unknown, i: number): Block {
 	const f = `blocks[${i}]`;
 	if (!isObject(raw)) fail(file, `« ${f} » doit être un objet.`);
@@ -93,13 +147,10 @@ function parseBlock(file: string, raw: unknown, i: number): Block {
 				...(raw.subject === undefined ? {} : { subject: str(file, raw.subject, `${f}.subject`) }),
 				lines: strList(file, raw.lines, `${f}.lines`, true),
 			};
-		case "illus": {
-			const name = str(file, raw.name, `${f}.name`);
-			if (!(ILLUS_NAMES as readonly string[]).includes(name)) {
-				fail(file, `« ${f}.name » inconnu : ${name}. Illustrations disponibles : ${ILLUS_NAMES.join(", ")}.`);
-			}
-			return { type: "illus", name: name as IllusName };
-		}
+		case "illus":
+			return { type: "illus", name: parseIllusName(file, raw.name, `${f}.name`) };
+		case "photo":
+			return { type: "photo", ...parsePhoto(file, raw, f) };
 		default:
 			return fail(file, `« ${f}.type » inconnu : ${String(raw.type)}.`);
 	}
@@ -141,6 +192,8 @@ function parseGuide(file: string, raw: unknown): Guide {
 		updated,
 		author: "Frédéric Mallet",
 		readingMinutes: raw.readingMinutes,
+		...(raw.hero === undefined ? {} : { hero: parsePhoto(file, raw.hero, "hero") }),
+		...(raw.heroIllus === undefined ? {} : { heroIllus: parseIllusName(file, raw.heroIllus, "heroIllus") }),
 		blocks,
 		faq: raw.faq.map((item: unknown, i: number) => {
 			if (!isObject(item)) fail(file, `« faq[${i}] » doit être un objet.`);

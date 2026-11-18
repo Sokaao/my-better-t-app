@@ -11,6 +11,7 @@
 	"updated": "2026-11-18",
 	"author": "Frédéric Mallet",
 	"readingMinutes": 9,
+	"heroIllus": "hero-devis",
 	"blocks": [
 		{
 			"type": "h2",
@@ -34,6 +35,10 @@
 		{
 			"type": "p",
 			"text": "Aucune de ces raisons ne veut dire « non ». Une relance au bon moment suffit souvent à les lever, ou au moins à savoir où vous en êtes."
+		},
+		{
+			"type": "illus",
+			"name": "boite-envoi"
 		},
 		{
 			"type": "h2",
@@ -141,6 +146,10 @@
 			"text": "Une règle simple : si vous appelez et tombez sur la messagerie, envoyez le mail dans la foulée en le mentionnant. Votre client a les deux, il choisit."
 		},
 		{
+			"type": "illus",
+			"name": "canaux-relance"
+		},
+		{
 			"type": "h2",
 			"text": "Comment ne plus oublier une relance",
 			"id": "comment-ne-plus-oublier-une-relance"
@@ -156,6 +165,10 @@
 		{
 			"type": "p",
 			"text": "Un tableur suffit pour démarrer : une ligne par devis, avec le client, le montant, la date d'envoi, la date de la prochaine relance et le statut (en attente, relancé, signé, perdu). Chaque lundi matin, triez par date de relance et traitez ce qui est échu. Quinze minutes par semaine, et plus aucun devis n'est oublié."
+		},
+		{
+			"type": "illus",
+			"name": "tableau-suivi"
 		},
 		{
 			"type": "p",
@@ -201,6 +214,10 @@
 			"text": "Prenons une entreprise de quinze salariés qui envoie ses devis depuis son logiciel de facturation et suit ses clients dans un tableur. Une fois les outils reliés, voici ce qui se passe : le devis part, une ligne se crée dans le fichier clients avec la date de relance. Le jour venu, si le devis n'est ni signé ni discuté, un brouillon de relance vous attend, avec le bon nom, le bon montant et le bon objet. Vous relisez, vous envoyez. Si le client répond ou signe, tout s'arrête, et le statut se met à jour. Le lundi, vous voyez d'un coup d'œil les devis en attente."
 		},
 		{
+			"type": "illus",
+			"name": "outils-relies"
+		},
+		{
 			"type": "p",
 			"text": "Rien n'est remplacé : c'est ce que je fais au quotidien, [relier vos outils sans en changer](/). Chacun garde son rôle, ils partagent simplement la même information."
 		},
@@ -237,6 +254,10 @@
 		{
 			"type": "p",
 			"text": "C'est la règle que j'applique dans tout ce que je mets en place : l'assistant prépare, vous validez d'un clic. Il vous fait gagner le temps de la rédaction, pas le contrôle de la relation."
+		},
+		{
+			"type": "illus",
+			"name": "ia-prepare"
 		},
 		{
 			"type": "h2",
