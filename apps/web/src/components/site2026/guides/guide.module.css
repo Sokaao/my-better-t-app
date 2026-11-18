@@ -25,6 +25,8 @@
 :global(.s26) .body h2 { margin-top: 56px; font-size: clamp(26px, 1rem + 1.6vw, 34px); line-height: 1.15; letter-spacing: -.03em; font-weight: 800; color: var(--ink); scroll-margin-top: 96px; }
 :global(.s26) .body h3 { margin-top: 36px; font-size: clamp(20px, 1rem + .6vw, 24px); line-height: 1.25; letter-spacing: -.02em; font-weight: 700; color: var(--ink); }
 :global(.s26) .body h2 + *, :global(.s26) .body h3 + * { margin-top: 14px; }
+/* Illustrations (guides/illus) : plus d'air que le texte, avant et après */
+:global(.s26) .body > figure { margin-block: 36px 40px; }
 .body strong { color: var(--ink); font-weight: 600; }
 .body a, .intro a, .faq a, .closingLead a { color: var(--orange-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 

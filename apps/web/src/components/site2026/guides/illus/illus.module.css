@@ -1,0 +1,119 @@
+/* Illustrations des guides. État de base = état final (sans JavaScript, mouvement réduit).
+   PlayOnView pose data-anim="armed" puis "play" à l'arrivée à l'écran : l'animation se joue une fois.
+   Seuls transform et opacity sont animés. */
+
+/* Marges : posées dans guide.module.css (.body > figure), les styles du corps l'emportent ici */
+.figure { margin: 0; }
+
+.card {
+	background: var(--bg);
+	border: 1px solid var(--line);
+	border-radius: 20px;
+	box-shadow: 0 30px 70px -40px rgb(15 23 42 / .35);
+	padding: 22px 22px 18px;
+	text-align: left;
+}
+
+/* ---------- Frise des relances ---------- */
+.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 20px; }
+.top b { font-family: var(--font-display); font-size: 17px; letter-spacing: -.02em; color: var(--ink); }
+.top span { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+
+.track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.step { position: relative; display: grid; justify-items: center; align-content: start; gap: 6px; padding: 34px 6px 0; text-align: center; }
+
+/* Segment qui relie l'étape à la précédente, au niveau des points */
+.step + .step::before {
+	content: "";
+	position: absolute;
+	top: 41px;
+	left: -50%;
+	width: 100%;
+	height: 2px;
+	background: var(--orange-line);
+	transform-origin: left center;
+}
+
+.dot { position: relative; z-index: 1; width: 16px; height: 16px; margin-bottom: 8px; border: 3px solid var(--orange); border-radius: 50%; background: var(--bg); box-sizing: border-box; }
+.step:last-child .dot { background: var(--orange); }
+
+/* Délai : posé au milieu du segment, donc sur la frontière entre deux colonnes */
+.gap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	translate: -50% 0;
+	padding: 3px 9px;
+	border-radius: 999px;
+	background: var(--orange-soft);
+	color: var(--orange-text);
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+.name { font-size: 14px; font-weight: 700; line-height: 1.25; color: var(--ink); }
+.goal { font-size: 13px; line-height: 1.35; color: var(--ink-2); }
+
+/* .card .stop : « .s26 p { margin: 0 } » l'emporterait sur .stop seul */
+.card .stop { display: flex; align-items: center; gap: 10px; margin: 20px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--ok); }
+.stop::before { content: "✓"; flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ok-soft); font-weight: 800; }
+
+/* Mobile : frise verticale, points à gauche */
+@media (max-width: 600px) {
+	.card { padding: 18px 16px 16px; }
+	.track { grid-template-columns: minmax(0, 1fr); }
+	.step { justify-items: start; gap: 4px; padding: 0 0 20px 32px; text-align: left; }
+	.step:last-child { padding-bottom: 0; }
+	.step + .step::before { content: none; }
+	/* Le point s'aligne sur le nom de l'étape ; la pastille de délai reste sur le segment, au-dessus */
+	.dot { position: absolute; top: 1px; left: 0; margin: 0; }
+	.gap { position: static; translate: none; margin-bottom: 2px; }
+	.step:has(.gap) .dot { top: 29px; }
+	/* Segment : de son propre point jusqu'au point de l'étape suivante (29 px sous le haut de celle-ci) */
+	.step:not(:last-child)::after {
+		content: "";
+		position: absolute;
+		top: 17px;
+		bottom: -29px;
+		left: 7px;
+		width: 2px;
+		background: var(--orange-line);
+		transform-origin: center top;
+	}
+	.step:has(.gap):not(:last-child)::after { top: 45px; }
+}
+
+/* ---------- Animation (seulement quand PlayOnView l'a armée) ----------
+   Les transitions ne valent que pour « play » : le masquage (« armed ») est instantané,
+   sinon les derniers éléments restaient visibles le temps de leur délai. */
+.frise[data-anim="play"] .dot,
+.frise[data-anim="play"] .gap,
+.frise[data-anim="play"] .name,
+.frise[data-anim="play"] .goal,
+.frise[data-anim="play"] .stop {
+	transition: opacity .45s var(--e-out), transform .45s var(--e-out);
+	transition-delay: calc(var(--i, 4) * 260ms + 100ms);
+}
+.frise[data-anim="play"] .step + .step::before,
+.frise[data-anim="play"] .step::after {
+	transition: transform .4s cubic-bezier(.65, 0, .35, 1);
+}
+.frise[data-anim="play"] .step + .step::before { transition-delay: calc(var(--i) * 260ms - 200ms); }
+.frise[data-anim="play"] .step::after { transition-delay: calc(var(--i) * 260ms + 100ms); }
+
+.frise[data-anim="armed"] .dot { opacity: 0; transform: scale(.4); }
+.frise[data-anim="armed"] .gap,
+.frise[data-anim="armed"] .name,
+.frise[data-anim="armed"] .goal,
+.frise[data-anim="armed"] .stop { opacity: 0; transform: translateY(8px); }
+.frise[data-anim="armed"] .step + .step::before { transform: scaleX(0); }
+.frise[data-anim="armed"] .step::after { transform: scaleY(0); }
+
+/* Impression : toujours l'état final, même si la frise n'a pas encore défilé */
+@media print {
+	.frise[data-anim] *,
+	.frise[data-anim] *::before,
+	.frise[data-anim] *::after { opacity: 1 !important; transform: none !important; }
+}

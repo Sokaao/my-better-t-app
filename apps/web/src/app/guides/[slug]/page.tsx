@@ -6,6 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { articleLd, breadcrumbTrailLd, faqPageLd, graph } from "@/components/seo/schemas";
 import Inline from "@/components/site2026/guides/Inline";
 import CopyButton from "@/components/site2026/guides/CopyButton";
+import Illus from "@/components/site2026/guides/illus/Illus";
 import { formatDateFr, getAllGuides, getGuide, type Block } from "@/lib/guides";
 import s from "@/components/site2026/guides/guide.module.css";
 
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 			type: "article",
 			siteName: "Synapsis",
 			locale: "fr_FR",
-			images: ["/opengraph-image"],
+			// image : opengraph-image.tsx de ce dossier (une image par guide)
 			title: guide.title,
 			description: guide.description,
 			url,
@@ -36,7 +37,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 			modifiedTime: guide.updated,
 			authors: [guide.author],
 		},
-		twitter: { title: guide.title, description: guide.description },
+		// card répété : l'objet twitter d'une page remplace celui du layout en entier
+		twitter: { card: "summary_large_image", title: guide.title, description: guide.description },
 	};
 }
 
@@ -84,6 +86,8 @@ function BlockView({ block }: { block: Block }) {
 					<Inline text={block.text} />
 				</p>
 			);
+		case "illus":
+			return <Illus name={block.name} />;
 	}
 }
 

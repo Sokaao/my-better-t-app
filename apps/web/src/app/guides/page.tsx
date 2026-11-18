@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	description: DESCRIPTION,
 	alternates: { canonical: "/guides" },
 	openGraph: { title: TITLE, description: DESCRIPTION, url: "/guides", siteName: "Synapsis", locale: "fr_FR", images: ["/opengraph-image"] },
-	twitter: { title: TITLE, description: DESCRIPTION },
+	twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function GuidesPage() {

@@ -7,6 +7,10 @@ import { cache } from "react";
 
 export type Inline = string; // supporte **gras** et [texte](url) uniquement
 
+// Illustrations disponibles (components/site2026/guides/illus/Illus.tsx). Un nom inconnu fait échouer le build.
+export const ILLUS_NAMES = ["frise-relances"] as const;
+export type IllusName = (typeof ILLUS_NAMES)[number];
+
 export type Block =
 	| { type: "h2"; text: string; id: string }
 	| { type: "h3"; text: string }
@@ -14,7 +18,8 @@ export type Block =
 	| { type: "ul"; items: Inline[] }
 	| { type: "ol"; items: Inline[] }
 	| { type: "message"; label: string; subject?: string; lines: string[] } // modèle de mail à copier
-	| { type: "note"; text: Inline };
+	| { type: "note"; text: Inline }
+	| { type: "illus"; name: IllusName }; // illustration de la bibliothèque
 
 export type Guide = {
 	slug: string;
@@ -88,6 +93,13 @@ function parseBlock(file: string, raw: unknown, i: number): Block {
 				...(raw.subject === undefined ? {} : { subject: str(file, raw.subject, `${f}.subject`) }),
 				lines: strList(file, raw.lines, `${f}.lines`, true),
 			};
+		case "illus": {
+			const name = str(file, raw.name, `${f}.name`);
+			if (!(ILLUS_NAMES as readonly string[]).includes(name)) {
+				fail(file, `« ${f}.name » inconnu : ${name}. Illustrations disponibles : ${ILLUS_NAMES.join(", ")}.`);
+			}
+			return { type: "illus", name: name as IllusName };
+		}
 		default:
 			return fail(file, `« ${f}.type » inconnu : ${String(raw.type)}.`);
 	}

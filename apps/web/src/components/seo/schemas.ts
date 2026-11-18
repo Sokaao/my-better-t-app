@@ -37,7 +37,7 @@ export function articleLd(guide: Pick<Guide, "slug" | "h1" | "description" | "pu
 		dateModified: guide.updated,
 		inLanguage: "fr-FR",
 		mainEntityOfPage: url,
-		image: `${SITE_URL}/opengraph-image`,
+		image: `${url}/opengraph-image`, // app/guides/[slug]/opengraph-image.tsx, 1200 × 630
 		isPartOf: { "@id": `${SITE_URL}/#website` },
 		author: {
 			"@type": "Person",

@@ -58,6 +58,10 @@
 			"text": "Au-delà, vous insistez. Et dès que le client répond, même par « pas maintenant », les relances s'arrêtent : vous notez sa réponse et la date à laquelle revenir vers lui."
 		},
 		{
+			"type": "illus",
+			"name": "frise-relances"
+		},
+		{
 			"type": "h2",
 			"text": "Quoi écrire : trois modèles prêts à copier",
 			"id": "quoi-ecrire-trois-modeles-prets-a-copier"
